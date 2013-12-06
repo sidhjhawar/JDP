@@ -13,7 +13,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import com.turingworld.controller.BlockBuilderController;
-import com.turingworld.controller.BlockBuilderControllerHelper;
+import com.turingworld.controller.ControllerHelper;
 import com.turingworld.model.BlockBuilderModel;
 
 public class LoadBlockView extends JFrame {
@@ -56,7 +56,7 @@ public class LoadBlockView extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String x = comboBox.getSelectedItem().toString();
 				File file = new File("jsondata/" + x);
-				BlockBuilderControllerHelper blockbuildercontrollerhelper = new BlockBuilderControllerHelper();
+				ControllerHelper blockbuildercontrollerhelper = new ControllerHelper();
 				BlockBuilderModel blockBuilderModel = new BlockBuilderModel();
 				blockBuilderModel = blockbuildercontrollerhelper.importJSON(file);
 				BlockBuilderView blockbuilderview = new BlockBuilderView(blockBuilderModel);

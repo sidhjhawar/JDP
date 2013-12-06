@@ -10,6 +10,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
@@ -17,7 +23,7 @@ import net.sf.json.JSONSerializer;
 import com.turingworld.model.Block;
 import com.turingworld.model.BlockBuilderModel;
 
-public class BlockBuilderControllerHelper {
+public class ControllerHelper {
 
 	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 	Date date = new Date();
@@ -98,5 +104,22 @@ public class BlockBuilderControllerHelper {
 
 		model.setBlockList(arr);
 		return model;
+	}
+
+	public void playSound(String audioFile) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+		try {
+			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(audioFile));
+
+			Clip clip = AudioSystem.getClip();
+
+			clip.open(audioInputStream);
+			clip.start();
+		} catch (UnsupportedAudioFileException uae) {
+			System.out.println(uae);
+		} catch (IOException ioe) {
+			System.out.println(ioe);
+		} catch (LineUnavailableException lua) {
+			System.out.println(lua);
+		}
 	}
 }
