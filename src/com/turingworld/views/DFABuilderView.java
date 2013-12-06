@@ -33,11 +33,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import javax.imageio.ImageIO;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -48,7 +43,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
@@ -176,9 +170,6 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		DOWN, UP, UPSIDE_DOWN, ABOUT_CENTER;
 	}
 
-	/**
-	 * Launch the application.
-	 */
 	public void addoutputicons(JLabel icon) {
 		outputicons.add(icon);
 	}
@@ -263,9 +254,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		setContentPane(contentPanel);
 		contentPanel.setLayout(null);
 		creatHeaderMenu();
-		createTabbedView();
 		createLeftPaneView();
-		createActionView();
 		panel_1 = new JPanel();
 		panel_1.setBounds(155, 515, 785, 150);
 		contentPanel.add(panel_1);
@@ -348,7 +337,6 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 						contentPanel.revalidate();
 						contentPanel.repaint();
 						playView.dropMario();
-
 						playView.runMario(runStartStateBlock);
 
 					}
@@ -774,13 +762,6 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		menuBar.add(mntmTutorial);
 	}
 
-	private void createActionView() {
-	}
-
-	private void createTabbedView() {
-
-	}
-
 	public void loadpaint(BlockBuilderModel blockbuildermodel) {
 		actionPanel.removeAll();
 		for (Block block : blockbuildermodel.getBlockList()) {
@@ -815,10 +796,6 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		}
 		actionPanel.revalidate();
 		actionPanel.repaint();
-	}
-
-	private void DisplayOutput() {
-
 	}
 
 	private void setResult(String result) {
@@ -1039,11 +1016,6 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-
-				// timer.stop();
-				// Timer playTimer = new Timer(10, new PlayTimerTaskListener());
-				// playTimer.start();
-
 				isTestClicked = true;
 				mario = new Mario();
 				mario.setState("FALLING");
@@ -1099,8 +1071,6 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 								.setHorizontalAlignment(SwingConstants.CENTER);
 						mushroomTransit1.setFont(new Font("Serif", Font.BOLD,
 								16));
-						// mushroomTransit1.add(g, new
-						// FlowLayout(FlowLayout.CENTER));
 						mushroomTransit1.setBounds(colorPositionX,
 								colorPositionY, 64, 46);
 						output.remove(plus);
@@ -1143,13 +1113,11 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 						} else {
 							Icon = new ImageIcon("image/enemy.png");
 						}
-						// RotatedIcon ri = new RotatedIcon(Icon, degrees);
 						mushroomTransit.setIcon(Icon);
 
 						JLabel text = new JLabel();
 						mushroomTransit.setBounds(colorPositionX,
 								colorPositionY, 64, 46);
-						// mushroomTransit.setText(charList[1]);
 						mushroomTransit.setName(charList[1]);
 						output.remove(plus);
 						output.add(mushroomTransit);
@@ -1367,10 +1335,6 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		colorPallete = new JPanel();
 		colorPallete.setBorder(new TitledBorder("Select Transitions!"));
 		mushroom1 = new JButton();
-		/*
-		 * g = new JLabel(); g.setHorizontalAlignment(SwingConstants.CENTER);
-		 * g.setText(charList[0]); g.setFont(new Font("Serif", Font.BOLD, 16));
-		 */
 		FlowLayout f1 = new FlowLayout();
 		mushroom1.setLayout(f1);
 		if (charList[0].equals("a")) {
@@ -1414,20 +1378,16 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 						transitURL = "image/flower.png";
 
 					} else if (charList[0].equals("c")) {
-						// mushroom1.setIcon(new ImageIcon("image/coin.png"));
 						Icon = new ImageIcon("image/coin.png");
 						transitURL = "image/coin.png";
 
 					} else {
-						// mushroom1.setIcon(new ImageIcon("image/enemy.png"));
 						Icon = new ImageIcon("image/enemy.png");
 						transitURL = "image/enemy.png";
 
 					}
-					// ImageIcon Icon = new ImageIcon("image/mushroom.png");
 					RotatedIcon ri = new RotatedIcon(Icon, degrees);
 					stateTransit1.setIcon(ri);
-					// mushroomTransit1.setIcon(icon);
 					stateTransit1.setLayout(new FlowLayout(FlowLayout.CENTER));
 					stateTransit1.setHorizontalAlignment(SwingConstants.CENTER);
 					stateTransit1.setFont(new Font("Serif", Font.BOLD, 16));
@@ -1485,18 +1445,13 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 
 					stateTransit2 = new JLabel();
 
-					// ImageIcon Icon = new ImageIcon("image/mushroom.png");
 					if (charList[1].equals("a")) {
-						// mushroom1.setIcon(new
-						// ImageIcon("image/mushroom.png"));
 						Icon = new ImageIcon("image/mushroom.png");
 						transitURL = "image/mushrooom.png";
 					} else if (charList[1].equals("b")) {
-						// mushroom1.setIcon(new ImageIcon("image/flower.png"));
 						Icon = new ImageIcon("image/flower.png");
 						transitURL = "image/flower.png";
 					} else if (charList[1].equals("c")) {
-						// mushroom1.setIcon(new ImageIcon("image/coin.png"));
 						Icon = new ImageIcon("image/coin.png");
 						transitURL = "image/coin.png";
 					} else {
@@ -1902,7 +1857,6 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 
 		else if (x1 == x2 && y1 == y2
 				&& dfaBuilderController.getTimerTask().jumpUp == 1) {
-			// dfaBuilderController.getTimerTask().jumpUp = 2;
 			dfaBuilderController.getTimerTask().jumpUp = 0;
 			dfaBuilderController.getTimerTask().stop();
 			dfaBuilderController.movetoNextState();
