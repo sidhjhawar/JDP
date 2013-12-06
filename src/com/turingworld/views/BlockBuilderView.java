@@ -47,6 +47,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
@@ -57,24 +58,18 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
 
 import com.turingworld.controller.BlockBuilderController;
-import com.turingworld.controller.ControllerHelper;
 import com.turingworld.model.Block;
 import com.turingworld.model.BlockBuilderModel;
 
-@SuppressWarnings("serial")
 public class BlockBuilderView extends JFrame implements BuildViewInterface {
 
-	@SuppressWarnings("unused")
+	private JPanel contentPane;
+	private JPanel actionPanel;
 	private DropTarget dropTarget;
-
 	private MouseListener listener;
 	private MouseListener undoMouseListener;
 	private MouseListener redoMouseListener;
 	private MouseListener snapshotMouseListener;
-
-	private JScrollPane scrollPane;
-	private JScrollPane scrollPane_1;
-
 	private JLabel transition;
 	private JLabel undo;
 	private JLabel state;
@@ -84,43 +79,39 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 	private JLabel dragSource;
 	private JLabel noticeLabel;
 	private JLabel snapLabel;
+	private int activityNo = 0;
+	private JScrollPane scrollPane;
+	private JPanel panelActivity;
+	private JTextField field;
+	private int transitionX;
+	private int transitionY;
+	private Block b;
 	private JLabel actiontransition;
 	private JLabel actionstate;
+	private JPanel colorPallete;
+	private String textFieldValue = null;
+	public Collection<JLabel> actionicons = new ArrayList<JLabel>();
+	public Collection<JLabel> outputicons = new ArrayList<JLabel>();
+	public int count = 0;
+	private boolean cursorflag = false;
+	private BlockBuilderModel blockBuilderModel;
+	private Block block;
+	private BlockBuilderController blockBuilderController;
+	private JLabel outputLabel;
+	private JButton playAgain;
+	private JPanel panel_1;
+	private JScrollPane scrollPane_1;
+	private JPanel output;
+	private JPanel panel_2;
+	private JPanel snapShotPanel;
 	private JLabel g;
 	private JLabel r;
 	private JLabel c;
 	private JLabel y;
-	private JLabel outputLabel;
 
-	private JPanel colorPallete;
-	private JPanel contentPane;
-	private JPanel actionPanel;
-	private JPanel panelActivity;
-	private JPanel panel_1;
-	private JPanel output;
-	private JPanel panel_2;
-	private JPanel snapShotPanel;
-
-	private int activityNo = 0;
-	private int transitionX;
-	private int transitionY;
-
-	private String textFieldValue = null;
-
-	public Collection<JLabel> actionicons = new ArrayList<JLabel>();
-	public Collection<JLabel> outputicons = new ArrayList<JLabel>();
-	public int count = 0;
-
-	private boolean cursorflag = false;
-
-	private JButton playAgain;
-
-	private Block b;
-	private BlockBuilderModel blockBuilderModel;
-	private Block block;
-	private BlockBuilderController blockBuilderController;
-	private ControllerHelper controllerHelper;
-
+	/**
+	 * Launch the application.
+	 */
 	public void addoutputicons(JLabel icon) {
 		outputicons.add(icon);
 	}
@@ -133,18 +124,31 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 		this.blockBuilderController = blockBuilderController;
 	}
 
-	/*
-	 * Constructor - Takes BlockBuilderModel as the first parameter
+	public void playSound(String audioFile)
+			throws UnsupportedAudioFileException, IOException,
+			LineUnavailableException {
+		try {
+			AudioInputStream audioInputStream = AudioSystem
+					.getAudioInputStream(new File(audioFile));
+
+			Clip clip = AudioSystem.getClip();
+
+			clip.open(audioInputStream);
+			clip.start();
+		} catch (UnsupportedAudioFileException uae) {
+			System.out.println(uae);
+		} catch (IOException ioe) {
+			System.out.println(ioe);
+		} catch (LineUnavailableException lua) {
+			System.out.println(lua);
+		}
+	}
+
+	/**
+	 * Create the frame.
 	 */
 	public BlockBuilderView(BlockBuilderModel blockBuilderModel) {
-
-		setTitle("Welcome - Build your Blocks!");
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(50, 0, 1251, 719);
-		this.setVisible(true);
-
 		this.blockBuilderModel = blockBuilderModel;
-
 		try {
 			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 				if ("Nimbus".equals(info.getName())) {
@@ -153,9 +157,14 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			// If Nimbus is not available, you can set the GUI to another look
+			// and feel.
 		}
 
+		this.setVisible(true);
+		setTitle("Welcome - Build your Blocks!");
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(50, 0, 1251, 719);
 
 		// method to create the view
 		contentPane = new JPanel();
@@ -164,38 +173,43 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 		contentPane.setBorder(null);
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
 		creatHeaderMenu();
 		createTabbedView();
 		createLeftPaneView();
 		createActionView();
-		
-		
 		panel_1 = new JPanel();
 		panel_1.setBounds(155, 515, 785, 150);
 		contentPane.add(panel_1);
 		panel_1.setLayout(new BorderLayout(0, 0));
 
 		scrollPane_1 = new JScrollPane();
-		scrollPane_1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane_1.setViewportBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		scrollPane_1
+				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane_1.setViewportBorder(new TitledBorder(null, "",
+				TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel_1.add(scrollPane_1);
 
 		output = new JPanel();
 
-		output.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Output", TitledBorder.CENTER, TitledBorder.ABOVE_TOP, null, null));
+		output.setBorder(new TitledBorder(UIManager
+				.getBorder("TitledBorder.border"), "Output",
+				TitledBorder.CENTER, TitledBorder.ABOVE_TOP, null, null));
 		scrollPane_1.setViewportView(output);
 
 		panel_2 = new JPanel();
-		panel_2.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		panel_2.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null,
+				null, null));
 		panel_2.setBounds(939, 0, 296, 517);
 		contentPane.add(panel_2);
 		panel_2.setLayout(new BorderLayout(0, 0));
 
 		scrollPane = new JScrollPane();
 		panel_2.add(scrollPane);
-		scrollPane.setViewportBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Recent Activity", TitledBorder.CENTER, TitledBorder.ABOVE_TOP, null, null));
-		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane.setViewportBorder(new TitledBorder(UIManager
+				.getBorder("TitledBorder.border"), "Recent Activity",
+				TitledBorder.CENTER, TitledBorder.ABOVE_TOP, null, null));
+		scrollPane
+				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
 		panelActivity = new JPanel();
@@ -203,14 +217,17 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 		panelActivity.setLayout(new BoxLayout(panelActivity, BoxLayout.Y_AXIS));
 
 		snapShotPanel = new JPanel();
-		snapShotPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Snap Shot ", TitledBorder.CENTER, TitledBorder.BELOW_TOP, null, null));
+		snapShotPanel.setBorder(new TitledBorder(UIManager
+				.getBorder("TitledBorder.border"), "Snap Shot ",
+				TitledBorder.CENTER, TitledBorder.BELOW_TOP, null, null));
 		snapShotPanel.setLayout(new BorderLayout());
 		snapShotPanel.setBounds(939, 515, 296, 148);
 		contentPane.add(snapShotPanel);
 		actionPanel = new JPanel();
 		actionPanel.setBounds(155, 3, 785, 514);
 		contentPane.add(actionPanel);
-		actionPanel.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		actionPanel.setBorder(new TitledBorder(null, "", TitledBorder.LEADING,
+				TitledBorder.TOP, null, null));
 		actionPanel.setBackground(new Color(211, 211, 211));
 		actionPanel.setLayout(null);
 
@@ -222,8 +239,6 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 		actionPanel.add(noticeLabel);
 
 		dropTarget = new DropTarget(this.actionPanel, new DropTargetListener2());
-
-		controllerHelper = new ControllerHelper();
 
 		repaint();
 	}
@@ -253,8 +268,10 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 			isTriviaClicked = true;
 		}
 		blockBuilderModel = new BlockBuilderModel();
-		BlockBuilderView blockBuilderView = new BlockBuilderView(blockBuilderModel);
-		blockBuilderController = new BlockBuilderController(blockBuilderModel, blockBuilderView);
+		BlockBuilderView blockBuilderView = new BlockBuilderView(
+				blockBuilderModel);
+		blockBuilderController = new BlockBuilderController(blockBuilderModel,
+				blockBuilderView);
 		blockBuilderView.setController(blockBuilderController);
 		BlockBuilderModel.stateNo = 0;
 		BlockBuilderModel.transitionNo = 0;
@@ -271,7 +288,8 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 
 	public void drawCurve(int x1, int y1, int x2, int y2, Graphics g) {
 		Graphics2D g2d = (Graphics2D) g.create();
-		QuadCurve2D.Double curve = new QuadCurve2D.Double(x1, y1, (x1 + x2) / 2, ((y2 + y1) / 2) - 60, x2, y2);
+		QuadCurve2D.Double curve = new QuadCurve2D.Double(x1, y1,
+				(x1 + x2) / 2, ((y2 + y1) / 2) - 60, x2, y2);
 		g2d.draw(curve);
 	}
 
@@ -336,7 +354,8 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 				} else {
 				}
 
-				blockBuilderModel = blockBuilderController.loadTuringWorld(file);
+				blockBuilderModel = blockBuilderController
+						.loadTuringWorld(file);
 				loadpaint(blockBuilderModel);
 
 			}
@@ -358,9 +377,47 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 		JMenuItem mntmTutorial = new JMenuItem("Tutorial");
 		mntmTutorial.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
+				Block b1 = blockBuilderModel.getBlockList().get(0);
+				Block b2 = blockBuilderModel.getBlockList().get(1);
+				boolean switched = false;
+
+				int x1 = 0;
+				int x2 = 0;
+				int y1 = 0;
+				int y2 = 0;
+
+				if (b1.getY() < b2.getY() && b1.getX() < b2.getX()) {
+					x1 = b1.getX() + b1.getWidth();
+					x2 = b2.getX();
+					y1 = b1.getY();
+					y2 = b2.getY();
+					System.out.println("Normal routine");
+				}
+
+				else {
+					x1 = b2.getX() + b2.getWidth();
+					x2 = b1.getX();
+					y1 = b2.getY();
+					y2 = b1.getY();
+					switched = true;
+					System.out.println("Switched routine");
+				}
+
+				drawCurve(x1, y1, x2, y2, actionPanel.getGraphics());
+				drawSelfLoop(b1, actionPanel.getGraphics());
+				JLabel label = new JLabel();
+				label.setIcon(new ImageIcon("image/mario.png"));
+				BlockBuilderView.this.actionPanel.add(label);
+				label.setBounds(x1, y1, 50, 50);
+				/*
+				 * blockBuilderController.getTimerTask() .run(label, x1, y1, x2,
+				 * y2, switched);
+				 */
+				// moveState(x1, y1, x2, y2);
+
 			}
 		});
-		
 		mntmTutorial.setIcon(new ImageIcon("image/helpIcon.png"));
 		menuBar.add(mntmTutorial);
 	}
@@ -374,7 +431,7 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 		// repaint();
 
 	}
-
+	
 	private void createLevel1View() {
 		JPanel panelAmateur = new JPanel();
 		panelAmateur.setBounds(70, 126, 372, 134);
@@ -390,7 +447,8 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 		JTextArea txtrCanYouBuild = new JTextArea();
 		txtrCanYouBuild.setWrapStyleWord(true);
 		txtrCanYouBuild.setLineWrap(true);
-		txtrCanYouBuild.setText("Can you build a machine with equal number of A's and B's ?");
+		txtrCanYouBuild
+				.setText("Can you build a machine with equal number of A's and B's ?");
 		txtrCanYouBuild.setEditable(false);
 		txtrCanYouBuild.setBounds(51, 40, 273, 46);
 		panelAmateur.add(txtrCanYouBuild);
@@ -500,7 +558,8 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 			label.setLayout(new BorderLayout());
 			label.add(textLabel, BorderLayout.CENTER);
 
-			label.setBounds(block.getX(), block.getY(), block.getWidth(), block.getHeight());
+			label.setBounds(block.getX(), block.getY(), block.getWidth(),
+					block.getHeight());
 			label.addMouseListener(listener);
 			actionPanel.add(label);
 		}
@@ -579,7 +638,9 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 
 	private void createLeftPaneView() {
 		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel.setBorder(new TitledBorder(UIManager
+				.getBorder("TitledBorder.border"), "", TitledBorder.LEADING,
+				TitledBorder.TOP, null, null));
 		panel.setBackground(new Color(211, 211, 211));
 		panel.setBounds(0, 3, 153, 662);
 		contentPane.add(panel);
@@ -627,7 +688,8 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 				if (isCursorflag() == false) {
 					setCursorflag(true);
 					// added check for MouseEvent.BUTTON1 which is left click
-					if (e.isPopupTrigger() || e.getButton() == MouseEvent.BUTTON1) {
+					if (e.isPopupTrigger()
+							|| e.getButton() == MouseEvent.BUTTON1) {
 						Toolkit kit = Toolkit.getDefaultToolkit();
 
 						// Image image = null;
@@ -640,7 +702,8 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 						}
 
 						Point hotspot = new Point(0, 0);
-						Cursor cursor = kit.createCustomCursor(image, hotspot, "Stone");
+						Cursor cursor = kit.createCustomCursor(image, hotspot,
+								"Stone");
 						setCursor(cursor);
 
 					}
@@ -680,7 +743,9 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 			public void mousePressed(MouseEvent me) {
 
 				if (actionPanel.getComponentCount() == 0) {
-					JLabel msg = new JLabel(++activityNo + ". Please create the blocks before taking a snaps");
+					JLabel msg = new JLabel(
+							++activityNo
+									+ ". Please create the blocks before taking a snaps");
 					msg.setFont(new Font("Serif", Font.BOLD, 16));
 					msg.setForeground(Color.red);
 					panelActivity.add(msg);
@@ -698,7 +763,7 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 				snapShotPanel.revalidate();
 				snapShotPanel.repaint();
 				try {
-					controllerHelper.playSound("./audio/camera.wav");
+					playSound("./audio/camera.wav");
 				} catch (UnsupportedAudioFileException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -731,26 +796,31 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 					textLabel.setFont(new Font("Serif", Font.BOLD, 12));
 
 					if (block.isState()) {
-						blockLabel.setIcon(new ImageIcon("image/mini_state.png"));
+						blockLabel
+								.setIcon(new ImageIcon("image/mini_state.png"));
 						textLabel.setText("q" + stateNo++);
 						textLabel.setForeground(Color.white);
 						blockLabel.setLayout(new BorderLayout());
 						blockLabel.add(textLabel, BorderLayout.CENTER);
 					} else {
 						if (block.getTransitionType().equals("A")) {
-							blockLabel.setIcon(new ImageIcon("image/mini_transitionA.png"));
+							blockLabel.setIcon(new ImageIcon(
+									"image/mini_transitionA.png"));
 							textLabel.setText("A");
 							blockLabel.add(textLabel);
 						} else if (block.getTransitionType().equals("B")) {
-							blockLabel.setIcon(new ImageIcon("image/mini_transitionB.png"));
+							blockLabel.setIcon(new ImageIcon(
+									"image/mini_transitionB.png"));
 							textLabel.setText("B");
 							blockLabel.add(textLabel);
 						} else if (block.getTransitionType().equals("C")) {
-							blockLabel.setIcon(new ImageIcon("image/mini_transitionC.png"));
+							blockLabel.setIcon(new ImageIcon(
+									"image/mini_transitionC.png"));
 							textLabel.setText("C");
 							blockLabel.add(textLabel);
 						} else {
-							blockLabel.setIcon(new ImageIcon("image/mini_transitionD.png"));
+							blockLabel.setIcon(new ImageIcon(
+									"image/mini_transitionD.png"));
 							textLabel.setText("D");
 							blockLabel.add(textLabel);
 						}
@@ -775,16 +845,20 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 				dragSource = (JLabel) me.getSource();
 
 				if (isCursorflag() == true) {
-					if (blockBuilderController.getBlockObject(dragSource.getX(), dragSource.getY()) == true) {
-						block = blockBuilderController.getBlockObj(dragSource.getX(), dragSource.getY());
-						blockBuilderController.removeBlockFromListAndPanel(block);
+					if (blockBuilderController.getBlockObject(
+							dragSource.getX(), dragSource.getY()) == true) {
+						block = blockBuilderController.getBlockObj(
+								dragSource.getX(), dragSource.getY());
+						blockBuilderController
+								.removeBlockFromListAndPanel(block);
 						blockBuilderController.sortTransitions();
 						DisplayOutput();
 					}
 				} else {
 					TransferHandler handler = dragSource.getTransferHandler();
 					handler.exportAsDrag(dragSource, me, TransferHandler.COPY);
-					block = blockBuilderController.getBlockObj(dragSource.getX(), dragSource.getY());
+					block = blockBuilderController.getBlockObj(
+							dragSource.getX(), dragSource.getY());
 
 				}
 			}
@@ -812,7 +886,8 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				actiontransition.setIcon(new ImageIcon("image/transitionD.png"));
+				actiontransition
+						.setIcon(new ImageIcon("image/transitionD.png"));
 				actiontransition.add(g, BorderLayout.CENTER);
 				b.setTransitionType("D");
 				b.setBlockLabelURL("image/transitionD.png");
@@ -834,7 +909,8 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				actiontransition.setIcon(new ImageIcon("image/transitionB.png"));
+				actiontransition
+						.setIcon(new ImageIcon("image/transitionB.png"));
 				actiontransition.add(r, BorderLayout.CENTER);
 				b.setTransitionType("B");
 				b.setBlockLabelURL("image/transitionB.png");
@@ -855,7 +931,8 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				actiontransition.setIcon(new ImageIcon("image/transitionA.png"));
+				actiontransition
+						.setIcon(new ImageIcon("image/transitionA.png"));
 				actiontransition.add(y, BorderLayout.CENTER);
 				b.setTransitionType("A");
 				b.setBlockLabelURL("image/transitionA.png");
@@ -876,10 +953,12 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				actiontransition.setIcon(new ImageIcon("image/transitionC.png"));
+				actiontransition
+						.setIcon(new ImageIcon("image/transitionC.png"));
 				b.setTransitionType("C");
 				b.setBlockLabelURL("image/transitionC.png");
-				JLabel msg = new JLabel(++activityNo + ". C is added to the panel");
+				JLabel msg = new JLabel(++activityNo
+						+ ". C is added to the panel");
 				msg.setFont(new Font("Serif", Font.BOLD, 16));
 				msg.setForeground(Color.black);
 				panelActivity.add(msg);
@@ -903,7 +982,8 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 	public void removeFromPanel(Block block) {
 
 		String name = block.getName();
-		JLabel msg = new JLabel(++activityNo + ". " + name + " is removed from the panel");
+		JLabel msg = new JLabel(++activityNo + ". " + name
+				+ " is removed from the panel");
 		msg.setFont(new Font("Serif", Font.BOLD, 16));
 		msg.setForeground(Color.black);
 		panelActivity.add(msg);
@@ -915,9 +995,11 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 	}
 
 	public void addToPanel(Block block) {
-		block.getBlockLabel().setBounds(block.getX(), block.getY(), block.getWidth(), block.getHeight());
+		block.getBlockLabel().setBounds(block.getX(), block.getY(),
+				block.getWidth(), block.getHeight());
 		String name = block.getName();
-		JLabel msg = new JLabel(++activityNo + ". " + name + " is added to the panel");
+		JLabel msg = new JLabel(++activityNo + ". " + name
+				+ " is added to the panel");
 		msg.setFont(new Font("Serif", Font.BOLD, 16));
 		msg.setForeground(Color.black);
 		panelActivity.add(msg);
@@ -957,13 +1039,20 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 			int stateNo = 0;
 			if (dragSource.getName().contains("mini")) {
 				b = blockBuilderModel.getMiniBlockList().get(0);
-				int x = blockBuilderModel.getBlockList().get(blockBuilderModel.getBlockList().size() - 1).getX();
-				int y = blockBuilderModel.getBlockList().get(blockBuilderModel.getBlockList().size() - 1).getY();
+				int x = blockBuilderModel.getBlockList()
+						.get(blockBuilderModel.getBlockList().size() - 1)
+						.getX();
+				int y = blockBuilderModel.getBlockList()
+						.get(blockBuilderModel.getBlockList().size() - 1)
+						.getY();
 
 				int miniX = x;
 				int miniY = y;
 
-				if (blockBuilderModel.getBlockList().get(blockBuilderModel.getBlockList().size() - 1).isState() != blockBuilderModel.getMiniBlockList().get(0).isState()) {
+				if (blockBuilderModel.getBlockList()
+						.get(blockBuilderModel.getBlockList().size() - 1)
+						.isState() != blockBuilderModel.getMiniBlockList()
+						.get(0).isState()) {
 					miniX = x + 60;
 				} else {
 					miniX = x + 300;
@@ -989,19 +1078,23 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 					} else {
 						textLabel.setFont(new Font("Serif", Font.BOLD, 30));
 						if (block.getTransitionType().equals("A")) {
-							blockLabel.setIcon(new ImageIcon("image/transitionA.png"));
+							blockLabel.setIcon(new ImageIcon(
+									"image/transitionA.png"));
 							textLabel.setText("A");
 							blockLabel.add(textLabel);
 						} else if (block.getTransitionType().equals("B")) {
-							blockLabel.setIcon(new ImageIcon("image/transitionB.png"));
+							blockLabel.setIcon(new ImageIcon(
+									"image/transitionB.png"));
 							textLabel.setText("B");
 							blockLabel.add(textLabel);
 						} else if (block.getTransitionType().equals("C")) {
-							blockLabel.setIcon(new ImageIcon("image/transitionC.png"));
+							blockLabel.setIcon(new ImageIcon(
+									"image/transitionC.png"));
 							textLabel.setText("C");
 							blockLabel.add(textLabel);
 						} else {
-							blockLabel.setIcon(new ImageIcon("image/transitionD.png"));
+							blockLabel.setIcon(new ImageIcon(
+									"image/transitionD.png"));
 							textLabel.setText("D");
 							blockLabel.add(textLabel);
 						}
@@ -1024,33 +1117,42 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 				if (dragSource.getName().equals("leftPanelTransitionA")) {
 
 					if (blockBuilderModel.getBlockList().size() < 1) {
-						showMessage(true, "First Block should be a State Block!");
+						showMessage(true,
+								"First Block should be a State Block!");
 					}
 					transitionX = dtde.getLocation().x;
 					transitionY = dtde.getLocation().y;
 					actiontransition = new JLabel("transitionA");
-					actiontransition.setName("actiontransition" + (BlockBuilderModel.transitionNo));
-					actiontransition.setIcon(new ImageIcon("image/transition.png"));
-					actiontransition.setBounds(transitionX, transitionY, 75, 73);
+					actiontransition.setName("actiontransition"
+							+ (BlockBuilderModel.transitionNo));
+					actiontransition.setIcon(new ImageIcon(
+							"image/transition.png"));
+					actiontransition
+							.setBounds(transitionX, transitionY, 75, 73);
 
 					actiontransition.addMouseListener(listener);
-					actiontransition.setTransferHandler(new TransferHandler("text"));
+					actiontransition.setTransferHandler(new TransferHandler(
+							"text"));
 					addicons(actiontransition);
 					actiontransition.setLayout(new BorderLayout());
 					actionPanel.add(actiontransition);
 					addColorPallette(b);
-					b = blockBuilderController.createBlockObj(transitionX, transitionY, 75, 73, actiontransition, false, textFieldValue);
+					b = blockBuilderController.createBlockObj(transitionX,
+							transitionY, 75, 73, actiontransition, false,
+							textFieldValue);
 
 				}
 
 				else if (dragSource.getName().equals("leftPanelState")) {
 					actionstate = new JLabel("state");
 
-					actionstate.setName("actiontransition" + BlockBuilderModel.stateNo);
+					actionstate.setName("actiontransition"
+							+ BlockBuilderModel.stateNo);
 					actionstate.setIcon(new ImageIcon("image/state.png"));
 					actionstate.addMouseListener(listener);
 					actionstate.setTransferHandler(new TransferHandler("text"));
-					actionstate.setBounds(dtde.getLocation().x, dtde.getLocation().y, 75, 73);
+					actionstate.setBounds(dtde.getLocation().x,
+							dtde.getLocation().y, 75, 73);
 					FlowLayout fl = new FlowLayout();
 					fl.setVgap(30);
 					actionstate.setLayout(fl);
@@ -1060,12 +1162,15 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 					actionstate.add(text);
 					addicons(actionstate);
 					actionPanel.add(actionstate);
-					b = blockBuilderController.createBlockObj(dtde.getLocation().x, dtde.getLocation().y, 75, 73, actionstate, true, null);
+					b = blockBuilderController.createBlockObj(
+							dtde.getLocation().x, dtde.getLocation().y, 75, 73,
+							actionstate, true, null);
 					b.setBlockLabelURL("image/state.png");
 
 				} else {
 
-					b = blockBuilderController.updateBlockObj(dtde.getLocation().x, dtde.getLocation().y, block);
+					b = blockBuilderController.updateBlockObj(
+							dtde.getLocation().x, dtde.getLocation().y, block);
 					snapShotPanel.removeAll();
 
 					// b.setBlockLabelURL("image/state.png");
@@ -1078,7 +1183,7 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 					b.getBlockLabel().setLocation(b.getX(), b.getY());
 					showMessage(true, " Cannot attach two similar blocks");
 					try {
-						controllerHelper.playSound("./audio/repel.wav");
+						playSound("./audio/repel.wav");
 					} catch (UnsupportedAudioFileException e) {
 						e.printStackTrace();
 					} catch (IOException e) {
@@ -1086,19 +1191,23 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 					} catch (LineUnavailableException e) {
 						e.printStackTrace();
 					}
-				} else if (blockBuilderController.isAdjacentToDissimilarBlock(b) != null) {
+				} else if (blockBuilderController
+						.isAdjacentToDissimilarBlock(b) != null) {
 
-					adjacentBlock = blockBuilderController.isAdjacentToDissimilarBlock(b);
+					adjacentBlock = blockBuilderController
+							.isAdjacentToDissimilarBlock(b);
 					if (b.getX() > adjacentBlock.getX()) {
-						b.setX(adjacentBlock.getX() + adjacentBlock.getWidth() - 15);
+						b.setX(adjacentBlock.getX() + adjacentBlock.getWidth()
+								- 15);
 						b.setY(adjacentBlock.getY());
 					} else {
-						b.setX(adjacentBlock.getX() + adjacentBlock.getWidth() - 135);
+						b.setX(adjacentBlock.getX() + adjacentBlock.getWidth()
+								- 135);
 						b.setY(adjacentBlock.getY());
 
 					}
 					try {
-						controllerHelper.playSound("./audio/attach.wav");
+						playSound("./audio/attach.wav");
 					} catch (UnsupportedAudioFileException e) {
 						e.printStackTrace();
 					} catch (IOException e) {
@@ -1108,7 +1217,7 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 					}
 				} else {
 					try {
-						controllerHelper.playSound("./audio/beep_normal.wav");
+						playSound("./audio/beep_normal.wav");
 					} catch (UnsupportedAudioFileException e) {
 						e.printStackTrace();
 					} catch (IOException e) {
@@ -1137,7 +1246,8 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 
 				JLabel label = blockObj.getBlockLabel();
 				label.setTransferHandler(new TransferHandler("text"));
-				label.setBounds(blockObj.getX(), blockObj.getY(), blockObj.getWidth(), blockObj.getHeight());
+				label.setBounds(blockObj.getX(), blockObj.getY(),
+						blockObj.getWidth(), blockObj.getHeight());
 				actionPanel.add(label);
 			}
 		}

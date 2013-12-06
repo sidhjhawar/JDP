@@ -107,22 +107,18 @@ public class StateBlock implements FABlock {
 		return stateTransitionList;
 	}
 
-	public void setStateTransitionList(
-			HashMap<StateBlock, ArrayList<TransitionBlock>> stateTransitionList) {
+	public void setStateTransitionList(HashMap<StateBlock, ArrayList<TransitionBlock>> stateTransitionList) {
 		this.stateTransitionList = stateTransitionList;
 	}
 
 	@Override
 	public Rectangle getBounds() {
-		return new Rectangle(x, y, dfaLabel.getIcon().getIconWidth(), dfaLabel
-				.getIcon().getIconHeight());
+		return new Rectangle(x, y, dfaLabel.getIcon().getIconWidth(), dfaLabel.getIcon().getIconHeight());
 	}
 
 	@Override
 	public Rectangle getCollisionBounds() {
-		return new Rectangle(x - 50, y - 50,
-				dfaLabel.getIcon().getIconWidth() + 100, dfaLabel.getIcon()
-						.getIconHeight() + 100);
+		return new Rectangle(x - 50, y - 50, dfaLabel.getIcon().getIconWidth() + 100, dfaLabel.getIcon().getIconHeight() + 100);
 	}
 
 	@Override

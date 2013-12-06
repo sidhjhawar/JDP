@@ -5,10 +5,10 @@ import java.util.ArrayList;
 public class BlockBuilderModel {
 	public static int stateNo = 0;
 	public static int transitionNo = 0;
-
+	
 	private ArrayList<Block> blockList;
 	private ArrayList<Block> miniBlockList;
-
+	
 	public ArrayList<Block> getMiniBlockList() {
 		return miniBlockList;
 	}
@@ -17,7 +17,8 @@ public class BlockBuilderModel {
 		this.miniBlockList = miniBlockList;
 	}
 
-	public BlockBuilderModel() {
+	public BlockBuilderModel()
+	{
 		blockList = new ArrayList<Block>();
 		miniBlockList = new ArrayList<Block>();
 	}

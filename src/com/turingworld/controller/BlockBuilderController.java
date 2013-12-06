@@ -32,7 +32,7 @@ public class BlockBuilderController {
 
 	private StringBuilder outputString;
 	public static boolean isTriviaClicked;
-	private ControllerHelper blockBuilderControllerHelper;
+	private BlockBuilderControllerHelper blockBuilderControllerHelper;
 	private TimerTask timerTask;
 
 	public StringBuilder getOutputString() {
@@ -47,7 +47,7 @@ public class BlockBuilderController {
 
 		this.blockBuilderModel = blockBuilderModel;
 		this.buildViewInterface = buildViewInterface;
-		this.blockBuilderControllerHelper = new ControllerHelper();
+		this.blockBuilderControllerHelper = new BlockBuilderControllerHelper();
 		this.timerTask = new TimerTask(this);
 
 		isTriviaClicked = false;

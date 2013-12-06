@@ -14,9 +14,11 @@ public class DFABuilderModel {
 	public void setDfaBlockList(ArrayList<FABlock> dfaBlockList) {
 		this.dfaBlockList = dfaBlockList;
 	}
-
-	public DFABuilderModel() {
+	
+	public DFABuilderModel()
+	{
 		dfaBlockList = new ArrayList<FABlock>();
 	}
+
 
 }
