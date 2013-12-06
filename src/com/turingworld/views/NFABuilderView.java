@@ -14,6 +14,8 @@ import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -38,14 +40,12 @@ import javax.swing.border.TitledBorder;
 
 import com.turingworld.controller.NFABuilderController;
 import com.turingworld.model.BlockBuilderModel;
-import com.turingworld.model.DFABuilderModel;
 import com.turingworld.model.FABlock;
 import com.turingworld.model.NFABuilderModel;
-import com.turingworld.model.StateBlock;
 import com.turingworld.views.BlockBuilderView.DropTargetListener2;
 
-public class NFABuilderView extends JFrame implements NFABuildViewInterface {
-
+public class NFABuilderView extends JFrame implements NFABuildViewInterface{
+	
 	JPanel contentPanel;
 	JLabel undo;
 	JLabel stateCirle;
@@ -56,6 +56,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 	JScrollPane scrollPane;
 	JPanel panel_2;
 	JPanel panelActivity;
+	private PopupForStateView popupForStateView;
 	JScrollPane scrollPane_1;
 	JPanel panel_1;
 	NFABuilderModel nfaBuilderModel;
@@ -64,26 +65,27 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 	private JLabel dragSource;
 	private NFABuilderController nfaBuilderController;
 	private DropTarget dropTarget;
-	private FABlock b;
-	private String stateURL;
-	private FABlock faBlock;
 	JLabel actionState;
+	private MouseListener hoverListener;
 
+	
+	
+	
 	public NFABuilderView(NFABuilderModel nfaBuilderModel) {
-
+		popupForStateView = new PopupForStateView();
 		this.nfaBuilderModel = nfaBuilderModel;
 		setVisible(true);
 		setTitle("Welcome - Build your Blocks!");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(50, 0, 1251, 719);
-
+		
 		contentPanel = new JPanel();
 		contentPanel.setBackground(new Color(255, 255, 255));
 		contentPanel.setToolTipText("");
 		contentPanel.setBorder(null);
 		setContentPane(contentPanel);
 		contentPanel.setLayout(null);
-
+		
 		panel_2 = new JPanel();
 		panel_2.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		panel_2.setBounds(939, 0, 296, 681);
@@ -99,15 +101,14 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 		panelActivity = new JPanel();
 		scrollPane.setViewportView(panelActivity);
 		panelActivity.setLayout(new BoxLayout(panelActivity, BoxLayout.Y_AXIS));
-		// actionPanel = new ImagePanel(new
-		// ImageIcon("image/background.png").getImage());
+	//	actionPanel = new ImagePanel(new ImageIcon("image/background.png").getImage());
 		actionPanel = new JPanel();
 		actionPanel.setBounds(155, 3, 785, 514);
 		contentPanel.add(actionPanel);
 		actionPanel.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		actionPanel.setBackground(new Color(211, 211, 211));
 		actionPanel.setLayout(null);
-
+		
 		panel_1 = new JPanel();
 		panel_1.setBounds(155, 515, 785, 166);
 		contentPanel.add(panel_1);
@@ -117,14 +118,16 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 		scrollPane_1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane_1.setViewportBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel_1.add(scrollPane_1);
-
+		
 		createLeftPaneView();
-
+		popupForStateView.registerActionListner(new MenuActionListener());
 		dropTarget = new DropTarget(this.actionPanel, new DropTargetListener2());
 		repaint();
 
 	}
-
+	
+	
+	
 	private void createLeftPaneView() {
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -168,7 +171,8 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 				if (isCursorflag() == false) {
 					setCursorflag(true);
 					// added check for MouseEvent.BUTTON1 which is left click
-					if (e.isPopupTrigger() || e.getButton() == MouseEvent.BUTTON1) {
+					if (e.isPopupTrigger()
+							|| e.getButton() == MouseEvent.BUTTON1) {
 						Toolkit kit = Toolkit.getDefaultToolkit();
 
 						// Image image = null;
@@ -181,7 +185,8 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 						}
 
 						Point hotspot = new Point(0, 0);
-						Cursor cursor = kit.createCustomCursor(image, hotspot, "Stone");
+						Cursor cursor = kit.createCustomCursor(image, hotspot,
+								"Stone");
 						setCursor(cursor);
 
 					}
@@ -192,53 +197,79 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 			}
 		});
 		panel.add(eraser);
-
+		
 		play = new JLabel("Play Button");
 		play.setToolTipText("Play\r\n");
 		play.setIcon(new ImageIcon("image/run.png"));
 		play.setBounds(30, 549, 75, 75);
-
+		
+		
 		panel.add(play);
-
+		
+		hoverListener = new MouseAdapter() {
+			public void mouseEntered(MouseEvent me) {
+				dragSource = (JLabel) me.getSource();
+				/*dfaBlock = dfaBuilderController.getDFABlockObj(dragSource.getX(), dragSource.getY());
+				if (dfaBlock != null && dfaBlock.isState()) {
+					endStateBlock = (StateBlock) dfaBlock;
+					DFABuilderView.this.isStartStateClicked = true;
+				}*/
+			}
+		};
+		
 		listener = new MouseAdapter() {
 			public void mousePressed(MouseEvent me) {
-				dragSource = (JLabel) me.getSource();
+				dragSource =(JLabel)me.getSource();
 				TransferHandler handler = dragSource.getTransferHandler();
 				handler.exportAsDrag(dragSource, me, TransferHandler.COPY);
-				faBlock = nfaBuilderController.getNFABlockObj(dragSource.getX(), dragSource.getY());
+				System.out.println("dragging");
+				if (me.getButton() == MouseEvent.BUTTON3) {
+					popupForStateView.show(me.getComponent(), me.getX(), me.getY());
+				}
+			
+			
 			}
+			
+			
+			
+			};
+		
+		
+			stateCirle.addMouseListener(listener);
 
-		};
-
-		stateCirle.addMouseListener(listener);
-
+		
+		
 	}
+	
+	
+	
+	
+	
+	
 
-	@Override
-	public void addToPanel(FABlock dfaBlock) {
-		// TODO Auto-generated method stub
 
-	}
 
-	@Override
-	public void removeFromPanel(FABlock dfaBlock) {
-		// TODO Auto-generated method stub
 
-	}
+
 
 	@Override
 	public NFABuildViewInterface getViewType() {
 		return null;
 	}
 
+
+
 	@Override
 	public void moveState(JLabel label, int x1, int y1, int x2, int y2) {
-
+		
 	}
+
+
 
 	public void setController(NFABuilderController nfaBuilderController) {
-		this.nfaBuilderController = nfaBuilderController;
+		
 	}
+	
 
 	public boolean isCursorflag() {
 		return cursorflag;
@@ -247,72 +278,231 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 	public void setCursorflag(boolean cursorflag) {
 		this.cursorflag = cursorflag;
 	}
-
+	
 	class DropTargetListener2 implements DropTargetListener {
 
 		@Override
 		public void dragEnter(DropTargetDragEvent arg0) {
 			// TODO Auto-generated method stub
-
+			
 		}
 
 		@Override
 		public void dragExit(DropTargetEvent arg0) {
 			// TODO Auto-generated method stub
-
+			
 		}
 
 		@Override
 		public void dragOver(DropTargetDragEvent arg0) {
 			// TODO Auto-generated method stub
-
+			
 		}
 
 		@Override
 		public void drop(DropTargetDropEvent dtde) {
-			b = new StateBlock();
-
-			if (dragSource.getName().equals("leftPanelState")) {
-				// Add block
-
+			
+			
+				System.out.println("State dragged");
+				if (dragSource.getName().equals("leftPanelState")){
 				actionState = new JLabel("state");
-
-				actionState.setName("actiontransition" + BlockBuilderModel.stateNo);
 				actionState.setIcon(new ImageIcon("image/stateCirlce.png"));
-				stateURL = "image/stateCirlce.png";
+				actionState.setName("actiontransition" + BlockBuilderModel.stateNo);
 				actionState.addMouseListener(listener);
 				actionState.setTransferHandler(new TransferHandler("text"));
-				actionState.setBounds(dtde.getLocation().x, dtde.getLocation().y, 80, 80);
+				actionState.setBounds(dtde.getLocation().x,
+						dtde.getLocation().y, 80, 80);
 				FlowLayout fl = new FlowLayout();
 				fl.setVgap(30);
 				actionState.setLayout(fl);
-
-				actionState.setBounds(dtde.getLocation().x, dtde.getLocation().y, 80, 80);
-				b = nfaBuilderController.createBlockObj(stateURL, dtde.getLocation().x, dtde.getLocation().y, 50, 93, actionState, true, null);
-
+				}
+				else{
+					actionState.setBounds(dtde.getLocation().x,
+							dtde.getLocation().y, 80, 80);
+					actionState.addMouseListener(listener);
+				}
+				
+					
+				
+				
+				
+				
+				
 				actionPanel.add(actionState);
-			} else {
-				// Update block
-				b = nfaBuilderController.updateBlockObj(dtde.getLocation().x, dtde.getLocation().y, faBlock);
-				actionState = b.getDfaLabel();
-				actionState.setBounds(dtde.getLocation().x, dtde.getLocation().y, 80, 80);
-				// actionState.setBounds(b.getX(), b.getY(), 80, 80);
-				actionState.addMouseListener(listener);
-			}
-			actionPanel.revalidate();
-			actionPanel.repaint();
-
+				actionPanel.revalidate();
+				actionPanel.repaint();
+				
+			
+			
+			
 			dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
 			dtde.getDropTargetContext().dropComplete(true);
-
+			
+			
+			
+			
 		}
 
 		@Override
 		public void dropActionChanged(DropTargetDragEvent arg0) {
 			// TODO Auto-generated method stub
-
+			
 		}
+		
+		
+	}
+	
+	class MenuActionListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			if(e.getActionCommand().equals("Add Transition")){
+				System.out.println("CLicked");
+			}
+			
+			
+			
+			/*if (e.getActionCommand().equals("Add Initial State")) {
+
+				for (DFABlock dfaBlockObj : dfaBuilderModel.getDfaBlockList()) {
+					if (dfaBlockObj.isState()) {
+						if (((StateBlock) dfaBlockObj).isInitial()) {
+
+							actionPanel.remove(dfaBlockObj.getDfaLabel());
+							((StateBlock) dfaBlockObj).setInitial(false);
+							JLabel label = new JLabel((new ImageIcon("image/tunnel.png")));
+							dfaBlockObj.setDfaLabel(label);
+							repaint();
+
+						}
+
+						if (dfaBlockObj.isState() && (dfaBlockObj.getX() == dragSource.getX())) {
+
+							actionPanel.remove(dfaBlockObj.getDfaLabel());
+							((StateBlock) dfaBlockObj).setInitial(true);
+							JLabel label = new JLabel((new ImageIcon("image/house.png")));
+							label.setBounds(dfaBlockObj.getX(), dfaBlockObj.getY(), 76, 96);
+							dfaBlockObj.setDfaLabel(label);
+							runStartStateBlock = (StateBlock) dfaBlockObj;
+						}
+
+					}
+				}
+				for (DFABlock dfaBlockObj : dfaBuilderModel.getDfaBlockList()) {
+
+					if (dfaBlockObj.isState()) {
+
+						JLabel label = dfaBlockObj.getDfaLabel();
+						label.setName("");
+						label.addMouseListener(listener);
+						label.setTransferHandler(new TransferHandler("text"));
+						if (((StateBlock) dfaBlockObj).isInitial()) {
+							label.setBounds(dfaBlockObj.getX(), dfaBlockObj.getY(), 76, 96);
+
+						}
+
+						else if (((StateBlock) dfaBlockObj).isFinal()) {
+							label.setBounds(dfaBlockObj.getX(), dfaBlockObj.getY(), 76, 106);
+
+						}
+
+						else {
+
+							label.setBounds(dfaBlockObj.getX(), dfaBlockObj.getY(), dfaBlockObj.getWidth(), dfaBlockObj.getHeight());
+
+						}
+						actionPanel.add(label);
+					}
+				}
+
+				actionPanel.revalidate();
+				actionPanel.repaint();
+			} else if (e.getActionCommand().equals("Add Final State")) {
+				for (DFABlock dfaBlockObj : dfaBuilderModel.getDfaBlockList()) {
+
+					if (dfaBlockObj.isState()) {
+						if (((StateBlock) dfaBlockObj).isFinal()) {
+							actionPanel.remove(dfaBlockObj.getDfaLabel());
+							((StateBlock) dfaBlockObj).setFinal(false);
+							JLabel label = new JLabel((new ImageIcon("image/tunnel.png")));
+							dfaBlockObj.setDfaLabel(label);
+							repaint();
+
+						}
+
+						if (dfaBlockObj.isState() && (dfaBlockObj.getX() == dragSource.getX())) {
+
+							actionPanel.remove(dfaBlockObj.getDfaLabel());
+							((StateBlock) dfaBlockObj).setFinal(true);
+
+							JLabel label = new JLabel((new ImageIcon("image/princess.png")));
+							label.setBounds(dfaBlockObj.getX(), dfaBlockObj.getY(), 76, 96);
+
+							dfaBlockObj.setDfaLabel(label);
+							runEndStateBlock = (StateBlock) dfaBlockObj;
+
+						}
+
+					}
+				}
+				for (DFABlock dfaBlockObj : dfaBuilderModel.getDfaBlockList()) {
+					if (dfaBlockObj.isState()) {
+
+						JLabel label = dfaBlockObj.getDfaLabel();
+						label.setName("");
+						label.addMouseListener(listener);
+						label.setTransferHandler(new TransferHandler("text"));
+						if (((StateBlock) dfaBlockObj).isInitial()) {
+							label.setBounds(dfaBlockObj.getX(), dfaBlockObj.getY(), 76, 96);
+
+						}
+
+						else if (((StateBlock) dfaBlockObj).isFinal()) {
+							label.setBounds(dfaBlockObj.getX(), dfaBlockObj.getY(), 76, 106);
+
+						}
+
+						else {
+
+							label.setBounds(dfaBlockObj.getX(), dfaBlockObj.getY(), dfaBlockObj.getWidth(), dfaBlockObj.getHeight());
+
+						}
+
+						actionPanel.add(label);
+					}
+				}
+				actionPanel.revalidate();
+				actionPanel.repaint();
+
+			} else if (e.getActionCommand().equals("Add Transition")) {
+
+				for (DFABlock dfaBlockObj : dfaBuilderModel.getDfaBlockList()) {
+					JLabel label = dfaBlockObj.getDfaLabel();
+					label.addMouseListener(hoverListener);
+				}
+			}*/
+		}
+
+		
 
 	}
 
+	@Override
+	public void addToPanel(FABlock dfaBlock) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void removeFromPanel(FABlock dfaBlock) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+
+	
+	
 }
