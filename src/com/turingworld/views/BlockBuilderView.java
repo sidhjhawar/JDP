@@ -58,6 +58,7 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
 
 import com.turingworld.controller.BlockBuilderController;
+import com.turingworld.controller.ControllerHelper;
 import com.turingworld.model.Block;
 import com.turingworld.model.BlockBuilderModel;
 
@@ -108,6 +109,8 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 	private JLabel r;
 	private JLabel c;
 	private JLabel y;
+	
+	private ControllerHelper controllerHelper;
 
 	/**
 	 * Launch the application.
@@ -122,26 +125,6 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 
 	public void setController(BlockBuilderController blockBuilderController) {
 		this.blockBuilderController = blockBuilderController;
-	}
-
-	public void playSound(String audioFile)
-			throws UnsupportedAudioFileException, IOException,
-			LineUnavailableException {
-		try {
-			AudioInputStream audioInputStream = AudioSystem
-					.getAudioInputStream(new File(audioFile));
-
-			Clip clip = AudioSystem.getClip();
-
-			clip.open(audioInputStream);
-			clip.start();
-		} catch (UnsupportedAudioFileException uae) {
-			System.out.println(uae);
-		} catch (IOException ioe) {
-			System.out.println(ioe);
-		} catch (LineUnavailableException lua) {
-			System.out.println(lua);
-		}
 	}
 
 	/**
@@ -239,6 +222,8 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 		actionPanel.add(noticeLabel);
 
 		dropTarget = new DropTarget(this.actionPanel, new DropTargetListener2());
+		
+		controllerHelper = new ControllerHelper();
 
 		repaint();
 	}
@@ -763,7 +748,7 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 				snapShotPanel.revalidate();
 				snapShotPanel.repaint();
 				try {
-					playSound("./audio/camera.wav");
+					controllerHelper.playSound("./audio/camera.wav");
 				} catch (UnsupportedAudioFileException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -1183,7 +1168,7 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 					b.getBlockLabel().setLocation(b.getX(), b.getY());
 					showMessage(true, " Cannot attach two similar blocks");
 					try {
-						playSound("./audio/repel.wav");
+						controllerHelper.playSound("./audio/repel.wav");
 					} catch (UnsupportedAudioFileException e) {
 						e.printStackTrace();
 					} catch (IOException e) {
@@ -1207,7 +1192,7 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 
 					}
 					try {
-						playSound("./audio/attach.wav");
+						controllerHelper.playSound("./audio/attach.wav");
 					} catch (UnsupportedAudioFileException e) {
 						e.printStackTrace();
 					} catch (IOException e) {
@@ -1217,7 +1202,7 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 					}
 				} else {
 					try {
-						playSound("./audio/beep_normal.wav");
+						controllerHelper.playSound("./audio/beep_normal.wav");
 					} catch (UnsupportedAudioFileException e) {
 						e.printStackTrace();
 					} catch (IOException e) {
