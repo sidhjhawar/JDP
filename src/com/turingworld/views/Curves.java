@@ -14,7 +14,7 @@ public class Curves {
 	private QuadCurve2D.Double curve;
 	private ArrayList<JLabel> stateTransits;
 	
-	Curves()
+public Curves()
 	{
 		curves = new ArrayList<QuadCurve2D.Double>();
 		startStateBlock = new ArrayList<StateBlock>();
