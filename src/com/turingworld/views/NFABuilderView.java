@@ -14,6 +14,8 @@ import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -43,6 +45,7 @@ import com.turingworld.model.FABlock;
 import com.turingworld.model.NFABuilderModel;
 import com.turingworld.model.StateBlock;
 import com.turingworld.views.BlockBuilderView.DropTargetListener2;
+import com.turingworld.views.DFABuilderView.MenuActionListener;
 
 public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 
@@ -68,9 +71,12 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 	private String stateURL;
 	private FABlock faBlock;
 	JLabel actionState;
+	private PopupForStateView popupForStateView;
+	private MouseListener hoverListener;
+
 
 	public NFABuilderView(NFABuilderModel nfaBuilderModel) {
-
+		popupForStateView = new PopupForStateView();
 		this.nfaBuilderModel = nfaBuilderModel;
 		setVisible(true);
 		setTitle("Welcome - Build your Blocks!");
@@ -119,6 +125,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 		panel_1.add(scrollPane_1);
 
 		createLeftPaneView();
+		popupForStateView.registerActionListner(new MenuActionListener());
 
 		dropTarget = new DropTarget(this.actionPanel, new DropTargetListener2());
 		repaint();
@@ -200,13 +207,30 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 
 		panel.add(play);
 
+		hoverListener = new MouseAdapter() {
+			public void mouseEntered(MouseEvent me) {
+				dragSource = (JLabel) me.getSource();
+				System.out.println("Listener");
+				/*dfaBlock = dfaBuilderController.getDFABlockObj(
+						dragSource.getX(), dragSource.getY());
+				if (dfaBlock != null && dfaBlock.isState()) {
+					endStateBlock = (StateBlock) dfaBlock;
+					DFABuilderView.this.isStartStateClicked = true;
+				}*/
+			}
+		};
 		listener = new MouseAdapter() {
 			public void mousePressed(MouseEvent me) {
 				dragSource = (JLabel) me.getSource();
 				TransferHandler handler = dragSource.getTransferHandler();
 				handler.exportAsDrag(dragSource, me, TransferHandler.COPY);
 				faBlock = nfaBuilderController.getNFABlockObj(dragSource.getX(), dragSource.getY());
+				if (me.getButton() == MouseEvent.BUTTON3) {
+					popupForStateView.show(me.getComponent(),
+							me.getX(), me.getY());
+				}
 			}
+			
 
 		};
 
@@ -312,7 +336,152 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 			// TODO Auto-generated method stub
 
 		}
+		
+		
 
 	}
+	class MenuActionListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (e.getActionCommand().equals("Add Transition")) {
+				System.out.println("Clicked");
+		/*		for (FABlock dfaBlockObj : dfaBuilderModel.getDfaBlockList()) {
+					if (dfaBlockObj.isState()) {
+						if (((StateBlock) dfaBlockObj).isInitial()) {
+
+							actionPanel.remove(dfaBlockObj.getDfaLabel());
+							((StateBlock) dfaBlockObj).setInitial(false);
+							JLabel label = new JLabel((new ImageIcon(
+									"image/tunnel.png")));
+							dfaBlockObj.setDfaLabel(label);
+							repaint();
+
+						}
+
+						if (dfaBlockObj.isState()
+								&& (dfaBlockObj.getX() == dragSource.getX())) {
+
+							actionPanel.remove(dfaBlockObj.getDfaLabel());
+							((StateBlock) dfaBlockObj).setInitial(true);
+							JLabel label = new JLabel((new ImageIcon(
+									"image/house.png")));
+							label.setBounds(dfaBlockObj.getX(),
+									dfaBlockObj.getY(), 76, 96);
+							dfaBlockObj.setDfaLabel(label);
+							runStartStateBlock = (StateBlock) dfaBlockObj;
+						}
+
+					}
+				}
+				for (FABlock dfaBlockObj : dfaBuilderModel.getDfaBlockList()) {
+
+					if (dfaBlockObj.isState()) {
+
+						JLabel label = dfaBlockObj.getDfaLabel();
+						label.setName("");
+						label.addMouseListener(listener);
+						label.setTransferHandler(new TransferHandler("text"));
+						if (((StateBlock) dfaBlockObj).isInitial()) {
+							label.setBounds(dfaBlockObj.getX(),
+									dfaBlockObj.getY(), 76, 96);
+
+						}
+
+						else if (((StateBlock) dfaBlockObj).isFinal()) {
+							label.setBounds(dfaBlockObj.getX(),
+									dfaBlockObj.getY(), 76, 106);
+
+						}
+
+						else {
+
+							label.setBounds(dfaBlockObj.getX(),
+									dfaBlockObj.getY(), dfaBlockObj.getWidth(),
+									dfaBlockObj.getHeight());
+
+						}
+						actionPanel.add(label);
+					}
+				}
+
+				actionPanel.revalidate();
+				actionPanel.repaint();
+			} else if (e.getActionCommand().equals("Add Final State")) {
+				for (FABlock dfaBlockObj : dfaBuilderModel.getDfaBlockList()) {
+
+					if (dfaBlockObj.isState()) {
+						if (((StateBlock) dfaBlockObj).isFinal()) {
+							actionPanel.remove(dfaBlockObj.getDfaLabel());
+							((StateBlock) dfaBlockObj).setFinal(false);
+							JLabel label = new JLabel((new ImageIcon(
+									"image/tunnel.png")));
+							dfaBlockObj.setDfaLabel(label);
+							repaint();
+
+						}
+
+						if (dfaBlockObj.isState()
+								&& (dfaBlockObj.getX() == dragSource.getX())) {
+
+							actionPanel.remove(dfaBlockObj.getDfaLabel());
+							((StateBlock) dfaBlockObj).setFinal(true);
+
+							JLabel label = new JLabel((new ImageIcon(
+									"image/princess.png")));
+							label.setBounds(dfaBlockObj.getX(),
+									dfaBlockObj.getY(), 76, 96);
+
+							dfaBlockObj.setDfaLabel(label);
+							runEndStateBlock = (StateBlock) dfaBlockObj;
+
+						}
+
+					}
+				}
+				for (FABlock dfaBlockObj : dfaBuilderModel.getDfaBlockList()) {
+					if (dfaBlockObj.isState()) {
+
+						JLabel label = dfaBlockObj.getDfaLabel();
+						label.setName("");
+						label.addMouseListener(listener);
+						label.setTransferHandler(new TransferHandler("text"));
+						if (((StateBlock) dfaBlockObj).isInitial()) {
+							label.setBounds(dfaBlockObj.getX(),
+									dfaBlockObj.getY(), 76, 96);
+
+						}
+
+						else if (((StateBlock) dfaBlockObj).isFinal()) {
+							label.setBounds(dfaBlockObj.getX(),
+									dfaBlockObj.getY(), 76, 106);
+
+						}
+
+						else {
+
+							label.setBounds(dfaBlockObj.getX(),
+									dfaBlockObj.getY(), dfaBlockObj.getWidth(),
+									dfaBlockObj.getHeight());
+
+						}
+
+						actionPanel.add(label);
+					}
+				}
+				actionPanel.revalidate();
+				actionPanel.repaint();
+
+			} else if (e.getActionCommand().equals("Add Transition")) {
+
+				for (FABlock dfaBlockObj : dfaBuilderModel.getDfaBlockList()) {
+					JLabel label = dfaBlockObj.getDfaLabel();
+					label.addMouseListener(hoverListener);
+				}*/
+			}
+		}
+
+	}
+
 
 }
