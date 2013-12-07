@@ -6,7 +6,10 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
@@ -19,9 +22,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.Line2D;
+import java.awt.geom.QuadCurve2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.Action;
@@ -33,6 +39,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
 import javax.swing.TransferHandler;
 import javax.swing.UIManager;
 import javax.swing.border.BevelBorder;
@@ -44,7 +51,7 @@ import com.turingworld.model.DFABuilderModel;
 import com.turingworld.model.FABlock;
 import com.turingworld.model.NFABuilderModel;
 import com.turingworld.model.StateBlock;
-import com.turingworld.views.BlockBuilderView.DropListener;
+
 import com.turingworld.views.DFABuilderView.MenuActionListener;
 
 public class NFABuilderView extends JFrame implements NFABuildViewInterface {
@@ -73,9 +80,21 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 	JLabel actionState;
 	private PopupForStateView popupForStateView;
 	private MouseListener hoverListener;
-
+	protected boolean isStartStateClicked;
+	private FABlock nfaBlock;
+	private StateBlock startStateBlock;
+	private StateBlock endStateBlock;
+	private StateBlock finalEndStateBlock;
+	private ArrayList<Line2D.Double> lines;
+	private Graphics2D g2;
+	private Timer timer;
 
 	public NFABuilderView(NFABuilderModel nfaBuilderModel) {
+
+		timer = new Timer(5, blinker);
+		timer.start();
+
+		lines = new ArrayList<Line2D.Double>();
 		popupForStateView = new PopupForStateView();
 		this.nfaBuilderModel = nfaBuilderModel;
 		setVisible(true);
@@ -129,6 +148,11 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 
 		dropTarget = new DropTarget(this.actionPanel, new DropTargetListener2());
 		repaint();
+		paintLines();
+
+		startStateBlock = new StateBlock();
+		endStateBlock = new StateBlock();
+		finalEndStateBlock = new StateBlock();
 
 	}
 
@@ -211,12 +235,21 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 			public void mouseEntered(MouseEvent me) {
 				dragSource = (JLabel) me.getSource();
 				System.out.println("Listener");
-				/*dfaBlock = dfaBuilderController.getDFABlockObj(
-						dragSource.getX(), dragSource.getY());
-				if (dfaBlock != null && dfaBlock.isState()) {
-					endStateBlock = (StateBlock) dfaBlock;
-					DFABuilderView.this.isStartStateClicked = true;
-				}*/
+				nfaBlock = nfaBuilderController.getNFABlockObj(dragSource.getX(), dragSource.getY());
+				if (nfaBlock != null /* && nfaBlock.isState() */) {
+					endStateBlock = (StateBlock) nfaBlock;
+					NFABuilderView.this.isStartStateClicked = true;
+					
+					g2 = (Graphics2D) actionPanel.getGraphics().create();
+					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+					Line2D.Double line = new Line2D.Double(startStateBlock.getX(), startStateBlock.getY(), endStateBlock.getX(), endStateBlock.getY());
+					lines.add(line);
+					paintLines();
+					for (FABlock nfaBlockObj : nfaBuilderModel.getNfaBlockList()) {
+						JLabel label = nfaBlockObj.getDfaLabel();
+						label.removeMouseListener(hoverListener);
+					}
+				}
 			}
 		};
 		listener = new MouseAdapter() {
@@ -226,17 +259,46 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 				handler.exportAsDrag(dragSource, me, TransferHandler.COPY);
 				faBlock = nfaBuilderController.getNFABlockObj(dragSource.getX(), dragSource.getY());
 				if (me.getButton() == MouseEvent.BUTTON3) {
-					popupForStateView.show(me.getComponent(),
-							me.getX(), me.getY());
+					popupForStateView.show(me.getComponent(), me.getX(), me.getY());
+					nfaBlock = nfaBuilderController.getNFABlockObj(dragSource.getX(), dragSource.getY());
+					startStateBlock = (StateBlock) nfaBlock;
+					System.out.println(nfaBlock.getX());
 				}
+
 			}
-			
 
 		};
 
 		stateCirle.addMouseListener(listener);
 
 	}
+
+	void paintLines() {
+		double theta;
+		for (Line2D.Double line : lines) {
+			g2.draw(line);
+			theta = Math.atan2(line.getY2() - line.getY1(), line.getX2() - line.getX1());
+			drawArrow(theta, line.getX2(), line.getY2());
+		}
+
+	}
+
+	private void drawArrow(double theta, double x0, double y0) {
+		int barb = 20; // barb length
+		double phi = Math.PI / 6;
+		double x = x0 - barb * Math.cos(theta + phi);
+		double y = y0 - barb * Math.sin(theta + phi);
+		g2.draw(new Line2D.Double(x0, y0, x, y));
+		x = x0 - barb * Math.cos(theta - phi);
+		y = y0 - barb * Math.sin(theta - phi);
+		g2.draw(new Line2D.Double(x0, y0, x, y));
+	}
+
+	ActionListener blinker = new ActionListener() {
+		public void actionPerformed(ActionEvent ae) {
+
+		}
+	};
 
 	@Override
 	public void addToPanel(FABlock dfaBlock) {
@@ -294,6 +356,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 
 		@Override
 		public void drop(DropTargetDropEvent dtde) {
+			paintLines();
 			b = new StateBlock();
 
 			if (dragSource.getName().equals("leftPanelState")) {
@@ -315,6 +378,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 				b = nfaBuilderController.createBlockObj(stateURL, dtde.getLocation().x, dtde.getLocation().y, 50, 93, actionState, true, null);
 
 				actionPanel.add(actionState);
+
 			} else {
 				// Update block
 				b = nfaBuilderController.updateBlockObj(dtde.getLocation().x, dtde.getLocation().y, faBlock);
@@ -329,6 +393,10 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 			dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
 			dtde.getDropTargetContext().dropComplete(true);
 
+			g2 = (Graphics2D) actionPanel.getGraphics().create();
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			paintLines();
+
 		}
 
 		@Override
@@ -336,157 +404,23 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 			// TODO Auto-generated method stub
 
 		}
-		
-		
 
 	}
+
 	class MenuActionListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("Add Transition")) {
-				System.out.println("Clicked");
-				
-				for (FABlock faBlockObj : nfaBuilderModel.getNfaBlockList()) {
-					JLabel label = faBlockObj.getDfaLabel();
-					label.addMouseListener(hoverListener);
-				}
-		/*		for (FABlock dfaBlockObj : dfaBuilderModel.getDfaBlockList()) {
-					if (dfaBlockObj.isState()) {
-						if (((StateBlock) dfaBlockObj).isInitial()) {
-
-							actionPanel.remove(dfaBlockObj.getDfaLabel());
-							((StateBlock) dfaBlockObj).setInitial(false);
-							JLabel label = new JLabel((new ImageIcon(
-									"image/tunnel.png")));
-							dfaBlockObj.setDfaLabel(label);
-							repaint();
-
-						}
-
-						if (dfaBlockObj.isState()
-								&& (dfaBlockObj.getX() == dragSource.getX())) {
-
-							actionPanel.remove(dfaBlockObj.getDfaLabel());
-							((StateBlock) dfaBlockObj).setInitial(true);
-							JLabel label = new JLabel((new ImageIcon(
-									"image/house.png")));
-							label.setBounds(dfaBlockObj.getX(),
-									dfaBlockObj.getY(), 76, 96);
-							dfaBlockObj.setDfaLabel(label);
-							runStartStateBlock = (StateBlock) dfaBlockObj;
-						}
-
+				for (FABlock nfaBlockObj : nfaBuilderModel.getNfaBlockList()) {
+					if (!nfaBlockObj.equals(startStateBlock)) {
+						JLabel label = nfaBlockObj.getDfaLabel();
+						label.addMouseListener(hoverListener);
 					}
 				}
-				for (FABlock dfaBlockObj : dfaBuilderModel.getDfaBlockList()) {
-
-					if (dfaBlockObj.isState()) {
-
-						JLabel label = dfaBlockObj.getDfaLabel();
-						label.setName("");
-						label.addMouseListener(listener);
-						label.setTransferHandler(new TransferHandler("text"));
-						if (((StateBlock) dfaBlockObj).isInitial()) {
-							label.setBounds(dfaBlockObj.getX(),
-									dfaBlockObj.getY(), 76, 96);
-
-						}
-
-						else if (((StateBlock) dfaBlockObj).isFinal()) {
-							label.setBounds(dfaBlockObj.getX(),
-									dfaBlockObj.getY(), 76, 106);
-
-						}
-
-						else {
-
-							label.setBounds(dfaBlockObj.getX(),
-									dfaBlockObj.getY(), dfaBlockObj.getWidth(),
-									dfaBlockObj.getHeight());
-
-						}
-						actionPanel.add(label);
-					}
-				}
-
-				actionPanel.revalidate();
-				actionPanel.repaint();
-			} else if (e.getActionCommand().equals("Add Final State")) {
-				for (FABlock dfaBlockObj : dfaBuilderModel.getDfaBlockList()) {
-
-					if (dfaBlockObj.isState()) {
-						if (((StateBlock) dfaBlockObj).isFinal()) {
-							actionPanel.remove(dfaBlockObj.getDfaLabel());
-							((StateBlock) dfaBlockObj).setFinal(false);
-							JLabel label = new JLabel((new ImageIcon(
-									"image/tunnel.png")));
-							dfaBlockObj.setDfaLabel(label);
-							repaint();
-
-						}
-
-						if (dfaBlockObj.isState()
-								&& (dfaBlockObj.getX() == dragSource.getX())) {
-
-							actionPanel.remove(dfaBlockObj.getDfaLabel());
-							((StateBlock) dfaBlockObj).setFinal(true);
-
-							JLabel label = new JLabel((new ImageIcon(
-									"image/princess.png")));
-							label.setBounds(dfaBlockObj.getX(),
-									dfaBlockObj.getY(), 76, 96);
-
-							dfaBlockObj.setDfaLabel(label);
-							runEndStateBlock = (StateBlock) dfaBlockObj;
-
-						}
-
-					}
-				}
-				for (FABlock dfaBlockObj : dfaBuilderModel.getDfaBlockList()) {
-					if (dfaBlockObj.isState()) {
-
-						JLabel label = dfaBlockObj.getDfaLabel();
-						label.setName("");
-						label.addMouseListener(listener);
-						label.setTransferHandler(new TransferHandler("text"));
-						if (((StateBlock) dfaBlockObj).isInitial()) {
-							label.setBounds(dfaBlockObj.getX(),
-									dfaBlockObj.getY(), 76, 96);
-
-						}
-
-						else if (((StateBlock) dfaBlockObj).isFinal()) {
-							label.setBounds(dfaBlockObj.getX(),
-									dfaBlockObj.getY(), 76, 106);
-
-						}
-
-						else {
-
-							label.setBounds(dfaBlockObj.getX(),
-									dfaBlockObj.getY(), dfaBlockObj.getWidth(),
-									dfaBlockObj.getHeight());
-
-						}
-
-						actionPanel.add(label);
-					}
-				}
-				actionPanel.revalidate();
-				actionPanel.repaint();
-
-			} else if (e.getActionCommand().equals("Add Transition")) {
-
-				for (FABlock dfaBlockObj : dfaBuilderModel.getDfaBlockList()) {
-					JLabel label = dfaBlockObj.getDfaLabel();
-					label.addMouseListener(hoverListener);
-				}*/
 			}
 		}
 
 	}
-
 
 }
