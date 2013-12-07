@@ -44,7 +44,7 @@ import com.turingworld.model.DFABuilderModel;
 import com.turingworld.model.FABlock;
 import com.turingworld.model.NFABuilderModel;
 import com.turingworld.model.StateBlock;
-import com.turingworld.views.BlockBuilderView.DropTargetListener2;
+import com.turingworld.views.BlockBuilderView.DropListener;
 import com.turingworld.views.DFABuilderView.MenuActionListener;
 
 public class NFABuilderView extends JFrame implements NFABuildViewInterface {

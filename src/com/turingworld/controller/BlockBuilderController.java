@@ -157,7 +157,7 @@ public class BlockBuilderController {
 		System.out.println(block.getName());
 		ArrayList<Block> blockList = blockBuilderModel.getBlockList();
 		blockList.add(block);
-		buildViewInterface.addToPanel(block);
+		buildViewInterface.addBlockToPanel(block);
 	}
 
 	public void removeBlock() {
@@ -185,7 +185,7 @@ public class BlockBuilderController {
 	public void removeBlockFromListAndPanel(Block block) {
 		ArrayList<Block> blockList = blockBuilderModel.getBlockList();
 		blockList.remove(block);
-		buildViewInterface.removeFromPanel(block);
+		buildViewInterface.removeBlockFromPanel(block);
 	}
 
 	public void sortTransitions()
