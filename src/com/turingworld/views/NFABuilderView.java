@@ -346,6 +346,11 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("Add Transition")) {
 				System.out.println("Clicked");
+				
+				for (FABlock faBlockObj : nfaBuilderModel.getNfaBlockList()) {
+					JLabel label = faBlockObj.getDfaLabel();
+					label.addMouseListener(hoverListener);
+				}
 		/*		for (FABlock dfaBlockObj : dfaBuilderModel.getDfaBlockList()) {
 					if (dfaBlockObj.isState()) {
 						if (((StateBlock) dfaBlockObj).isInitial()) {
