@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -53,13 +54,14 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
+
 import com.turingworld.controller.BlockBuilderController;
 import com.turingworld.controller.DFABuilderController;
 import com.turingworld.helper.Mario;
 import com.turingworld.model.Block;
 import com.turingworld.model.BlockBuilderModel;
-import com.turingworld.model.FABlock;
 import com.turingworld.model.DFABuilderModel;
+import com.turingworld.model.FABlock;
 import com.turingworld.model.StateBlock;
 import com.turingworld.model.TransitionBlock;
 
@@ -88,7 +90,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 	private boolean isMini;
 	private JLabel snapLabel;
 	private int activityNo = 0;
-	private JScrollPane scrollPane;
+	private JScrollPane recentActivityScrollPanel;
 	private JPanel panelActivity;
 	private JTextField field;
 	private int transitionX;
@@ -109,12 +111,12 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 	private DFABuilderController dfaBuilderController;
 	private JLabel outputLabel;
 	private JButton playAgain;
-	private JPanel panel_1;
+	private JPanel outputPanel;
 	private JLabel stateTransit1;
 	private JLabel stateTransit2;
-	private JScrollPane scrollPane_1;
+	private JScrollPane outputScrollPanel;
 	private JPanel output;
-	private JPanel panel_2;
+	private JPanel reecntActivityPanel;
 	private JLabel g;
 	private JLabel r;
 	private String[] charList;
@@ -123,7 +125,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 	private Graphics2D g2d;
 	private JTextField textFieldM1;
 	private JTextField textFieldM2;
-	private JPanel panel;
+	private JPanel charSelectPanel;
 	private StateBlock startStateBlock;
 	private StateBlock endStateBlock;
 	private StateBlock finalEndStateBlock;
@@ -157,6 +159,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 	private ArrayList<JLabel> inputPathLabels;
 	private int inputPathIndex = 0;
 	boolean fromPlayView = false;
+	private ActionListener blinker;
 
 	public ArrayList<String> getImgButtons() {
 		return imgButtons;
@@ -242,7 +245,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 
 		this.setVisible(true);
 
-		setTitle("Welcome - Build your Blocks!");
+		setTitle("Welcome - Build your DFA Blocks!");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(50, 0, 1251, 719);
 
@@ -253,68 +256,47 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		contentPanel.setBorder(null);
 		setContentPane(contentPanel);
 		contentPanel.setLayout(null);
+		
+		//creates the header menu
 		creatHeaderMenu();
+		
+		//creates the left panel which has all the tools.
 		createLeftPaneView();
-		panel_1 = new JPanel();
-		panel_1.setBounds(155, 515, 785, 150);
-		contentPanel.add(panel_1);
-		panel_1.setLayout(new BorderLayout(0, 0));
-
-		scrollPane_1 = new JScrollPane();
-		scrollPane_1
-				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane_1.setViewportBorder(new TitledBorder(null, "",
-				TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_1.add(scrollPane_1);
-
-		output = new JPanel();
-
-		output.setBorder(new TitledBorder(UIManager
-				.getBorder("TitledBorder.border"), "", TitledBorder.CENTER,
-				TitledBorder.ABOVE_TOP, null, null));
-		scrollPane_1.setViewportView(output);
-		output.setLayout(null);
-
-		panel_2 = new JPanel();
-		panel_2.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null,
-				null, null));
-		panel_2.setBounds(939, 0, 296, 665);
-		contentPanel.add(panel_2);
-		panel_2.setLayout(new BorderLayout(0, 0));
-
-		scrollPane = new JScrollPane();
-		panel_2.add(scrollPane);
-		scrollPane.setViewportBorder(new TitledBorder(UIManager
-				.getBorder("TitledBorder.border"), "Recent Activity",
-				TitledBorder.CENTER, TitledBorder.ABOVE_TOP, null, null));
-		scrollPane
-				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane.setAlignmentX(Component.RIGHT_ALIGNMENT);
-
-		panelActivity = new JPanel();
-		scrollPane.setViewportView(panelActivity);
-		panelActivity.setLayout(new BoxLayout(panelActivity, BoxLayout.Y_AXIS));
-		actionPanel = new ImagePanel(
-				new ImageIcon("image/background.png").getImage());
-		actionPanel.setBounds(155, 3, 785, 514);
-		contentPanel.add(actionPanel);
-		actionPanel.setBorder(new TitledBorder(null, "", TitledBorder.LEADING,
-				TitledBorder.TOP, null, null));
-		actionPanel.setBackground(new Color(211, 211, 211));
-		actionPanel.setLayout(null);
-
-		noticeLabel = new JLabel();
-		noticeLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		noticeLabel.setFont(new Font("Shruti", Font.BOLD, 16));
-		noticeLabel.setForeground(Color.BLACK);
-		noticeLabel.setBounds(238, 464, 323, 39);
-		actionPanel.add(noticeLabel);
+		
+		//creates the output panel which is at the bottom of the window.This panel would show the output related
+		//activities.
+		createOutputPanel();
+		
+		//creates the recent activity panel. This panel is on the right of the screen and shows all the activities 
+		createRecentActivityPanel();
+		
+		//creates a label which holds warning /notice for the user activities.
+		createNoticeLabel();
+		
+		//Right click menu
 		popupForStateView.registerActionListner(new MenuActionListener());
+		
+		//Drag Drop initialization
 		dropTarget = new DropTarget(this.actionPanel, new DropTargetListener2());
-
+		
+		//Creates the select char view which enables the user to choose from the list of available variables.
 		createCharSelectView();
+
+		//boolean variable used for snapshot
 		isMini = false;
-		ActionListener blinker = new ActionListener() {
+		
+		//Set action listener (Add more command)
+		setActionListener();
+		timer = new Timer(5, blinker);
+		timer.start();
+
+		repaint();
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+	}
+
+	private void setActionListener() {
+	blinker = new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				for (QuadCurve2D.Double curve : curves1.getCurves()) {
 					g2d.draw(curve);
@@ -368,12 +350,73 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 				}
 			}
 		};
-		timer = new Timer(5, blinker);
-		timer.start();
 
-		repaint();
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+	}
 
+	private void createNoticeLabel() {
+		noticeLabel = new JLabel();
+		noticeLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		noticeLabel.setFont(new Font("Shruti", Font.BOLD, 16));
+		noticeLabel.setForeground(Color.BLACK);
+		noticeLabel.setBounds(238, 464, 323, 39);
+		actionPanel.add(noticeLabel);
+		
+	}
+
+	private void createRecentActivityPanel() {
+		reecntActivityPanel = new JPanel();
+		reecntActivityPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null,
+				null, null));
+		reecntActivityPanel.setBounds(939, 0, 296, 665);
+		contentPanel.add(reecntActivityPanel);
+		reecntActivityPanel.setLayout(new BorderLayout(0, 0));
+
+		recentActivityScrollPanel = new JScrollPane();
+		reecntActivityPanel.add(recentActivityScrollPanel);
+		recentActivityScrollPanel.setViewportBorder(new TitledBorder(UIManager
+				.getBorder("TitledBorder.border"), "Recent Activity",
+				TitledBorder.CENTER, TitledBorder.ABOVE_TOP, null, null));
+		recentActivityScrollPanel
+				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		recentActivityScrollPanel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+
+		panelActivity = new JPanel();
+		recentActivityScrollPanel.setViewportView(panelActivity);
+		panelActivity.setLayout(new BoxLayout(panelActivity, BoxLayout.Y_AXIS));
+		actionPanel = new ImagePanel(
+				new ImageIcon("image/background.png").getImage());
+		actionPanel.setBounds(155, 3, 785, 514);
+		contentPanel.add(actionPanel);
+		actionPanel.setBorder(new TitledBorder(null, "", TitledBorder.LEADING,
+				TitledBorder.TOP, null, null));
+		actionPanel.setBackground(new Color(211, 211, 211));
+		actionPanel.setLayout(null);
+		
+	}
+
+	private void createOutputPanel() {
+		outputPanel = new JPanel();
+		outputPanel.setBounds(155, 515, 785, 150);
+		contentPanel.add(outputPanel);
+		outputPanel.setLayout(new BorderLayout(0, 0));
+
+		outputScrollPanel = new JScrollPane();
+		outputScrollPanel
+				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		outputScrollPanel.setViewportBorder(new TitledBorder(null, "",
+				TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		outputPanel.add(outputScrollPanel);
+
+		output = new JPanel();
+
+		output.setBorder(new TitledBorder(UIManager
+				.getBorder("TitledBorder.border"), "", TitledBorder.CENTER,
+				TitledBorder.ABOVE_TOP, null, null));
+		outputScrollPanel.setViewportView(output);
+		output.setLayout(null);
+
+		
 	}
 
 	class MenuActionListener implements ActionListener {
@@ -381,7 +424,6 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("Add Initial State")) {
-
 				for (FABlock dfaBlockObj : dfaBuilderModel.getDfaBlockList()) {
 					if (dfaBlockObj.isState()) {
 						if (((StateBlock) dfaBlockObj).isInitial()) {
@@ -540,15 +582,15 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 
 	
 	public void createCharSelectView() {
-		panel = new JPanel();
-		panel.setBounds(251, 199, 250, 207);
-		actionPanel.add(panel);
-		panel.setLayout(null);
+		charSelectPanel = new JPanel();
+		charSelectPanel.setBounds(251, 199, 250, 207);
+		actionPanel.add(charSelectPanel);
+		charSelectPanel.setLayout(null);
 
 		JLabel lblEnterCharacters = new JLabel("Select any two transitions!");
 		lblEnterCharacters.setHorizontalAlignment(SwingConstants.CENTER);
 		lblEnterCharacters.setBounds(44, 11, 161, 14);
-		panel.add(lblEnterCharacters);
+		charSelectPanel.add(lblEnterCharacters);
 
 		mushroom = new JButton();
 		JLabel mushroom1 = new JLabel("");
@@ -560,7 +602,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		mushroom.setLayout(f2);
 		mushroom.setBounds(44, 53, 64, 46);
 		mushroom.add(mushroom1);
-		panel.add(mushroom);
+		charSelectPanel.add(mushroom);
 		mushroom.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -593,7 +635,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		flower1.setLayout(f1);
 		flower1.setBounds(44, 112, 64, 46);
 		flower1.add(flower);
-		panel.add(flower1);
+		charSelectPanel.add(flower1);
 		flower1.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -624,7 +666,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		coin1.setLayout(f3);
 		coin1.setBounds(141, 53, 64, 46);
 		coin1.add(coin);
-		panel.add(coin1);
+		charSelectPanel.add(coin1);
 		coin1.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -656,7 +698,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		enemy1.setLayout(f4);
 		enemy1.setBounds(141, 112, 64, 46);
 		enemy1.add(enemy);
-		panel.add(enemy1);
+		charSelectPanel.add(enemy1);
 		enemy1.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -689,12 +731,12 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 					charList[i] = imgButtons.get(i);
 
 				}
-				actionPanel.remove(panel);
+				actionPanel.remove(charSelectPanel);
 				actionPanel.revalidate();
 				actionPanel.repaint();
 			}
 		});
-		panel.add(btnDone);
+		charSelectPanel.add(btnDone);
 
 	}
 
@@ -832,14 +874,14 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 	}
 
 	private void createLeftPaneView() {
-		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder(UIManager
+		JPanel leftPanel = new JPanel();
+		leftPanel.setBorder(new TitledBorder(UIManager
 				.getBorder("TitledBorder.border"), "", TitledBorder.LEADING,
 				TitledBorder.TOP, null, null));
-		panel.setBackground(new Color(211, 211, 211));
-		panel.setBounds(0, 3, 153, 662);
-		contentPanel.add(panel);
-		panel.setLayout(null);
+		leftPanel.setBackground(new Color(211, 211, 211));
+		leftPanel.setBounds(0, 3, 153, 662);
+		contentPanel.add(leftPanel);
+		leftPanel.setLayout(null);
 
 		undo = new JLabel("undo");
 		undo.setIcon(new ImageIcon("image/undo.png"));
@@ -847,7 +889,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		undo.setName("undo");
 		undo.setBounds(30, 190, 75, 75);
 		undo.setTransferHandler(new TransferHandler("text"));
-		panel.add(undo);
+		leftPanel.add(undo);
 
 		castle = new JLabel("");
 		castle.setHorizontalAlignment(SwingConstants.CENTER);
@@ -856,13 +898,13 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		castle.setIcon(new ImageIcon("image/tunnel.png"));
 		castle.setBounds(30, 42, 76, 96);
 		castle.setTransferHandler(new TransferHandler("text"));
-		panel.add(castle);
+		leftPanel.add(castle);
 
 		redo = new JLabel("redo");
 		redo.setToolTipText("Redo");
 		redo.setIcon(new ImageIcon("image/redo.png"));
 		redo.setBounds(30, 309, 75, 75);
-		panel.add(redo);
+		leftPanel.add(redo);
 
 		eraser = new JLabel("eraser");
 		eraser.setToolTipText("Eraser\r\n");
@@ -901,13 +943,13 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 				}
 			}
 		});
-		panel.add(eraser);
+		leftPanel.add(eraser);
 
 		JLabel play = new JLabel("Play Button");
 		play.setToolTipText("Play\r\n");
 		play.setIcon(new ImageIcon("image/run.png"));
 		play.setBounds(30, 549, 75, 75);
-		panel.add(play);
+		leftPanel.add(play);
 		colorPositionX = 12;
 		colorPositionY = 34;
 		transitionX = 12;
