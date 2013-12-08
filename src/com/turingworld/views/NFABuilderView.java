@@ -336,7 +336,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 						{
 						x1=startStateBlock.getX()+16;
 						y1=startStateBlock.getY()+7;
-						x2=endStateBlock.getX()+66;
+						x2=endStateBlock.getX()+76; // y =66 (Remdodified)
 						y2=endStateBlock.getY()+48;
 						}
 						
@@ -344,7 +344,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 						{
 							x1=startStateBlock.getX()+7;
 							y1=startStateBlock.getY()+16;
-							x2=endStateBlock.getX()+48;
+							x2=endStateBlock.getX()+66; // x = 48
 							y2=endStateBlock.getY()+66;
 							shift =false;
 							
