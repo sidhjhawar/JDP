@@ -55,13 +55,6 @@ public class HomeScreen extends JFrame {
 	private void createLoad() {
 
 		JButton btnNewButton = new JButton("Load Existing Files");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				LoadBlockView loadblockview = new LoadBlockView();
-				dispose();
-
-			}
-		});
 		btnNewButton.setIcon(new ImageIcon("image/load.png"));
 		btnNewButton.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 18));
 		getContentPane().add(btnNewButton, BorderLayout.SOUTH);
