@@ -86,6 +86,8 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 	private StateBlock endStateBlock;
 	private StateBlock finalEndStateBlock;
 	private ArrayList<Line2D.Double> lines;
+	private ArrayList<StateBlock> startStateBlockList;
+	private ArrayList<StateBlock> endStateBlockList;
 	private Graphics2D g2;
 	private Timer timer;
 
@@ -95,6 +97,8 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 		timer.start();
 
 		lines = new ArrayList<Line2D.Double>();
+		startStateBlockList = new ArrayList<StateBlock>();
+		endStateBlockList = new ArrayList<StateBlock>();
 		popupForStateView = new PopupForStateView();
 		this.nfaBuilderModel = nfaBuilderModel;
 		setVisible(true);
@@ -232,17 +236,128 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 		panel.add(play);
 
 		hoverListener = new MouseAdapter() {
+			private boolean shift;
+
 			public void mouseEntered(MouseEvent me) {
+				int x1 = 0,x2=0,y1 = 0,y2=02;
 				dragSource = (JLabel) me.getSource();
 				System.out.println("Listener");
+				FABlock sblock;
+				FABlock fblock;
 				nfaBlock = nfaBuilderController.getNFABlockObj(dragSource.getX(), dragSource.getY());
 				if (nfaBlock != null /* && nfaBlock.isState() */) {
 					endStateBlock = (StateBlock) nfaBlock;
 					NFABuilderView.this.isStartStateClicked = true;
-					
-					g2 = (Graphics2D) actionPanel.getGraphics().create();
+					g2 = (Graphics2D) actionPanel.getGraphics()		;
 					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-					Line2D.Double line = new Line2D.Double(startStateBlock.getX(), startStateBlock.getY(), endStateBlock.getX(), endStateBlock.getY());
+					startStateBlockList.add(startStateBlock);
+					endStateBlockList.add(endStateBlock);
+					for (int i =0;i<startStateBlockList.size();i++) {
+						sblock = startStateBlockList.get(i);
+						fblock = endStateBlockList.get(i);
+						if(endStateBlock.equals(sblock)&&startStateBlock.equals(fblock))
+						{
+							shift = true;
+						}
+					}
+					
+					if((startStateBlock.getX()<endStateBlock.getX())&&(startStateBlock.getY()>endStateBlock.getY()))
+							{
+							if(!shift)
+							{
+								x1=startStateBlock.getX()+48;
+								y1=startStateBlock.getY()+7;
+								x2=endStateBlock.getX()+7;
+								y2=endStateBlock.getY()+48;
+							}
+							else
+								
+							{
+								
+								x1=startStateBlock.getX()+66;
+								y1=startStateBlock.getY()+16;
+								x2=endStateBlock.getX()+16;
+								y2=endStateBlock.getY()+66;
+								shift = false;
+								
+							}
+							
+							}
+					else if((startStateBlock.getX()>endStateBlock.getX())&&(startStateBlock.getY()<endStateBlock.getY()))
+					{
+						if(!shift)
+						{
+						x1=startStateBlock.getX()+7;
+						y1=startStateBlock.getY()+48;
+						x2=endStateBlock.getX()+48;
+						y2=endStateBlock.getY()+7;
+						}
+						
+						else
+						{
+							x1=startStateBlock.getX()+16;
+							y1=startStateBlock.getY()+66;
+							x2=endStateBlock.getX()+66;
+							y2=endStateBlock.getY()+16;
+							shift =false;
+							
+						}
+						
+											
+											
+					}
+					
+					else if((startStateBlock.getX()<endStateBlock.getX())&&(startStateBlock.getY()<endStateBlock.getY()))
+					{
+						if(!shift)
+						{
+						x1=startStateBlock.getX()+66;
+						y1=startStateBlock.getY()+48;
+						x2=endStateBlock.getX()+16;
+						y2=endStateBlock.getY()+7;
+						}
+						
+						else
+						{
+							x1=startStateBlock.getX()+48;
+							y1=startStateBlock.getY()+66;
+							x2=endStateBlock.getX()+7;
+							y2=endStateBlock.getY()+16;
+							shift =false;
+							
+						}
+						
+											
+											
+					}
+						else if((startStateBlock.getX()>endStateBlock.getX())&&(startStateBlock.getY()>endStateBlock.getY()))
+					{
+						if(!shift)
+						{
+						x1=startStateBlock.getX()+16;
+						y1=startStateBlock.getY()+7;
+						x2=endStateBlock.getX()+66;
+						y2=endStateBlock.getY()+48;
+						}
+						
+						else
+						{
+							x1=startStateBlock.getX()+7;
+							y1=startStateBlock.getY()+16;
+							x2=endStateBlock.getX()+48;
+							y2=endStateBlock.getY()+66;
+							shift =false;
+							
+						}
+						
+											
+											
+					}
+					
+					
+					
+					
+					Line2D.Double line = new Line2D.Double(x1, y1, x2, y2);
 					lines.add(line);
 					paintLines();
 					for (FABlock nfaBlockObj : nfaBuilderModel.getNfaBlockList()) {
@@ -275,6 +390,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 
 	void paintLines() {
 		double theta;
+		
 		for (Line2D.Double line : lines) {
 			g2.draw(line);
 			theta = Math.atan2(line.getY2() - line.getY1(), line.getX2() - line.getX1());
@@ -284,7 +400,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 	}
 
 	private void drawArrow(double theta, double x0, double y0) {
-		int barb = 20; // barb length
+		int barb = 13; // barb length
 		double phi = Math.PI / 6;
 		double x = x0 - barb * Math.cos(theta + phi);
 		double y = y0 - barb * Math.sin(theta + phi);
@@ -296,7 +412,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 
 	ActionListener blinker = new ActionListener() {
 		public void actionPerformed(ActionEvent ae) {
-
+			paintLines();
 		}
 	};
 
@@ -392,10 +508,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 
 			dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
 			dtde.getDropTargetContext().dropComplete(true);
-
-			g2 = (Graphics2D) actionPanel.getGraphics().create();
-			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			paintLines();
+			
 
 		}
 
