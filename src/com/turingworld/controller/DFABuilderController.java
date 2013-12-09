@@ -157,7 +157,6 @@ public class DFABuilderController {
 	}
 
 	public void addBlockToList(FABlock dfaBlock) {
-		System.out.println(dfaBlock.getName());
 		ArrayList<FABlock> dfaBlockList = dfaBuilderModel.getDfaBlockList();
 		dfaBlockList.add(dfaBlock);
 		dfaBuildViewInterface.addToPanel(dfaBlock);
@@ -216,8 +215,6 @@ public class DFABuilderController {
 						StateBlock key = (StateBlock) iter.next();
 						TransitionBlock value = (TransitionBlock) stateTransitionList.get(key).get(0);
 						char check = value.getTransitionType().charAt(0);
-						System.out.println("check: " + check);
-
 						// char check = 'a';
 						if (check == dfaBuilderView.getInputPathString().charAt(dfaBuilderView.getCurrentPathIndex())) { // matching
 							// transition
@@ -255,7 +252,6 @@ public class DFABuilderController {
 		if (dfaBuilderView.getCurrentPathIndex() < dfaBuilderView.getInputPathString().length()) {
 			dfaBuilderView.setCurrentPathIndex(++currentPathIndex);
 			nextState = getNextState();
-			System.out.println("nextState: " + nextState.getName());
 
 			JLabel label = new JLabel();
 			label.setIcon(new ImageIcon("image/mario.png"));

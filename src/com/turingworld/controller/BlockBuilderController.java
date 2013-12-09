@@ -62,10 +62,8 @@ public class BlockBuilderController {
 		block.setHeight(height);
 		block.setBlockLabel(label);
 		block.setTransitionType(transitionType);
-		// System.out.println("In side the create block");
 
 		if (isState) {
-			// System.out.println("In side State");
 			block.setName("q" + BlockBuilderModel.stateNo);
 			BlockBuilderModel.stateNo++;
 			block.setState(true);
@@ -154,7 +152,6 @@ public class BlockBuilderController {
 	}
 
 	public void addBlockToList(Block block) {
-		System.out.println(block.getName());
 		ArrayList<Block> blockList = blockBuilderModel.getBlockList();
 		blockList.add(block);
 		buildViewInterface.addBlockToPanel(block);
@@ -214,8 +211,6 @@ public class BlockBuilderController {
 				}
 			}
 		}
-
-		// System.out.println(outputString);
 	}
 
 	/*
@@ -243,7 +238,6 @@ public class BlockBuilderController {
 		int h = x1 + (x2 - x1) / 2;
 		int k = y1 - 50;
 		int sq = (int) (Math.pow(((x - h) / 10), 2));
-		System.out.println("sq:" + sq);
 		int y = sq + k;
 		return y;
 	}

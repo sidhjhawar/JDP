@@ -311,7 +311,6 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 						actionPanel.repaint();
 					} else {
 						timer.stop();
-						System.out.println("dfaBView: ");
 						playView = new PlayView(dfaBuilderController);
 						playPanel = playView.getView();
 						contentPanel.remove(actionPanel);
@@ -335,7 +334,6 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 						actionPanel.repaint();
 					} else {
 						timer.stop();
-						System.out.println("dfaBView: ");
 						playView = new PlayView(dfaBuilderController);
 						playPanel = playView.getView();
 						contentPanel.remove(actionPanel);
@@ -1103,8 +1101,6 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 						mushroomTransit1.setIcon(Icon);
 						// mushroomTransit1.setText(charList[0]);
 						mushroomTransit1.setName(charList[0]);
-						System.out.println("Icon: "
-								+ mushroomTransit1.getIcon());
 						// mushroomTransit1.setIcon(icon);
 						mushroomTransit1.setLayout(new FlowLayout(
 								FlowLayout.CENTER));
@@ -1646,7 +1642,6 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 						StateBlock f = finalEndStateBlock1.get(i);
 
 						if (s.equals(faBlock)) {
-							System.out.println("1");
 
 							x1 = faBlock.getX();
 							w1 = faBlock.getWidth();
@@ -1731,7 +1726,6 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 							}
 
 						} else if (f.equals(faBlock)) {
-							System.out.println("2");
 							x1 = s.getX();
 							w1 = s.getWidth();
 							y1 = s.getY();
@@ -1907,7 +1901,6 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 	}
 
 	public void switchToActionPanel(StateBlock stateBlock) {
-		System.out.println("in switch toAction");
 		contentPanel.remove(playPanel);
 		contentPanel.add(actionPanel);
 

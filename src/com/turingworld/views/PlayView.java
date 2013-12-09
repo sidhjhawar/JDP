@@ -107,8 +107,6 @@ public class PlayView extends JPanel {
 	}
 
 	public void dropMario() {
-		System.out.println("drop mario called");
-		
 		//resetting
 		isFalling = true;
 		isJumping =false;
@@ -144,7 +142,6 @@ public class PlayView extends JPanel {
 				playView.add(marioLabel);
 			}else if(marioLabel.getBounds().intersects(panelRight.getBounds())){
 				timer.stop();
-				System.out.println("timerstopped");
 				playView.remove(marioLabel);
 				
 				// not equal to final state
@@ -244,10 +241,7 @@ public class PlayView extends JPanel {
 		int currentIndex = dfaBuilderController.getDfaBuilderView().getInputPathIndex();
 		JLabel nextTransition = dfaBuilderController.getDfaBuilderView().getInputPathLabels().get(currentIndex);
 		int counter = 0;
-		System.out.println(" nextTransition.getIcon().toString(): "+ nextTransition.getIcon().toString());
-		System.out.println("level size:"+ transitionLevels.size());
 		for (JLabel transition : transitionLevels) {
-			System.out.println("transition.getIcon().toString(): "+ transition.getIcon().toString());
 			if(nextTransition.getName().equalsIgnoreCase(transition.getName())){
 				
 				dfaBuilderController.getDfaBuilderView().setInputPathIndex(++currentIndex);
