@@ -47,6 +47,7 @@ import com.turingworld.model.FABlock;
 import com.turingworld.model.NFABuilderModel;
 import com.turingworld.model.StateBlock;
 
+@SuppressWarnings("serial")
 public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 
 	JPanel contentPanel;
@@ -231,8 +232,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 			public void mouseClicked(MouseEvent e) {
 				NFARunWindow nfaRun = new NFARunWindow();
 			}
-		
-		
+
 		});
 
 		panel.add(play);
@@ -241,7 +241,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 			private boolean shift;
 
 			public void mouseEntered(MouseEvent me) {
-				int x1 = 0,x2=0,y1 = 0,y2=02;
+				int x1 = 0, x2 = 0, y1 = 0, y2 = 02;
 				dragSource = (JLabel) me.getSource();
 				System.out.println("Listener");
 				FABlock sblock;
@@ -250,115 +250,92 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 				if (nfaBlock != null /* && nfaBlock.isState() */) {
 					endStateBlock = (StateBlock) nfaBlock;
 					NFABuilderView.this.isStartStateClicked = true;
-					g2 = (Graphics2D) actionPanel.getGraphics()		;
+					g2 = (Graphics2D) actionPanel.getGraphics();
 					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 					startStateBlockList.add(startStateBlock);
 					endStateBlockList.add(endStateBlock);
-					for (int i =0;i<startStateBlockList.size();i++) {
+					for (int i = 0; i < startStateBlockList.size(); i++) {
 						sblock = startStateBlockList.get(i);
 						fblock = endStateBlockList.get(i);
-						if(endStateBlock.equals(sblock)&&startStateBlock.equals(fblock))
-						{
+						if (endStateBlock.equals(sblock) && startStateBlock.equals(fblock)) {
 							shift = true;
 						}
 					}
-					
-					if((startStateBlock.getX()<endStateBlock.getX())&&(startStateBlock.getY()>endStateBlock.getY()))
-							{
-							if(!shift)
-							{
-								x1=startStateBlock.getX()+48;
-								y1=startStateBlock.getY()+7;
-								x2=endStateBlock.getX()+7;
-								y2=endStateBlock.getY()+48;
-							}
-							else
-								
-							{
-								
-								x1=startStateBlock.getX()+66;
-								y1=startStateBlock.getY()+16;
-								x2=endStateBlock.getX()+16;
-								y2=endStateBlock.getY()+66;
-								shift = false;
-								
-							}
-							
-							}
-					else if((startStateBlock.getX()>endStateBlock.getX())&&(startStateBlock.getY()<endStateBlock.getY()))
-					{
-						if(!shift)
+
+					if ((startStateBlock.getX() < endStateBlock.getX()) && (startStateBlock.getY() > endStateBlock.getY())) {
+						if (!shift) {
+							x1 = startStateBlock.getX() + 48;
+							y1 = startStateBlock.getY() + 7;
+							x2 = endStateBlock.getX() + 7;
+							y2 = endStateBlock.getY() + 48;
+						} else
+
 						{
-						x1=startStateBlock.getX()+7;
-						y1=startStateBlock.getY()+48;
-						x2=endStateBlock.getX()+48;
-						y2=endStateBlock.getY()+7;
+
+							x1 = startStateBlock.getX() + 66;
+							y1 = startStateBlock.getY() + 16;
+							x2 = endStateBlock.getX() + 16;
+							y2 = endStateBlock.getY() + 66;
+							shift = false;
+
 						}
-						
-						else
-						{
-							x1=startStateBlock.getX()+16;
-							y1=startStateBlock.getY()+66;
-							x2=endStateBlock.getX()+66;
-							y2=endStateBlock.getY()+16;
-							shift =false;
-							
+
+					} else if ((startStateBlock.getX() > endStateBlock.getX()) && (startStateBlock.getY() < endStateBlock.getY())) {
+						if (!shift) {
+							x1 = startStateBlock.getX() + 7;
+							y1 = startStateBlock.getY() + 48;
+							x2 = endStateBlock.getX() + 48;
+							y2 = endStateBlock.getY() + 7;
 						}
-						
-											
-											
+
+						else {
+							x1 = startStateBlock.getX() + 16;
+							y1 = startStateBlock.getY() + 66;
+							x2 = endStateBlock.getX() + 66;
+							y2 = endStateBlock.getY() + 16;
+							shift = false;
+
+						}
+
 					}
-					
-					else if((startStateBlock.getX()<endStateBlock.getX())&&(startStateBlock.getY()<endStateBlock.getY()))
-					{
-						if(!shift)
-						{
-						x1=startStateBlock.getX()+66;
-						y1=startStateBlock.getY()+48;
-						x2=endStateBlock.getX()+16;
-						y2=endStateBlock.getY()+7;
+
+					else if ((startStateBlock.getX() < endStateBlock.getX()) && (startStateBlock.getY() < endStateBlock.getY())) {
+						if (!shift) {
+							x1 = startStateBlock.getX() + 66;
+							y1 = startStateBlock.getY() + 48;
+							x2 = endStateBlock.getX() + 16;
+							y2 = endStateBlock.getY() + 7;
 						}
-						
-						else
-						{
-							x1=startStateBlock.getX()+48;
-							y1=startStateBlock.getY()+66;
-							x2=endStateBlock.getX()+7;
-							y2=endStateBlock.getY()+16;
-							shift =false;
-							
+
+						else {
+							x1 = startStateBlock.getX() + 48;
+							y1 = startStateBlock.getY() + 66;
+							x2 = endStateBlock.getX() + 7;
+							y2 = endStateBlock.getY() + 16;
+							shift = false;
+
 						}
-						
-											
-											
+
+					} else if ((startStateBlock.getX() > endStateBlock.getX()) && (startStateBlock.getY() > endStateBlock.getY())) {
+						if (!shift) {
+							x1 = startStateBlock.getX() + 16;
+							y1 = startStateBlock.getY() + 7;
+							x2 = endStateBlock.getX() + 76; // y =66
+															// (Remdodified)
+							y2 = endStateBlock.getY() + 48;
+						}
+
+						else {
+							x1 = startStateBlock.getX() + 7;
+							y1 = startStateBlock.getY() + 16;
+							x2 = endStateBlock.getX() + 66; // x = 48
+							y2 = endStateBlock.getY() + 66;
+							shift = false;
+
+						}
+
 					}
-						else if((startStateBlock.getX()>endStateBlock.getX())&&(startStateBlock.getY()>endStateBlock.getY()))
-					{
-						if(!shift)
-						{
-						x1=startStateBlock.getX()+16;
-						y1=startStateBlock.getY()+7;
-						x2=endStateBlock.getX()+76; // y =66 (Remdodified)
-						y2=endStateBlock.getY()+48;
-						}
-						
-						else
-						{
-							x1=startStateBlock.getX()+7;
-							y1=startStateBlock.getY()+16;
-							x2=endStateBlock.getX()+66; // x = 48
-							y2=endStateBlock.getY()+66;
-							shift =false;
-							
-						}
-						
-											
-											
-					}
-					
-					
-					
-					
+
 					Line2D.Double line = new Line2D.Double(x1, y1, x2, y2);
 					lines.add(line);
 					paintLines();
@@ -392,7 +369,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 
 	void paintLines() {
 		double theta;
-		
+
 		for (Line2D.Double line : lines) {
 			g2.draw(line);
 			theta = Math.atan2(line.getY2() - line.getY1(), line.getX2() - line.getX1());
@@ -510,7 +487,6 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 
 			dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
 			dtde.getDropTargetContext().dropComplete(true);
-			
 
 		}
 
