@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -20,6 +21,7 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.TitledBorder;
 
 import com.turingworld.model.StateBlock;
+import com.turingworld.model.TransitionBlock;
 
 public class NFARunWindow extends JFrame {
 	private JPanel actionPanel;
@@ -96,27 +98,44 @@ public class NFARunWindow extends JFrame {
 
 
 	private void displayOutput() {
-		level = 1;
+		level = 2;
+		
+		treeBWLevel1.setIcon(new ImageIcon("image/tree.png"));
+		JLabel text =  new JLabel("q0");
+		text.setFont(new Font("Serif", Font.BOLD, 16));
+		text.setForeground(Color.white);
+		treeBWLevel1.add(text);
+		
 		
 		while(level!=4){
 			
-			for(StateBlock block : previousBlock){
-				currentBlock.add(block);
+			for (StateBlock block : previousBlock) {
+				HashMap<StateBlock, ArrayList<TransitionBlock>> list = block.getStateTransitionList();
+				for (Map.Entry<StateBlock, ArrayList<TransitionBlock>> entry : list.entrySet()) {
+					StateBlock key = entry.getKey();
+				    ArrayList<TransitionBlock> value = entry.getValue();
+				    for(TransitionBlock transitionBlock: value)
+				    {
+				    	currentBlock.add(key);
+				    }
+				}
 			}
 			int i = 0;
 			for(StateBlock block :currentBlock){
 				i++;
 						System.out.println(block.getName());
 						labelList.get(new Integer(Integer.toString(level)+Integer.toString(i))).setIcon(new ImageIcon("image/tree.png"));
-						JLabel text =  new JLabel(""+block.getName().toString());
-						text.setFont(new Font("Serif", Font.BOLD, 16));
-						text.setForeground(Color.white);
-					//	labelList.get(new Integer(level+i)).setLayout(new FlowLayout(FlowLayout.CENTER));
-						labelList.get(new Integer(level+i)).add(text);
+						String stateName = ""+block.getName().toString();
+						JLabel stateNo =  new JLabel(stateName);
+						stateNo.setFont(new Font("Serif", Font.BOLD, 16));
+						stateNo.setForeground(Color.white);
+						labelList.get(new Integer(Integer.toString(level)+Integer.toString(i))).setLayout(new FlowLayout(FlowLayout.CENTER));
+				//		labelList.get(new Integer(level+i)).setLayout(new FlowLayout(FlowLayout.CENTER));
+						labelList.get(new Integer(Integer.toString(level)+Integer.toString(i))).add(stateNo);
 			}
 			level++;
 			previousBlock = currentBlock;
-			currentBlock = null;
+			currentBlock.clear();
 			
 			
 			
