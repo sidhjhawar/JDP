@@ -1,5 +1,13 @@
 package com.turingworld.views;
 
+/*
+ * This class like DFABuilderView is used for creating NFA's the implementation is very much similar to the one
+ * in DFA.Most of the method used here are there in dfa as well with slight modifications.
+ * We have stick to traditional circle and arrow notation for NFA. We have separate visualization when the user
+ * clicks on the play button
+ * 
+ */
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -62,11 +70,11 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 	JLabel eraser;
 	JLabel play;
 	JPanel actionPanel;
-	JScrollPane scrollPane;
-	JPanel panel_2;
+	JScrollPane recentScrollPanel;
+	JPanel recentActivityPanel;
 	JPanel panelActivity;
-	JScrollPane scrollPane_1;
-	JPanel panel_1;
+	JScrollPane outputScrollPanel;
+	JPanel outputActivityPanel;
 	NFABuilderModel nfaBuilderModel;
 	boolean cursorflag;
 	private MouseListener listener;
@@ -118,39 +126,44 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 		setContentPane(contentPanel);
 		contentPanel.setLayout(null);
 
-		panel_2 = new JPanel();
-		panel_2.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		panel_2.setBounds(939, 0, 296, 681);
-		contentPanel.add(panel_2);
-		panel_2.setLayout(new BorderLayout(0, 0));
+		recentActivityPanel = new JPanel();
+		recentActivityPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null,
+				null, null));
+		recentActivityPanel.setBounds(939, 0, 296, 681);
+		contentPanel.add(recentActivityPanel);
+		recentActivityPanel.setLayout(new BorderLayout(0, 0));
 
-		scrollPane = new JScrollPane();
-		panel_2.add(scrollPane);
-		scrollPane.setViewportBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Recent Activity", TitledBorder.CENTER, TitledBorder.ABOVE_TOP, null, null));
-		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		recentScrollPanel = new JScrollPane();
+		recentActivityPanel.add(recentScrollPanel);
+		recentScrollPanel.setViewportBorder(new TitledBorder(UIManager
+				.getBorder("TitledBorder.border"), "Recent Activity",
+				TitledBorder.CENTER, TitledBorder.ABOVE_TOP, null, null));
+		recentScrollPanel
+				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		recentScrollPanel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
 		panelActivity = new JPanel();
-		scrollPane.setViewportView(panelActivity);
+		recentScrollPanel.setViewportView(panelActivity);
 		panelActivity.setLayout(new BoxLayout(panelActivity, BoxLayout.Y_AXIS));
-		// actionPanel = new ImagePanel(new
-		// ImageIcon("image/background.png").getImage());
 		actionPanel = new JPanel();
 		actionPanel.setBounds(155, 3, 785, 514);
 		contentPanel.add(actionPanel);
-		actionPanel.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		actionPanel.setBorder(new TitledBorder(null, "", TitledBorder.LEADING,
+				TitledBorder.TOP, null, null));
 		actionPanel.setBackground(new Color(211, 211, 211));
 		actionPanel.setLayout(null);
 
-		panel_1 = new JPanel();
-		panel_1.setBounds(155, 515, 785, 166);
-		contentPanel.add(panel_1);
-		panel_1.setLayout(new BorderLayout(0, 0));
+		outputActivityPanel = new JPanel();
+		outputActivityPanel.setBounds(155, 515, 785, 166);
+		contentPanel.add(outputActivityPanel);
+		outputActivityPanel.setLayout(new BorderLayout(0, 0));
 
-		scrollPane_1 = new JScrollPane();
-		scrollPane_1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane_1.setViewportBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_1.add(scrollPane_1);
+		outputScrollPanel = new JScrollPane();
+		outputScrollPanel
+				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		outputScrollPanel.setViewportBorder(new TitledBorder(null, "",
+				TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		outputActivityPanel.add(outputScrollPanel);
 
 		createLeftPaneView();
 		popupForStateView.registerActionListner(new MenuActionListener());
@@ -166,12 +179,14 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 	}
 
 	private void createLeftPaneView() {
-		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel.setBackground(new Color(211, 211, 211));
-		panel.setBounds(0, 3, 153, 678);
-		contentPanel.add(panel);
-		panel.setLayout(null);
+		JPanel leftPanel = new JPanel();
+		leftPanel.setBorder(new TitledBorder(UIManager
+				.getBorder("TitledBorder.border"), "", TitledBorder.LEADING,
+				TitledBorder.TOP, null, null));
+		leftPanel.setBackground(new Color(211, 211, 211));
+		leftPanel.setBounds(0, 3, 153, 678);
+		contentPanel.add(leftPanel);
+		leftPanel.setLayout(null);
 
 		undo = new JLabel("undo");
 		undo.setIcon(new ImageIcon("image/undo.png"));
@@ -179,7 +194,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 		undo.setName("undo");
 		undo.setBounds(30, 190, 75, 75);
 		undo.setTransferHandler(new TransferHandler("text"));
-		panel.add(undo);
+		leftPanel.add(undo);
 
 		stateCirle = new JLabel("");
 		stateCirle.setHorizontalAlignment(SwingConstants.CENTER);
@@ -188,13 +203,13 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 		stateCirle.setIcon(new ImageIcon("image/stateCirlce.png"));
 		stateCirle.setBounds(30, 42, 80, 80);
 		stateCirle.setTransferHandler(new TransferHandler("text"));
-		panel.add(stateCirle);
+		leftPanel.add(stateCirle);
 
 		redo = new JLabel("redo");
 		redo.setToolTipText("Redo");
 		redo.setIcon(new ImageIcon("image/redo.png"));
 		redo.setBounds(30, 309, 75, 75);
-		panel.add(redo);
+		leftPanel.add(redo);
 
 		eraser = new JLabel("eraser");
 		eraser.setToolTipText("Eraser\r\n");
@@ -208,7 +223,8 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 				if (isCursorflag() == false) {
 					setCursorflag(true);
 					// added check for MouseEvent.BUTTON1 which is left click
-					if (e.isPopupTrigger() || e.getButton() == MouseEvent.BUTTON1) {
+					if (e.isPopupTrigger()
+							|| e.getButton() == MouseEvent.BUTTON1) {
 						Toolkit kit = Toolkit.getDefaultToolkit();
 
 						// Image image = null;
@@ -221,7 +237,8 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 						}
 
 						Point hotspot = new Point(0, 0);
-						Cursor cursor = kit.createCustomCursor(image, hotspot, "Stone");
+						Cursor cursor = kit.createCustomCursor(image, hotspot,
+								"Stone");
 						setCursor(cursor);
 
 					}
@@ -231,7 +248,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 				}
 			}
 		});
-		panel.add(eraser);
+		leftPanel.add(eraser);
 
 		play = new JLabel("Play Button");
 		play.setToolTipText("Play\r\n");
@@ -255,7 +272,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 
 		});
 
-		panel.add(play);
+		leftPanel.add(play);
 
 		hoverListener = new MouseAdapter() {
 			private boolean shift;
@@ -263,18 +280,24 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 			public void mouseEntered(MouseEvent me) {
 				int x1 = 0, x2 = 0, y1 = 0, y2 = 02;
 				dragSource = (JLabel) me.getSource();
-				System.out.println("Listener");
 				FABlock sblock;
 				FABlock fblock;
-				nfaBlock = nfaBuilderController.getNFABlockObj(dragSource.getX(), dragSource.getY());
+				nfaBlock = nfaBuilderController.getNFABlockObj(
+						dragSource.getX(), dragSource.getY());
 				if (nfaBlock != null /* && nfaBlock.isState() */) {
 
 					endStateBlock = (StateBlock) nfaBlock;
 					if (startStateBlock.equals(endStateBlock)) {
-						QuadCurve2D.Double curve = new QuadCurve2D.Double(startStateBlock.getX() + 16, startStateBlock.getY() + 7, startStateBlock.getX() + 32,
-								startStateBlock.getY() - 70, startStateBlock.getX() + 48, startStateBlock.getY() + 7);
+						QuadCurve2D.Double curve = new QuadCurve2D.Double(
+								startStateBlock.getX() + 16,
+								startStateBlock.getY() + 7,
+								startStateBlock.getX() + 32,
+								startStateBlock.getY() - 70,
+								startStateBlock.getX() + 48,
+								startStateBlock.getY() + 7);
 						g2 = (Graphics2D) actionPanel.getGraphics();
-						g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+						g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+								RenderingHints.VALUE_ANTIALIAS_ON);
 
 						curves.add(curve);
 						addColorPallette(curve.getCtrlX(), curve.getCtrlY());
@@ -283,18 +306,22 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 					else {
 						NFABuilderView.this.isStartStateClicked = true;
 						g2 = (Graphics2D) actionPanel.getGraphics();
-						g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+						g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+								RenderingHints.VALUE_ANTIALIAS_ON);
 						startStateBlockList.add(startStateBlock);
 						endStateBlockList.add(endStateBlock);
 						for (int i = 0; i < startStateBlockList.size(); i++) {
 							sblock = startStateBlockList.get(i);
 							fblock = endStateBlockList.get(i);
-							if (endStateBlock.equals(sblock) && startStateBlock.equals(fblock)) {
+							if (endStateBlock.equals(sblock)
+									&& startStateBlock.equals(fblock)) {
 								shift = true;
 							}
 						}
 
-						if ((startStateBlock.getX() < endStateBlock.getX()) && (startStateBlock.getY() > endStateBlock.getY())) {
+						if ((startStateBlock.getX() < endStateBlock.getX())
+								&& (startStateBlock.getY() > endStateBlock
+										.getY())) {
 							if (!shift) {
 								x1 = startStateBlock.getX() + 48;
 								y1 = startStateBlock.getY() + 7;
@@ -312,7 +339,10 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 
 							}
 
-						} else if ((startStateBlock.getX() > endStateBlock.getX()) && (startStateBlock.getY() < endStateBlock.getY())) {
+						} else if ((startStateBlock.getX() > endStateBlock
+								.getX())
+								&& (startStateBlock.getY() < endStateBlock
+										.getY())) {
 							if (!shift) {
 								x1 = startStateBlock.getX() + 7;
 								y1 = startStateBlock.getY() + 48;
@@ -331,7 +361,9 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 
 						}
 
-						else if ((startStateBlock.getX() < endStateBlock.getX()) && (startStateBlock.getY() < endStateBlock.getY())) {
+						else if ((startStateBlock.getX() < endStateBlock.getX())
+								&& (startStateBlock.getY() < endStateBlock
+										.getY())) {
 							if (!shift) {
 								x1 = startStateBlock.getX() + 66;
 								y1 = startStateBlock.getY() + 48;
@@ -348,7 +380,10 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 
 							}
 
-						} else if ((startStateBlock.getX() > endStateBlock.getX()) && (startStateBlock.getY() > endStateBlock.getY())) {
+						} else if ((startStateBlock.getX() > endStateBlock
+								.getX())
+								&& (startStateBlock.getY() > endStateBlock
+										.getY())) {
 							if (!shift) {
 								x1 = startStateBlock.getX() + 16;
 								y1 = startStateBlock.getY() + 7;
@@ -373,7 +408,8 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 						paintLines();
 						addColorPallette(x1, x2, y1, y2);
 					}
-					for (FABlock nfaBlockObj : nfaBuilderModel.getNfaBlockList()) {
+					for (FABlock nfaBlockObj : nfaBuilderModel
+							.getNfaBlockList()) {
 						JLabel label = nfaBlockObj.getDfaLabel();
 						label.removeMouseListener(hoverListener);
 					}
@@ -385,12 +421,14 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 				dragSource = (JLabel) me.getSource();
 				TransferHandler handler = dragSource.getTransferHandler();
 				handler.exportAsDrag(dragSource, me, TransferHandler.COPY);
-				faBlock = nfaBuilderController.getNFABlockObj(dragSource.getX(), dragSource.getY());
+				faBlock = nfaBuilderController.getNFABlockObj(
+						dragSource.getX(), dragSource.getY());
 				if (me.getButton() == MouseEvent.BUTTON3) {
-					popupForStateView.show(me.getComponent(), me.getX(), me.getY());
-					nfaBlock = nfaBuilderController.getNFABlockObj(dragSource.getX(), dragSource.getY());
+					popupForStateView.show(me.getComponent(), me.getX(),
+							me.getY());
+					nfaBlock = nfaBuilderController.getNFABlockObj(
+							dragSource.getX(), dragSource.getY());
 					startStateBlock = (StateBlock) nfaBlock;
-					System.out.println(nfaBlock.getX());
 				}
 
 			}
@@ -400,7 +438,11 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 		stateCirle.addMouseListener(listener);
 
 	}
-
+/*
+ * The method below pops out a small TEXTField which allows user to enter a character as a transition
+ * between two states.
+ * 
+ */
 	public void addColorPallette(double d, double e) {
 
 		int x = (int) d;
@@ -426,7 +468,8 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 				actionPanel.repaint();
 				TransitionBlock transitionBlock = new TransitionBlock();
 				transitionBlock.setName(tranValue);
-				nfaBuilderController.addTransitionBlocktoStateList(startStateBlock, endStateBlock, transitionBlock);
+				nfaBuilderController.addTransitionBlocktoStateList(
+						startStateBlock, endStateBlock, transitionBlock);
 			}
 		});
 
@@ -460,24 +503,24 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 				actionPanel.repaint();
 				TransitionBlock transitionBlock = new TransitionBlock();
 				transitionBlock.setName(tranValue);
-				nfaBuilderController.addTransitionBlocktoStateList(startStateBlock, endStateBlock, transitionBlock);
+				nfaBuilderController.addTransitionBlocktoStateList(
+						startStateBlock, endStateBlock, transitionBlock);
 			}
 		});
-
-		System.out.println(tranValue);
 
 		actionPanel.revalidate();
 		actionPanel.repaint();
 
 	}
-
+// The method iterates over all the transition that were drawn by the user and continuously draws them on the screen.
 	void paintLines() {
 		double theta;
 
 		for (Line2D.Double line : lines) {
 
 			g2.draw(line);
-			theta = Math.atan2(line.getY2() - line.getY1(), line.getX2() - line.getX1());
+			theta = Math.atan2(line.getY2() - line.getY1(),
+					line.getX2() - line.getX1());
 			drawArrow(theta, line.getX2(), line.getY2());
 		}
 		for (QuadCurve2D.Double curve : curves) {
@@ -486,7 +529,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 		}
 
 	}
-
+// This method is used to draw arrow head on the transitions.
 	private void drawArrow(double theta, double x0, double y0) {
 		int barb = 13; // barb length
 		double phi = Math.PI / 6;
@@ -537,7 +580,8 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 	public void setCursorflag(boolean cursorflag) {
 		this.cursorflag = cursorflag;
 	}
-
+// The method below is the part of Drag and Drop library which is used to drag and drop states from left panel
+// to the main window.
 	class DropTargetListener2 implements DropTargetListener {
 
 		@Override
@@ -568,26 +612,33 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 
 				actionState = new JLabel("state");
 
-				actionState.setName("actiontransition" + BlockBuilderModel.stateNo);
+				actionState.setName("actiontransition"
+						+ BlockBuilderModel.stateNo);
 				actionState.setIcon(new ImageIcon("image/stateCirlce.png"));
 				stateURL = "image/stateCirlce.png";
 				actionState.addMouseListener(listener);
 				actionState.setTransferHandler(new TransferHandler("text"));
-				actionState.setBounds(dtde.getLocation().x, dtde.getLocation().y, 80, 80);
+				actionState.setBounds(dtde.getLocation().x,
+						dtde.getLocation().y, 80, 80);
 				FlowLayout fl = new FlowLayout();
 				fl.setVgap(30);
 				actionState.setLayout(fl);
 
-				actionState.setBounds(dtde.getLocation().x, dtde.getLocation().y, 80, 80);
-				b = nfaBuilderController.createBlockObj(stateURL, dtde.getLocation().x, dtde.getLocation().y, 50, 93, actionState, true, null);
+				actionState.setBounds(dtde.getLocation().x,
+						dtde.getLocation().y, 80, 80);
+				b = nfaBuilderController.createBlockObj(stateURL,
+						dtde.getLocation().x, dtde.getLocation().y, 50, 93,
+						actionState, true, null);
 
 				actionPanel.add(actionState);
 
 			} else {
 				// Update block
-				b = nfaBuilderController.updateBlockObj(dtde.getLocation().x, dtde.getLocation().y, faBlock);
+				b = nfaBuilderController.updateBlockObj(dtde.getLocation().x,
+						dtde.getLocation().y, faBlock);
 				actionState = b.getDfaLabel();
-				actionState.setBounds(dtde.getLocation().x, dtde.getLocation().y, 80, 80);
+				actionState.setBounds(dtde.getLocation().x,
+						dtde.getLocation().y, 80, 80);
 				// actionState.setBounds(b.getX(), b.getY(), 80, 80);
 				actionState.addMouseListener(listener);
 			}
@@ -606,7 +657,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 		}
 
 	}
-
+// The class below is used to implement the right click menu.
 	class MenuActionListener implements ActionListener {
 
 		@Override
@@ -629,8 +680,10 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 						actionPanel.remove(nfaBlockObj.getDfaLabel());
 						JLabel initial = new JLabel();
 						initial.setName("");
-						initial.setIcon(new ImageIcon("image/initialStateCirlce.png"));
-						initial.setBounds(nfaBlockObj.getX(), nfaBlockObj.getY(), 80, 80);
+						initial.setIcon(new ImageIcon(
+								"image/initialStateCirlce.png"));
+						initial.setBounds(nfaBlockObj.getX(),
+								nfaBlockObj.getY(), 80, 80);
 						initial.setTransferHandler(new TransferHandler("text"));
 						initial.addMouseListener(listener);
 						;
@@ -653,11 +706,12 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 						actionPanel.remove(nfaBlockObj.getDfaLabel());
 						JLabel initial = new JLabel();
 						initial.setName("");
-						initial.setIcon(new ImageIcon("image/finalStateCirlce.png"));
-						initial.setBounds(nfaBlockObj.getX(), nfaBlockObj.getY(), 80, 80);
+						initial.setIcon(new ImageIcon(
+								"image/finalStateCirlce.png"));
+						initial.setBounds(nfaBlockObj.getX(),
+								nfaBlockObj.getY(), 80, 80);
 						initial.setTransferHandler(new TransferHandler("text"));
 						initial.addMouseListener(listener);
-						;
 						nfaBlockObj.setDfaLabel(initial);
 
 						actionPanel.add(nfaBlockObj.getDfaLabel());

@@ -1,5 +1,10 @@
 package com.turingworld.views;
-
+/*
+ * The class is used for storing all the curves or quadcurve which are drawn between any two states and state
+ * itself. We are storing them to continuously maintain them on screen.
+ * Since, its a graphics component , it is hard to continuously maintain them on screen and so we need to iterate 
+ * over the data structure in the class and continuously plot on screen.
+ */
 import java.awt.geom.QuadCurve2D;
 import java.util.ArrayList;
 

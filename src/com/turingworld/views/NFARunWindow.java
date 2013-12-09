@@ -1,5 +1,12 @@
 package com.turingworld.views;
 
+/*
+ * This view class is to show the intuitive visualization of the NFA. The instance of this class is called from
+ * the NFABuilderView which sends the initial stateblock to the constructor of this class.
+ * The visual part that would aid in better understanding of the NFA based on the machine that was drawn in the
+ * NFABuilderView and the input that was provided by the user.
+ */
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -10,7 +17,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -62,13 +68,16 @@ public class NFARunWindow extends JFrame {
 	private ArrayList<StateBlock> previousBlock;
 	private ArrayList<StateBlock> currentBlock;
 	private int level = 0;
-	int x[];
-	int y[];
+	int x1 = 0;
+	int y1 = 0;
+	int x2 = 0;
+	int y2 = 0;
 	private HashMap<Integer, JLabel> labelList;
 	private StateBlock initialState;
 
 	public NFARunWindow(StateBlock firstState) {
 
+		//Below try block is for the theme of the swing component which is "Nimbus" here.
 		try {
 			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 				if ("Nimbus".equals(info.getName())) {
@@ -78,7 +87,7 @@ public class NFARunWindow extends JFrame {
 			}
 		} catch (Exception e) {
 		}
-		
+
 		previousBlock = new ArrayList<StateBlock>();
 		previousBlock.add(firstState);
 		currentBlock = new ArrayList<StateBlock>();
@@ -87,13 +96,19 @@ public class NFARunWindow extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(50, 0, 1259, 719);
 		this.setVisible(true);
+		timer = new Timer(5, blinker);
+		timer.start();
+
+		setActionListener();
 		createBWScreen();
 		displayOutput();
 
 	}
-
-	
-
+/*
+ * Below method is called from the constructor when the object of this class is instantiated.
+ * The method iterate over the data structure which is used to store what user has made in the NFABuilderView
+ * and plots on the screen with a complete new visual aid. This would give a better understanding of the NFA
+ */
 	private void displayOutput() {
 		level = 2;
 
@@ -102,12 +117,16 @@ public class NFARunWindow extends JFrame {
 		text.setFont(new Font("Serif", Font.BOLD, 16));
 		text.setForeground(Color.white);
 		treeBWLevel1.add(text);
-
+//Since , NFA's are practically never ending, we have kept our implementation upto 4 levels.
 		while (level != 4) {
 
 			for (StateBlock block : previousBlock) {
-				HashMap<StateBlock, ArrayList<TransitionBlock>> list = block.getStateTransitionList();
-				for (Map.Entry<StateBlock, ArrayList<TransitionBlock>> entry : list.entrySet()) {
+				x1 = block.getX();
+				y1 = block.getY();
+				HashMap<StateBlock, ArrayList<TransitionBlock>> list = block
+						.getStateTransitionList();
+				for (Map.Entry<StateBlock, ArrayList<TransitionBlock>> entry : list
+						.entrySet()) {
 					StateBlock key = entry.getKey();
 					ArrayList<TransitionBlock> value = entry.getValue();
 					for (TransitionBlock transitionBlock : value) {
@@ -118,59 +137,62 @@ public class NFARunWindow extends JFrame {
 			int i = 0;
 			for (StateBlock block : currentBlock) {
 				i++;
-				System.out.println(block.getName());
-				labelList.get(new Integer(Integer.toString(level) + Integer.toString(i))).setIcon(new ImageIcon("image/tree.png"));
+				x2 = block.getX();
+				y2 = block.getY();
+				labelList.get(
+						new Integer(Integer.toString(level)
+								+ Integer.toString(i))).setIcon(
+						new ImageIcon("image/tree.png"));
 				String stateName = "" + block.getName().toString();
 				JLabel stateNo = new JLabel(stateName);
 				stateNo.setFont(new Font("Serif", Font.BOLD, 16));
 				stateNo.setForeground(Color.white);
-				labelList.get(new Integer(Integer.toString(level) + Integer.toString(i))).setLayout(new FlowLayout(FlowLayout.CENTER));
-				// labelList.get(new Integer(level+i)).setLayout(new
-				// FlowLayout(FlowLayout.CENTER));
-				labelList.get(new Integer(Integer.toString(level) + Integer.toString(i))).add(stateNo);
+				labelList.get(
+						new Integer(Integer.toString(level)
+								+ Integer.toString(i))).setLayout(
+						new FlowLayout(FlowLayout.CENTER));
+				labelList.get(
+						new Integer(Integer.toString(level)
+								+ Integer.toString(i))).add(stateNo);
 			}
 			level++;
-			previousBlock = (ArrayList<StateBlock>)currentBlock.clone();
+			previousBlock = (ArrayList<StateBlock>) currentBlock.clone();
 			currentBlock.clear();
 
 		}
 
 	}
-
+// Plots the J Components on the screen. Called from the constuctor.
 	private void createBWScreen() {
 		float[] dash1 = { 2f, 0f, 2f };
-		BasicStroke bs1 = new BasicStroke(6, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER, 6.0f, dash1, 4f);
 		Color myNewBlue = new Color(136, 69, 19);
 
-		actionPanel = new ImagePanel(new ImageIcon("image/BackgroundNFA.png").getImage());
+		BasicStroke bs1 = new BasicStroke(20, BasicStroke.CAP_BUTT,
+				BasicStroke.JOIN_BEVEL);
+
+		actionPanel = new ImagePanel(
+				new ImageIcon("image/BackgroundNFA.png").getImage());
 		actionPanel.setBackground(Color.white);
 		actionPanel.setBounds(0, 0, 1259, 719);
 		getContentPane().add(actionPanel);
 
-		actionPanel.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		actionPanel.setBorder(new TitledBorder(null, "", TitledBorder.LEADING,
+				TitledBorder.TOP, null, null));
 		actionPanel.setLayout(null);
 
 		g = (Graphics2D) actionPanel.getGraphics();
 		g.setColor(myNewBlue);
 		g.setStroke(bs1);
-		setActionListener();
-		timer = new Timer(5, blinker);
-		timer.start();
 
 		treeBWLevel1 = new JLabel("");
 		treeBWLevel1.setLayout(new FlowLayout(FlowLayout.CENTER));
 		treeBWLevel1.setIcon(new ImageIcon("image/treeBW.png"));
 		treeBWLevel1.setBounds(553, 51, 58, 58);
 		treeBWLevel1.setName("1");
-		/*
-		 * JLabel text = new JLabel("q0"); text.setFont(new Font("Serif",
-		 * Font.BOLD, 16)); text.setForeground(Color.white);
-		 * treeBWLevel1.add(text);
-		 */
+		
 		actionPanel.add(treeBWLevel1);
 		labelList.put(11, treeBWLevel1);
 
-		
 		treeBWLevel23 = new JLabel("");
 		treeBWLevel23.setIcon(new ImageIcon("image/treeBW.png"));
 		treeBWLevel23.setBounds(975, 200, 58, 58);
@@ -184,7 +206,7 @@ public class NFARunWindow extends JFrame {
 		treeBWLevel22.setName("22");
 		labelList.put(22, treeBWLevel22);
 		actionPanel.add(treeBWLevel22);
-		
+
 		treeBWLevel21 = new JLabel("");
 		treeBWLevel21.setIcon(new ImageIcon("image/treeBW.png"));
 		treeBWLevel21.setBounds(166, 200, 58, 58);
@@ -382,18 +404,15 @@ public class NFARunWindow extends JFrame {
 		actionPanel.add(treeBWLevel418);
 
 	}
-
+// The timer actionlistener is used to continuously plot the transitions which are drawn using Graphics component.
 	private void setActionListener() {
 		blinker = new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				/*
-				 * int xpoints[] = {25, 145, 25, 145, 25}; int ypoints[] = {25,
-				 * 25, 145, 145, 25}; int x[] = {553,975,553,975,553,975}; int
-				 * y[] = {100,200,200,100,200,200};
-				 * g.fillPolygon(xpoints,ypoints,5);
-				 */
+
+				g.drawLine(x1, y1, x2, y2);
+
 			}
 		};
 	}
