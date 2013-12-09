@@ -7,7 +7,6 @@ import javax.swing.JLabel;
 
 import com.turingworld.command.AddBlockCommand;
 import com.turingworld.command.Invoker;
-import com.turingworld.helper.TimerTask;
 import com.turingworld.model.Block;
 import com.turingworld.model.BlockBuilderModel;
 import com.turingworld.views.BuildViewInterface;
@@ -33,8 +32,8 @@ public class BlockBuilderController {
 	private StringBuilder outputString;
 	public static boolean isTriviaClicked;
 	private ControllerHelper blockBuilderControllerHelper;
-	private TimerTask timerTask;
-
+	/*private TimerTask timerTask;
+*/
 	public StringBuilder getOutputString() {
 		return outputString;
 	}
@@ -48,8 +47,8 @@ public class BlockBuilderController {
 		this.blockBuilderModel = blockBuilderModel;
 		this.buildViewInterface = buildViewInterface;
 		this.blockBuilderControllerHelper = new ControllerHelper();
-		this.timerTask = new TimerTask(this);
-
+		/*this.timerTask = new TimerTask(this);
+*/
 		isTriviaClicked = false;
 		invoker = new Invoker();
 	}
@@ -79,9 +78,9 @@ public class BlockBuilderController {
 		return block;
 	}
 
-	public TimerTask getTimerTask() {
+	/*public TimerTask getTimerTask() {
 		return timerTask;
-	}
+	}*/
 
 	public BuildViewInterface getBuildViewInterface() {
 		return buildViewInterface;
@@ -91,9 +90,9 @@ public class BlockBuilderController {
 		this.buildViewInterface = buildViewInterface;
 	}
 
-	public void setTimerTask(TimerTask timerTask) {
+	/*public void setTimerTask(TimerTask timerTask) {
 		this.timerTask = timerTask;
-	}
+	}*/
 
 	public Block updateBlockObj(int x, int y, Block block) {
 		if (block != null) {

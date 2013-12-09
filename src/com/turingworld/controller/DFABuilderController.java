@@ -12,7 +12,7 @@ import javax.swing.JLabel;
 import com.turingworld.command.AddBlockCommand;
 import com.turingworld.command.AddDFABlockCommand;
 import com.turingworld.command.Invoker;
-import com.turingworld.helper.TimerTask;
+/*import com.turingworld.helper.TimerTask;*/
 import com.turingworld.model.Block;
 import com.turingworld.model.BlockBuilderModel;
 import com.turingworld.model.FABlock;
@@ -25,7 +25,7 @@ import com.turingworld.views.DFABuilderView;
 public class DFABuilderController {
 	public static boolean isTriviaClicked;
 
-	private TimerTask timerTask;
+	/*private TimerTask timerTask;*/
 
 	private DFABuilderModel dfaBuilderModel;
 	private DFABuilderView dfaBuilderView;
@@ -33,9 +33,9 @@ public class DFABuilderController {
 	private AddDFABlockCommand addDFABlockCommand;
 	private Invoker invoker;
 
-	public TimerTask getTimerTask() {
+	/*public TimerTask getTimerTask() {
 		return timerTask;
-	}
+	}*/
 
 	public DFABuildViewInterface getDfaBuildViewInterface() {
 		return dfaBuildViewInterface;
@@ -45,9 +45,9 @@ public class DFABuilderController {
 		this.dfaBuildViewInterface = dfaBuildViewInterface;
 	}
 
-	public void setTimerTask(TimerTask timerTask) {
+	/*public void setTimerTask(TimerTask timerTask) {
 		this.timerTask = timerTask;
-	}
+	}*/
 
 	public DFABuilderModel getDfaBuilderModel() {
 		return dfaBuilderModel;
@@ -68,7 +68,7 @@ public class DFABuilderController {
 	public DFABuilderController(DFABuilderModel dfaBuilderModel, DFABuildViewInterface dfaBuildViewInterface) {
 		this.dfaBuilderModel = dfaBuilderModel;
 		this.dfaBuildViewInterface = dfaBuildViewInterface;
-		this.timerTask = new TimerTask(this);
+	/*	this.timerTask = new TimerTask(this);*/
 		isTriviaClicked = false;
 		invoker = new Invoker();
 	}
@@ -245,7 +245,7 @@ public class DFABuilderController {
 		return true;
 	}
 
-	public void movetoNextState() {
+/*	public void movetoNextState() {
 		// currentPathIndex = 0; //hard coded - have to remove
 		StateBlock nextState;
 		int currentPathIndex = dfaBuilderView.getCurrentPathIndex();
@@ -266,6 +266,6 @@ public class DFABuilderController {
 			}
 		}
 
-	}
+	}*/
 
 }

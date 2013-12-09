@@ -192,7 +192,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 	public void setInputPathLabels(ArrayList<JLabel> inputPathLabels) {
 		this.inputPathLabels = inputPathLabels;
 	}
-	
+
 	public int getCurrentPathIndex() {
 		return currentPathIndex;
 	}
@@ -256,36 +256,39 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		contentPanel.setBorder(null);
 		setContentPane(contentPanel);
 		contentPanel.setLayout(null);
-		
-		//creates the header menu
+
+		// creates the header menu
 		creatHeaderMenu();
-		
-		//creates the left panel which has all the tools.
+
+		// creates the left panel which has all the tools.
 		createLeftPaneView();
-		
-		//creates the output panel which is at the bottom of the window.This panel would show the output related
-		//activities.
+
+		// creates the output panel which is at the bottom of the window.This
+		// panel would show the output related
+		// activities.
 		createOutputPanel();
-		
-		//creates the recent activity panel. This panel is on the right of the screen and shows all the activities 
+
+		// creates the recent activity panel. This panel is on the right of the
+		// screen and shows all the activities
 		createRecentActivityPanel();
-		
-		//creates a label which holds warning /notice for the user activities.
+
+		// creates a label which holds warning /notice for the user activities.
 		createNoticeLabel();
-		
-		//Right click menu
+
+		// Right click menu
 		popupForStateView.registerActionListner(new MenuActionListener());
-		
-		//Drag Drop initialization
+
+		// Drag Drop initialization
 		dropTarget = new DropTarget(this.actionPanel, new DropTargetListener2());
-		
-		//Creates the select char view which enables the user to choose from the list of available variables.
+
+		// Creates the select char view which enables the user to choose from
+		// the list of available variables.
 		createCharSelectView();
 
-		//boolean variable used for snapshot
+		// boolean variable used for snapshot
 		isMini = false;
-		
-		//Set action listener (Add more command)
+
+		// Set action listener (Add more command)
 		setActionListener();
 		timer = new Timer(5, blinker);
 		timer.start();
@@ -296,16 +299,14 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 	}
 
 	private void setActionListener() {
-	blinker = new ActionListener() {
+		blinker = new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				for (QuadCurve2D.Double curve : curves1.getCurves()) {
 					g2d.draw(curve);
 				}
 				if (isTestClicked && !fromPlayView) {
-					if (!marioLabel.getBounds().intersects(
-							runStartStateBlock.getBounds())) {
-						marioLabel.setBounds(marioLabel.getX(),
-								marioLabel.getY() + mario.getySpeed(), 65, 65);
+					if (!marioLabel.getBounds().intersects(runStartStateBlock.getBounds())) {
+						marioLabel.setBounds(marioLabel.getX(), marioLabel.getY() + mario.getySpeed(), 65, 65);
 						actionPanel.add(marioLabel);
 						actionPanel.revalidate();
 						actionPanel.repaint();
@@ -325,10 +326,8 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 				} else if (isTestClicked && fromPlayView) { // condition for
 															// return from
 															// PlayView
-					if (!marioLabel.getBounds().intersects(
-							currentPathState.getBounds())) {
-						marioLabel.setBounds(marioLabel.getX(),
-								marioLabel.getY() + mario.getySpeed(), 65, 65);
+					if (!marioLabel.getBounds().intersects(currentPathState.getBounds())) {
+						marioLabel.setBounds(marioLabel.getX(), marioLabel.getY() + mario.getySpeed(), 65, 65);
 						actionPanel.add(marioLabel);
 						actionPanel.revalidate();
 						actionPanel.repaint();
@@ -349,7 +348,6 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 			}
 		};
 
-		
 	}
 
 	private void createNoticeLabel() {
@@ -359,38 +357,33 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		noticeLabel.setForeground(Color.BLACK);
 		noticeLabel.setBounds(238, 464, 323, 39);
 		actionPanel.add(noticeLabel);
-		
+
 	}
 
 	private void createRecentActivityPanel() {
 		reecntActivityPanel = new JPanel();
-		reecntActivityPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null,
-				null, null));
+		reecntActivityPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		reecntActivityPanel.setBounds(939, 0, 296, 665);
 		contentPanel.add(reecntActivityPanel);
 		reecntActivityPanel.setLayout(new BorderLayout(0, 0));
 
 		recentActivityScrollPanel = new JScrollPane();
 		reecntActivityPanel.add(recentActivityScrollPanel);
-		recentActivityScrollPanel.setViewportBorder(new TitledBorder(UIManager
-				.getBorder("TitledBorder.border"), "Recent Activity",
-				TitledBorder.CENTER, TitledBorder.ABOVE_TOP, null, null));
-		recentActivityScrollPanel
-				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		recentActivityScrollPanel.setViewportBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Recent Activity", TitledBorder.CENTER, TitledBorder.ABOVE_TOP,
+				null, null));
+		recentActivityScrollPanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		recentActivityScrollPanel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
 		panelActivity = new JPanel();
 		recentActivityScrollPanel.setViewportView(panelActivity);
 		panelActivity.setLayout(new BoxLayout(panelActivity, BoxLayout.Y_AXIS));
-		actionPanel = new ImagePanel(
-				new ImageIcon("image/background.png").getImage());
+		actionPanel = new ImagePanel(new ImageIcon("image/background.png").getImage());
 		actionPanel.setBounds(155, 3, 785, 514);
 		contentPanel.add(actionPanel);
-		actionPanel.setBorder(new TitledBorder(null, "", TitledBorder.LEADING,
-				TitledBorder.TOP, null, null));
+		actionPanel.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		actionPanel.setBackground(new Color(211, 211, 211));
 		actionPanel.setLayout(null);
-		
+
 	}
 
 	private void createOutputPanel() {
@@ -400,21 +393,16 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		outputPanel.setLayout(new BorderLayout(0, 0));
 
 		outputScrollPanel = new JScrollPane();
-		outputScrollPanel
-				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		outputScrollPanel.setViewportBorder(new TitledBorder(null, "",
-				TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		outputScrollPanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		outputScrollPanel.setViewportBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		outputPanel.add(outputScrollPanel);
 
 		output = new JPanel();
 
-		output.setBorder(new TitledBorder(UIManager
-				.getBorder("TitledBorder.border"), "", TitledBorder.CENTER,
-				TitledBorder.ABOVE_TOP, null, null));
+		output.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "", TitledBorder.CENTER, TitledBorder.ABOVE_TOP, null, null));
 		outputScrollPanel.setViewportView(output);
 		output.setLayout(null);
 
-		
 	}
 
 	class MenuActionListener implements ActionListener {
@@ -424,25 +412,21 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 				for (FABlock dfaBlockObj : dfaBuilderModel.getDfaBlockList()) {
 					if (dfaBlockObj.isState()) {
 						if (((StateBlock) dfaBlockObj).isInitial()) {
-							
+
 							actionPanel.remove(dfaBlockObj.getDfaLabel());
 							((StateBlock) dfaBlockObj).setInitial(false);
-							JLabel label = new JLabel((new ImageIcon(
-									"image/tunnel.png")));
+							JLabel label = new JLabel((new ImageIcon("image/tunnel.png")));
 							dfaBlockObj.setDfaLabel(label);
 							repaint();
 
 						}
 
-						if (dfaBlockObj.isState()
-								&& (dfaBlockObj.getX() == dragSource.getX())) {
+						if (dfaBlockObj.isState() && (dfaBlockObj.getX() == dragSource.getX())) {
 
 							actionPanel.remove(dfaBlockObj.getDfaLabel());
 							((StateBlock) dfaBlockObj).setInitial(true);
-							JLabel label = new JLabel((new ImageIcon(
-									"image/house.png")));
-							label.setBounds(dfaBlockObj.getX(),
-									dfaBlockObj.getY(), 76, 96);
+							JLabel label = new JLabel((new ImageIcon("image/house.png")));
+							label.setBounds(dfaBlockObj.getX(), dfaBlockObj.getY(), 76, 96);
 							dfaBlockObj.setDfaLabel(label);
 							runStartStateBlock = (StateBlock) dfaBlockObj;
 						}
@@ -458,22 +442,18 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 						label.addMouseListener(listener);
 						label.setTransferHandler(new TransferHandler("text"));
 						if (((StateBlock) dfaBlockObj).isInitial()) {
-							label.setBounds(dfaBlockObj.getX(),
-									dfaBlockObj.getY(), 76, 96);
+							label.setBounds(dfaBlockObj.getX(), dfaBlockObj.getY(), 76, 96);
 
 						}
 
 						else if (((StateBlock) dfaBlockObj).isFinal()) {
-							label.setBounds(dfaBlockObj.getX(),
-									dfaBlockObj.getY(), 76, 106);
+							label.setBounds(dfaBlockObj.getX(), dfaBlockObj.getY(), 76, 106);
 
 						}
 
 						else {
 
-							label.setBounds(dfaBlockObj.getX(),
-									dfaBlockObj.getY(), dfaBlockObj.getWidth(),
-									dfaBlockObj.getHeight());
+							label.setBounds(dfaBlockObj.getX(), dfaBlockObj.getY(), dfaBlockObj.getWidth(), dfaBlockObj.getHeight());
 
 						}
 						actionPanel.add(label);
@@ -489,23 +469,19 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 						if (((StateBlock) dfaBlockObj).isFinal()) {
 							actionPanel.remove(dfaBlockObj.getDfaLabel());
 							((StateBlock) dfaBlockObj).setFinal(false);
-							JLabel label = new JLabel((new ImageIcon(
-									"image/tunnel.png")));
+							JLabel label = new JLabel((new ImageIcon("image/tunnel.png")));
 							dfaBlockObj.setDfaLabel(label);
 							repaint();
 
 						}
 
-						if (dfaBlockObj.isState()
-								&& (dfaBlockObj.getX() == dragSource.getX())) {
+						if (dfaBlockObj.isState() && (dfaBlockObj.getX() == dragSource.getX())) {
 
 							actionPanel.remove(dfaBlockObj.getDfaLabel());
 							((StateBlock) dfaBlockObj).setFinal(true);
 
-							JLabel label = new JLabel((new ImageIcon(
-									"image/princess.png")));
-							label.setBounds(dfaBlockObj.getX(),
-									dfaBlockObj.getY(), 76, 96);
+							JLabel label = new JLabel((new ImageIcon("image/princess.png")));
+							label.setBounds(dfaBlockObj.getX(), dfaBlockObj.getY(), 76, 96);
 
 							dfaBlockObj.setDfaLabel(label);
 							runEndStateBlock = (StateBlock) dfaBlockObj;
@@ -522,22 +498,18 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 						label.addMouseListener(listener);
 						label.setTransferHandler(new TransferHandler("text"));
 						if (((StateBlock) dfaBlockObj).isInitial()) {
-							label.setBounds(dfaBlockObj.getX(),
-									dfaBlockObj.getY(), 76, 96);
+							label.setBounds(dfaBlockObj.getX(), dfaBlockObj.getY(), 76, 96);
 
 						}
 
 						else if (((StateBlock) dfaBlockObj).isFinal()) {
-							label.setBounds(dfaBlockObj.getX(),
-									dfaBlockObj.getY(), 76, 106);
+							label.setBounds(dfaBlockObj.getX(), dfaBlockObj.getY(), 76, 106);
 
 						}
 
 						else {
 
-							label.setBounds(dfaBlockObj.getX(),
-									dfaBlockObj.getY(), dfaBlockObj.getWidth(),
-									dfaBlockObj.getHeight());
+							label.setBounds(dfaBlockObj.getX(), dfaBlockObj.getY(), dfaBlockObj.getWidth(), dfaBlockObj.getHeight());
 
 						}
 
@@ -577,7 +549,6 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		timer.start();
 	}
 
-	
 	public void createCharSelectView() {
 		charSelectPanel = new JPanel();
 		charSelectPanel.setBounds(251, 199, 250, 207);
@@ -604,11 +575,9 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (imgButtons.size() < 2) {
-					if (mushroom.getBorder() == BorderFactory
-							.createEmptyBorder()) {
+					if (mushroom.getBorder() == BorderFactory.createEmptyBorder()) {
 						imgButtons.add("a");
-						mushroom.setBorder(BorderFactory.createLineBorder(
-								Color.BLACK, 2));
+						mushroom.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 					} else if (mushroom.getBorder() != null) {
 						imgButtons.remove("a");
 						mushroom.setBorder(BorderFactory.createEmptyBorder());
@@ -637,11 +606,9 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (imgButtons.size() < 2) {
-					if (flower1.getBorder() == BorderFactory
-							.createEmptyBorder()) {
+					if (flower1.getBorder() == BorderFactory.createEmptyBorder()) {
 						imgButtons.add("b");
-						flower1.setBorder(BorderFactory.createLineBorder(
-								Color.BLACK, 2));
+						flower1.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 					} else if (flower1.getBorder() != null) {
 						imgButtons.remove("b");
 						flower1.setBorder(BorderFactory.createEmptyBorder());
@@ -670,8 +637,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 				if (imgButtons.size() < 2) {
 					if (coin1.getBorder() == BorderFactory.createEmptyBorder()) {
 						imgButtons.add("c");
-						coin1.setBorder(BorderFactory.createLineBorder(
-								Color.BLACK, 2));
+						coin1.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 					} else if (coin1.getBorder() != null) {
 
 						imgButtons.remove("c");
@@ -702,8 +668,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 				if (imgButtons.size() < 2) {
 					if (enemy1.getBorder() == BorderFactory.createEmptyBorder()) {
 						imgButtons.add("d");
-						enemy1.setBorder(BorderFactory.createLineBorder(
-								Color.BLACK, 2));
+						enemy1.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 					} else if (enemy1.getBorder() != null) {
 						imgButtons.remove("d");
 						enemy1.setBorder(BorderFactory.createEmptyBorder());
@@ -744,8 +709,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		}
 		dfaBuilderModel = new DFABuilderModel();
 		DFABuilderView dfaBuilderView = new DFABuilderView(dfaBuilderModel);
-		dfaBuilderController = new DFABuilderController(dfaBuilderModel,
-				dfaBuilderView);
+		dfaBuilderController = new DFABuilderController(dfaBuilderModel, dfaBuilderView);
 		dfaBuilderView.setController(dfaBuilderController);
 		BlockBuilderModel.stateNo = 0;
 		BlockBuilderModel.transitionNo = 0;
@@ -829,8 +793,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 			label.setLayout(new BorderLayout());
 			label.add(textLabel, BorderLayout.CENTER);
 
-			label.setBounds(block.getX(), block.getY(), block.getWidth(),
-					block.getHeight());
+			label.setBounds(block.getX(), block.getY(), block.getWidth(), block.getHeight());
 			actionPanel.add(label);
 		}
 		actionPanel.revalidate();
@@ -848,7 +811,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				removeFromPanel();
-				//createLevel1View();
+				// createLevel1View();
 				actionPanel.revalidate();
 				repaint();
 
@@ -872,9 +835,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 
 	private void createLeftPaneView() {
 		JPanel leftPanel = new JPanel();
-		leftPanel.setBorder(new TitledBorder(UIManager
-				.getBorder("TitledBorder.border"), "", TitledBorder.LEADING,
-				TitledBorder.TOP, null, null));
+		leftPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		leftPanel.setBackground(new Color(211, 211, 211));
 		leftPanel.setBounds(0, 3, 153, 662);
 		contentPanel.add(leftPanel);
@@ -915,8 +876,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 				if (isCursorflag() == false) {
 					setCursorflag(true);
 					// added check for MouseEvent.BUTTON1 which is left click
-					if (e.isPopupTrigger()
-							|| e.getButton() == MouseEvent.BUTTON1) {
+					if (e.isPopupTrigger() || e.getButton() == MouseEvent.BUTTON1) {
 						Toolkit kit = Toolkit.getDefaultToolkit();
 
 						// Image image = null;
@@ -929,8 +889,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 						}
 
 						Point hotspot = new Point(0, 0);
-						Cursor cursor = kit.createCustomCursor(image, hotspot,
-								"Stone");
+						Cursor cursor = kit.createCustomCursor(image, hotspot, "Stone");
 						setCursor(cursor);
 
 					}
@@ -975,8 +934,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		hoverListener = new MouseAdapter() {
 			public void mouseEntered(MouseEvent me) {
 				dragSource = (JLabel) me.getSource();
-				dfaBlock = dfaBuilderController.getDFABlockObj(
-						dragSource.getX(), dragSource.getY());
+				dfaBlock = dfaBuilderController.getDFABlockObj(dragSource.getX(), dragSource.getY());
 				if (dfaBlock != null && dfaBlock.isState()) {
 					endStateBlock = (StateBlock) dfaBlock;
 					DFABuilderView.this.isStartStateClicked = true;
@@ -988,33 +946,27 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 			public void mousePressed(MouseEvent me) {
 				dragSource = (JLabel) me.getSource();
 				if (isCursorflag() == true) {
-					if (dfaBuilderController.getDFABlockObject(
-							dragSource.getX(), dragSource.getY()) == true) {
-						dfaBlock = dfaBuilderController.getDFABlockObj(
-								dragSource.getX(), dragSource.getY());
-						dfaBuilderController
-								.removeBlockFromListAndPanel(dfaBlock);
+					if (dfaBuilderController.getDFABlockObject(dragSource.getX(), dragSource.getY()) == true) {
+						dfaBlock = dfaBuilderController.getDFABlockObj(dragSource.getX(), dragSource.getY());
+						dfaBuilderController.removeBlockFromListAndPanel(dfaBlock);
 						// DisplayOutput();
 					}
 				} else {
 					TransferHandler handler = dragSource.getTransferHandler();
 					handler.exportAsDrag(dragSource, me, TransferHandler.COPY);
-					dfaBlock = dfaBuilderController.getDFABlockObj(
-							dragSource.getX(), dragSource.getY());
+					dfaBlock = dfaBuilderController.getDFABlockObj(dragSource.getX(), dragSource.getY());
 
 					if (dfaBlock != null && isStartStateClicked == false) {
 						startStateBlock = (StateBlock) dfaBlock;
 						if (me.getButton() == MouseEvent.BUTTON3) {
-							popupForStateView.show(me.getComponent(),
-									me.getX(), me.getY());
+							popupForStateView.show(me.getComponent(), me.getX(), me.getY());
 						}
 					} else if (dfaBlock != null && isStartStateClicked == true) {
 						finalEndStateBlock = (StateBlock) dfaBlock;
 						addColorPallette(startStateBlock, finalEndStateBlock);
 						actionPanel.revalidate();
 						actionPanel.repaint();
-						for (FABlock dfaBlockObj : dfaBuilderModel
-								.getDfaBlockList()) {
+						for (FABlock dfaBlockObj : dfaBuilderModel.getDfaBlockList()) {
 							JLabel label = dfaBlockObj.getDfaLabel();
 							label.removeMouseListener(hoverListener);
 						}
@@ -1047,8 +999,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		FlowLayout f3 = new FlowLayout();
 		f3.setVgap(30);
 		testTransitionButton.setLayout(f3);
-		testTransitionButton.setBounds(colorPositionX + 600, colorPositionY,
-				64, 46);
+		testTransitionButton.setBounds(colorPositionX + 600, colorPositionY, 64, 46);
 		output.add(testTransitionButton);
 
 		testTransitionButton.addActionListener(new ActionListener() {
@@ -1059,8 +1010,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 				mario = new Mario();
 				mario.setState("FALLING");
 				marioLabel = mario.getMario();
-				marioLabel.setBounds(runStartStateBlock.getX(),
-						runStartStateBlock.getY() - 150, 65, 65);
+				marioLabel.setBounds(runStartStateBlock.getX(), runStartStateBlock.getY() - 150, 65, 65);
 
 			}
 		});
@@ -1102,20 +1052,15 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 						// mushroomTransit1.setText(charList[0]);
 						mushroomTransit1.setName(charList[0]);
 						// mushroomTransit1.setIcon(icon);
-						mushroomTransit1.setLayout(new FlowLayout(
-								FlowLayout.CENTER));
-						mushroomTransit1
-								.setHorizontalAlignment(SwingConstants.CENTER);
-						mushroomTransit1.setFont(new Font("Serif", Font.BOLD,
-								16));
-						mushroomTransit1.setBounds(colorPositionX,
-								colorPositionY, 64, 46);
+						mushroomTransit1.setLayout(new FlowLayout(FlowLayout.CENTER));
+						mushroomTransit1.setHorizontalAlignment(SwingConstants.CENTER);
+						mushroomTransit1.setFont(new Font("Serif", Font.BOLD, 16));
+						mushroomTransit1.setBounds(colorPositionX, colorPositionY, 64, 46);
 						output.remove(plus);
 						output.add(mushroomTransit1);
 						inputPathLabels.add(mushroomTransit1);
 						output.remove(colorPallete);
-						plus.setBounds(colorPositionX + 70, colorPositionY, 64,
-								46);
+						plus.setBounds(colorPositionX + 70, colorPositionY, 64, 46);
 						output.add(plus);
 						output.revalidate();
 						repaint();
@@ -1153,15 +1098,13 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 						mushroomTransit.setIcon(Icon);
 
 						JLabel text = new JLabel();
-						mushroomTransit.setBounds(colorPositionX,
-								colorPositionY, 64, 46);
+						mushroomTransit.setBounds(colorPositionX, colorPositionY, 64, 46);
 						mushroomTransit.setName(charList[1]);
 						output.remove(plus);
 						output.add(mushroomTransit);
 						inputPathLabels.add(mushroomTransit);
 						output.remove(colorPallete);
-						plus.setBounds(colorPositionX + 70, colorPositionY, 64,
-								46);
+						plus.setBounds(colorPositionX + 70, colorPositionY, 64, 46);
 						output.add(plus);
 						output.revalidate();
 						repaint();
@@ -1171,8 +1114,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 				colorPallete.setLayout(new GridLayout(1, 2));
 				colorPallete.add(mushroom1);
 				colorPallete.add(mushroom2);
-				colorPallete.setBounds(transitionX + 120, colorPositionY - 30,
-						120, 100);
+				colorPallete.setBounds(transitionX + 120, colorPositionY - 30, 120, 100);
 				output.add(colorPallete);
 				output.revalidate();
 				repaint();
@@ -1187,8 +1129,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (!marioLabel.getBounds().intersects(startStateBlock.getBounds())) {
-				marioLabel.setBounds(marioLabel.getX(), marioLabel.getY()
-						+ mario.getXspeed(), 65, 65);
+				marioLabel.setBounds(marioLabel.getX(), marioLabel.getY() + mario.getXspeed(), 65, 65);
 				actionPanel.add(marioLabel);
 			}
 
@@ -1197,68 +1138,11 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		}
 	}
 
-	protected void playMario() {
-
-		ArrayList<FABlock> dfaBlockList = new ArrayList<FABlock>();
-		dfaBlockList = dfaBuilderModel.getDfaBlockList();
-
-		JLabel label = new JLabel();
-		label.setIcon(new ImageIcon("image/mario.png"));
-		DFABuilderView.this.actionPanel.add(label);
-
-		for (FABlock dfaBlock : dfaBlockList) {
-			if (dfaBlock.isState()) {
-				StateBlock stateBlock = (StateBlock) dfaBlock;
-
-				// if(stateBlock.isInitial()){
-				if (true) {
-
-					HashMap<StateBlock, ArrayList<TransitionBlock>> stateTransitionList = stateBlock
-							.getStateTransitionList();
-
-					Iterator iter = stateTransitionList.keySet().iterator();
-					while (iter.hasNext()) {
-						StateBlock key = (StateBlock) iter.next();
-						TransitionBlock value = stateTransitionList.get(key)
-								.get(0);
-						char check = value.getTransitionType().charAt(0);
-						label.setBounds(stateBlock.getX(), stateBlock.getY(),
-								50, 50);
-						if (check == inputPathString.charAt(currentPathIndex)) { // matching
-																					// transition
-																					// found
-							JLabel pathOutputLabel = new JLabel("");
-							pathOutputLabel.setForeground(Color.GREEN);
-							pathOutputLabel.setText(" " + check);
-							output.add(pathOutputLabel);
-							if (!dfaBuilderController.getTimerTask()
-									.isRunning()) {
-
-								dfaBuilderController.getTimerTask().run(label,
-										stateBlock.getX(), stateBlock.getY(),
-										key.getX(), key.getY());
-								currentPathState = key;
-							}
-						}
-
-						TransitionBlock val = (TransitionBlock) stateTransitionList
-								.get(key).get(0);
-					}
-					break;
-				}
-			} else {
-
-			}
-		}
-	}
-
-	public void drawLine(String url2, JLabel stateTransit, int x1, int w1,
-			int y1, int h1, int x2, int w2, int y2, int h2, Graphics g,
-			String transitionType) {
+	
+	public void drawLine(String url2, JLabel stateTransit, int x1, int w1, int y1, int h1, int x2, int w2, int y2, int h2, Graphics g, String transitionType) {
 
 		float[] dash1 = { 2f, 0f, 2f };
-		BasicStroke bs1 = new BasicStroke(6, BasicStroke.CAP_ROUND,
-				BasicStroke.JOIN_MITER, 6.0f, dash1, 4f);
+		BasicStroke bs1 = new BasicStroke(6, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER, 6.0f, dash1, 4f);
 
 		g2d = (Graphics2D) g.create();
 		Color myNewBlue = new Color(136, 69, 19); // creates your new color
@@ -1266,10 +1150,8 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 
 		g2d.setStroke(bs1);
 		QuadCurve2D.Double curve = null;
-		ArrayList<StateBlock> tempstartStateBlock = curves1
-				.getStartStateBlock();
-		ArrayList<StateBlock> tempfinalEndStateBlock = curves1
-				.getFinalEndStateBlock();
+		ArrayList<StateBlock> tempstartStateBlock = curves1.getStartStateBlock();
+		ArrayList<StateBlock> tempfinalEndStateBlock = curves1.getFinalEndStateBlock();
 		for (int i = 0; i < tempstartStateBlock.size(); i++) {
 			StateBlock s = tempstartStateBlock.get(i);
 			StateBlock f = tempfinalEndStateBlock.get(i);
@@ -1277,18 +1159,13 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 			if (startStateBlock.equals(f) && (finalEndStateBlock.equals(s))) {
 				isFinalState = true;
 				if (x1 < x2) {
-					curve = new QuadCurve2D.Double(x1 + w1, y1 + (h1 / 2),
-							(x1 + x2) / 2, ((y2 + y1) / 2) + 120, x2, y2
-									+ (h2 / 2));
+					curve = new QuadCurve2D.Double(x1 + w1, y1 + (h1 / 2), (x1 + x2) / 2, ((y2 + y1) / 2) + 120, x2, y2 + (h2 / 2));
 
 				} else if (x1 > x2) {
-					curve = new QuadCurve2D.Double(x2 + w2, y2 + (h2 / 2),
-							(x1 + x2) / 2, ((y2 + y1) / 2) + 120, x1, y1
-									+ (h1 / 2));
+					curve = new QuadCurve2D.Double(x2 + w2, y2 + (h2 / 2), (x1 + x2) / 2, ((y2 + y1) / 2) + 120, x1, y1 + (h1 / 2));
 
 				} else if (x1 == x2 && y1 == y2) {
-					curve = new QuadCurve2D.Double(x1, y1, (x1 + w1 - 20),
-							y1 - 110, x1 + w1 - 5, y1);
+					curve = new QuadCurve2D.Double(x1, y1, (x1 + w1 - 20), y1 - 110, x1 + w1 - 5, y1);
 
 				}
 
@@ -1303,16 +1180,13 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		if (!isFinalState) {
 
 			if (x1 < x2) {
-				curve = new QuadCurve2D.Double(x1 + w1, y1 + (h1 / 2),
-						(x1 + x2) / 2, ((y2 + y1) / 2) - 60, x2, y2 + (h2 / 2));
+				curve = new QuadCurve2D.Double(x1 + w1, y1 + (h1 / 2), (x1 + x2) / 2, ((y2 + y1) / 2) - 60, x2, y2 + (h2 / 2));
 
 			} else if (x1 > x2) {
-				curve = new QuadCurve2D.Double(x2 + w2, y2 + (h2 / 2),
-						(x1 + x2) / 2, ((y2 + y1) / 2) - 60, x1, y1 + (h1 / 2));
+				curve = new QuadCurve2D.Double(x2 + w2, y2 + (h2 / 2), (x1 + x2) / 2, ((y2 + y1) / 2) - 60, x1, y1 + (h1 / 2));
 
 			} else if (x1 == x2 && y1 == y2) {
-				curve = new QuadCurve2D.Double(x1, y1, (x1 + w1 - 20),
-						y1 - 110, x1 + w1 - 5, y1);
+				curve = new QuadCurve2D.Double(x1, y1, (x1 + w1 - 20), y1 - 110, x1 + w1 - 5, y1);
 
 			}
 
@@ -1328,10 +1202,8 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		actionPanel.add(stateTransit);
 		actionPanel.revalidate();
 		actionPanel.repaint();
-		db = dfaBuilderController.createBlockObj(transitURL, x, y, 50, 50,
-				stateTransit, false, transitionType);
-		dfaBuilderController.addTransitionBlocktoStateList(startStateBlock,
-				finalEndStateBlock, (TransitionBlock) db);
+		db = dfaBuilderController.createBlockObj(transitURL, x, y, 50, 50, stateTransit, false, transitionType);
+		dfaBuilderController.addTransitionBlocktoStateList(startStateBlock, finalEndStateBlock, (TransitionBlock) db);
 		g2d.draw(curve);
 
 		curves1.setCurves(curve);
@@ -1364,10 +1236,8 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 			newX = (((firstBlock.getX() + secondBlock.getX()) / 2) - 10);
 			newY = (((firstBlock.getY() + firstBlock.getHeight())) + 20);
 		} else {
-			newX = ((firstBlock.getX() + secondBlock.getX() + firstBlock
-					.getWidth()) / 2);
-			newY = (((firstBlock.getY() + secondBlock.getY() + firstBlock
-					.getHeight()) / 2) - 40);
+			newX = ((firstBlock.getX() + secondBlock.getX() + firstBlock.getWidth()) / 2);
+			newY = (((firstBlock.getY() + secondBlock.getY() + firstBlock.getHeight()) / 2) - 40);
 		}
 		colorPallete = new JPanel();
 		colorPallete.setBorder(new TitledBorder("Select Transitions!"));
@@ -1394,12 +1264,9 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if (dfaBuilderController.checkErrors(startStateBlock,
-						finalEndStateBlock, charList[0])) {
+				if (dfaBuilderController.checkErrors(startStateBlock, finalEndStateBlock, charList[0])) {
 					noticeLabel.setVisible(false);
-					degrees = dfaBuilderController.calculateSlope(
-							startStateBlock.getX() + startStateBlock.getWidth(),
-							startStateBlock.getY(), endStateBlock.getX(),
+					degrees = dfaBuilderController.calculateSlope(startStateBlock.getX() + startStateBlock.getWidth(), startStateBlock.getY(), endStateBlock.getX(),
 							endStateBlock.getY());
 
 					stateTransit1 = new JLabel();
@@ -1429,14 +1296,8 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 					stateTransit1.setHorizontalAlignment(SwingConstants.CENTER);
 					stateTransit1.setFont(new Font("Serif", Font.BOLD, 16));
 					actionPanel.remove(colorPallete);
-					DFABuilderView.this.drawLine(transitURL, stateTransit1,
-							startStateBlock.getX(), startStateBlock.getWidth(),
-							startStateBlock.getY(),
-							startStateBlock.getHeight(),
-							finalEndStateBlock.getX(),
-							finalEndStateBlock.getWidth(),
-							finalEndStateBlock.getY(),
-							finalEndStateBlock.getHeight(),
+					DFABuilderView.this.drawLine(transitURL, stateTransit1, startStateBlock.getX(), startStateBlock.getWidth(), startStateBlock.getY(),
+							startStateBlock.getHeight(), finalEndStateBlock.getX(), finalEndStateBlock.getWidth(), finalEndStateBlock.getY(), finalEndStateBlock.getHeight(),
 							actionPanel.getGraphics(), charList[0]);
 					curves1.setStartStateBlock(startStateBlock);
 					curves1.setFinalEndStateBlock(finalEndStateBlock);
@@ -1472,12 +1333,9 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (dfaBuilderController.checkErrors(startStateBlock,
-						finalEndStateBlock, charList[1])) {
+				if (dfaBuilderController.checkErrors(startStateBlock, finalEndStateBlock, charList[1])) {
 					noticeLabel.setVisible(false);
-					degrees = dfaBuilderController.calculateSlope(
-							startStateBlock.getX() + startStateBlock.getWidth(),
-							startStateBlock.getY(), endStateBlock.getX(),
+					degrees = dfaBuilderController.calculateSlope(startStateBlock.getX() + startStateBlock.getWidth(), startStateBlock.getY(), endStateBlock.getX(),
 							endStateBlock.getY());
 
 					stateTransit2 = new JLabel();
@@ -1501,14 +1359,8 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 
 					JLabel text = new JLabel();
 					actionPanel.remove(colorPallete);
-					DFABuilderView.this.drawLine(transitURL, stateTransit2,
-							startStateBlock.getX(), startStateBlock.getWidth(),
-							startStateBlock.getY(),
-							startStateBlock.getHeight(),
-							finalEndStateBlock.getX(),
-							finalEndStateBlock.getWidth(),
-							finalEndStateBlock.getY(),
-							finalEndStateBlock.getHeight(),
+					DFABuilderView.this.drawLine(transitURL, stateTransit2, startStateBlock.getX(), startStateBlock.getWidth(), startStateBlock.getY(),
+							startStateBlock.getHeight(), finalEndStateBlock.getX(), finalEndStateBlock.getWidth(), finalEndStateBlock.getY(), finalEndStateBlock.getHeight(),
 							actionPanel.getGraphics(), charList[1]);
 					curves1.setStartStateBlock(startStateBlock);
 					curves1.setFinalEndStateBlock(finalEndStateBlock);
@@ -1535,8 +1387,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 
 	public void removeFromPanel(FABlock dfaBlock) {
 		String name = dfaBlock.getName();
-		JLabel msg = new JLabel(++activityNo + ". " + name
-				+ " is removed from the panel");
+		JLabel msg = new JLabel(++activityNo + ". " + name + " is removed from the panel");
 		msg.setFont(new Font("Serif", Font.BOLD, 16));
 		msg.setForeground(Color.black);
 		panelActivity.add(msg);
@@ -1549,11 +1400,9 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 	}
 
 	public void addToPanel(FABlock dfaBlock) {
-		dfaBlock.getDfaLabel().setBounds(dfaBlock.getX(), dfaBlock.getY(),
-				dfaBlock.getWidth(), dfaBlock.getHeight());
+		dfaBlock.getDfaLabel().setBounds(dfaBlock.getX(), dfaBlock.getY(), dfaBlock.getWidth(), dfaBlock.getHeight());
 		String name = dfaBlock.getName();
-		JLabel msg = new JLabel(++activityNo + ". " + name
-				+ " is added to the panel");
+		JLabel msg = new JLabel(++activityNo + ". " + name + " is added to the panel");
 		msg.setFont(new Font("Serif", Font.BOLD, 16));
 		msg.setForeground(Color.black);
 		panelActivity.add(msg);
@@ -1593,14 +1442,12 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 			if (dragSource.getName().equals("leftPanelState")) {
 				actionstate = new JLabel("");
 
-				actionstate.setName("actiontransition"
-						+ BlockBuilderModel.stateNo);
+				actionstate.setName("actiontransition" + BlockBuilderModel.stateNo);
 				actionstate.setIcon(new ImageIcon("image/tunnel.png"));
 				stateURL = "image/tunnel.png";
 				actionstate.addMouseListener(listener);
 				actionstate.setTransferHandler(new TransferHandler("text"));
-				actionstate.setBounds(dtde.getLocation().x,
-						dtde.getLocation().y, 50, 93);
+				actionstate.setBounds(dtde.getLocation().x, dtde.getLocation().y, 50, 93);
 
 				BoxLayout box = new BoxLayout(actionstate, BoxLayout.PAGE_AXIS);
 				FlowLayout fl = new FlowLayout(FlowLayout.CENTER);
@@ -1617,21 +1464,16 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 				actionstate.add(text);
 				actionPanel.add(actionstate);
 
-				faBlock = dfaBuilderController.createBlockObj(stateURL,
-						dtde.getLocation().x, dtde.getLocation().y, 50, 93,
-						actionstate, true, null);
+				faBlock = dfaBuilderController.createBlockObj(stateURL, dtde.getLocation().x, dtde.getLocation().y, 50, 93, actionstate, true, null);
 				faBlock.setDfaLabelURL("image/tunnel.png");
 
 			} else {
 
-				faBlock = dfaBuilderController.updateBlockObj(dtde.getLocation().x,
-						dtde.getLocation().y, dfaBlock);
+				faBlock = dfaBuilderController.updateBlockObj(dtde.getLocation().x, dtde.getLocation().y, dfaBlock);
 				faBlock.setDfaLabelURL("image/tunnel.png");
 				ArrayList<QuadCurve2D.Double> curves2 = curves1.getCurves();
-				ArrayList<StateBlock> startStateBlock1 = curves1
-						.getStartStateBlock();
-				ArrayList<StateBlock> finalEndStateBlock1 = curves1
-						.getFinalEndStateBlock();
+				ArrayList<StateBlock> startStateBlock1 = curves1.getStartStateBlock();
+				ArrayList<StateBlock> finalEndStateBlock1 = curves1.getFinalEndStateBlock();
 				ArrayList<JLabel> sTransit = curves1.getStateTransits();
 				int x1 = 0, w1 = 0, y1 = 0, h1 = 0, x2 = 0, w2 = 0, y2 = 0, h2 = 0;
 				QuadCurve2D.Double curve = null;
@@ -1672,27 +1514,19 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 							}
 
 							if (x1 < x2) {
-								curve = new QuadCurve2D.Double(x1 + w1, y1
-										+ (h1 / 2), (x1 + x2) / 2,
-										((y2 + y1) / 2) - 60, x2, y2 + (h2 / 2));
+								curve = new QuadCurve2D.Double(x1 + w1, y1 + (h1 / 2), (x1 + x2) / 2, ((y2 + y1) / 2) - 60, x2, y2 + (h2 / 2));
 
 							} else if (x1 > x2) {
-								curve = new QuadCurve2D.Double(x2 + w2, y2
-										+ (h2 / 2), (x1 + x2) / 2,
-										((y2 + y1) / 2) - 60, x1, y1 + (h1 / 2));
+								curve = new QuadCurve2D.Double(x2 + w2, y2 + (h2 / 2), (x1 + x2) / 2, ((y2 + y1) / 2) - 60, x1, y1 + (h1 / 2));
 
 							} else if (x1 == x2 && y1 == y2) {
-								curve = new QuadCurve2D.Double(x1, y1,
-										(x1 + w1 - 20), y1 - 110, x1 + w1 - 5,
-										y1);
+								curve = new QuadCurve2D.Double(x1, y1, (x1 + w1 - 20), y1 - 110, x1 + w1 - 5, y1);
 
 							}
 							curves1.getCurves().set(i, curve);
 							JLabel transit = sTransit.get(i);
 
-							degrees = dfaBuilderController.calculateSlope(
-									s.getX() + s.getWidth(), s.getY(),
-									f.getX(), f.getY());
+							degrees = dfaBuilderController.calculateSlope(s.getX() + s.getWidth(), s.getY(), f.getX(), f.getY());
 							int x = (int) curve.getCtrlX();
 							int y = (int) curve.getCtrlY();
 
@@ -1701,16 +1535,13 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 								y = y + 40;
 							}
 
-							for (FABlock dfaBlockObj : dfaBuilderModel
-									.getDfaBlockList()) {
+							for (FABlock dfaBlockObj : dfaBuilderModel.getDfaBlockList()) {
 
 								if (transit.equals(dfaBlockObj.getDfaLabel())) {
 
 									JLabel temp = dfaBlockObj.getDfaLabel();
-									ImageIcon icon = new ImageIcon(
-											dfaBlockObj.getDfaLabelURL());
-									RotatedIcon r = new RotatedIcon(icon,
-											degrees);
+									ImageIcon icon = new ImageIcon(dfaBlockObj.getDfaLabelURL());
+									RotatedIcon r = new RotatedIcon(icon, degrees);
 									temp.setIcon(r);
 
 									temp.setBounds(x, y, 50, 50);
@@ -1756,29 +1587,19 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 							}
 
 							if (x1 < x2) {
-								curve = new QuadCurve2D.Double(x1 + w1, y1
-										+ (h1 / 2), (x1 + x2) / 2,
-										((y2 + y1) / 2) + depth, x2, y2
-												+ (h2 / 2));
+								curve = new QuadCurve2D.Double(x1 + w1, y1 + (h1 / 2), (x1 + x2) / 2, ((y2 + y1) / 2) + depth, x2, y2 + (h2 / 2));
 
 							} else if (x1 > x2) {
-								curve = new QuadCurve2D.Double(x2 + w2, y2
-										+ (h2 / 2), (x1 + x2) / 2,
-										((y2 + y1) / 2) + depth, x1, y1
-												+ (h1 / 2));
+								curve = new QuadCurve2D.Double(x2 + w2, y2 + (h2 / 2), (x1 + x2) / 2, ((y2 + y1) / 2) + depth, x1, y1 + (h1 / 2));
 
 							} else if (x1 == x2 && y1 == y2) {
-								curve = new QuadCurve2D.Double(x1, y1,
-										(x1 + w1 - 20), y1 - 110, x1 + w1 - 5,
-										y1);
+								curve = new QuadCurve2D.Double(x1, y1, (x1 + w1 - 20), y1 - 110, x1 + w1 - 5, y1);
 
 							}
 
 							curves1.getCurves().set(i, curve);
 
-							degrees = dfaBuilderController.calculateSlope(
-									s.getX() + s.getWidth(), s.getY(),
-									f.getX(), f.getY());
+							degrees = dfaBuilderController.calculateSlope(s.getX() + s.getWidth(), s.getY(), f.getX(), f.getY());
 							int x = (int) curve.getCtrlX();
 							int y = (int) curve.getCtrlY();
 
@@ -1787,16 +1608,13 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 								y = y + 40;
 							}
 
-							for (FABlock dfaBlockObj : dfaBuilderModel
-									.getDfaBlockList()) {
+							for (FABlock dfaBlockObj : dfaBuilderModel.getDfaBlockList()) {
 
 								if (transit1.equals(dfaBlockObj.getDfaLabel())) {
 
 									JLabel temp = dfaBlockObj.getDfaLabel();
-									ImageIcon icon = new ImageIcon(
-											dfaBlockObj.getDfaLabelURL());
-									RotatedIcon r = new RotatedIcon(icon,
-											degrees);
+									ImageIcon icon = new ImageIcon(dfaBlockObj.getDfaLabelURL());
+									RotatedIcon r = new RotatedIcon(icon, degrees);
 									temp.setIcon(r);
 
 									temp.setBounds(x, y, 50, 50);
@@ -1824,21 +1642,18 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 
 				if (dfaBlockObj.isState()) {
 					if (((StateBlock) dfaBlockObj).isInitial()) {
-						label.setBounds(dfaBlockObj.getX(), dfaBlockObj.getY(),
-								76, 96);
+						label.setBounds(dfaBlockObj.getX(), dfaBlockObj.getY(), 76, 96);
 
 					}
 
 					else if (((StateBlock) dfaBlockObj).isFinal()) {
-						label.setBounds(dfaBlockObj.getX(), dfaBlockObj.getY(),
-								76, 106);
+						label.setBounds(dfaBlockObj.getX(), dfaBlockObj.getY(), 76, 106);
 
 					}
 
 					else {
 
-						label.setBounds(dfaBlockObj.getX(), dfaBlockObj.getY(),
-								dfaBlockObj.getWidth(), dfaBlockObj.getHeight());
+						label.setBounds(dfaBlockObj.getX(), dfaBlockObj.getY(), dfaBlockObj.getWidth(), dfaBlockObj.getHeight());
 
 					}
 				}
@@ -1868,38 +1683,11 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		return this;
 	}
 
-	@Override
-	public void moveState(JLabel label, int x1, int y1, int x2, int y2) {
-		label.setBounds(x1, y1, 50, 50);
-		if (x1 == x2 && y1 == y2) {
-			dfaBuilderController.getTimerTask().stop();
-			// if its not last state and mario has to move again
-			dfaBuilderController.movetoNextState();
-		}
-		actionPanel.revalidate();
-		repaint();
-	}
-
-	public void moveSelfloop(JLabel label, int x1, int y1, int x2, int y2) {
-
-		label.setBounds(x1, y1, 50, 50);
-
-		if (x1 == x2 && y1 == y2
-				&& dfaBuilderController.getTimerTask().jumpUp == 0) {
-			dfaBuilderController.getTimerTask().jumpUp = 1;
-			dfaBuilderController.getTimerTask().y2 += 100;
-		}
-
-		else if (x1 == x2 && y1 == y2
-				&& dfaBuilderController.getTimerTask().jumpUp == 1) {
-			dfaBuilderController.getTimerTask().jumpUp = 0;
-			dfaBuilderController.getTimerTask().stop();
-			dfaBuilderController.movetoNextState();
-
-		}
-		actionPanel.revalidate();
-	}
-
+	
+	/*
+	 * method is used to change the view from PlayGameView to DFABuilder View depending on the mario movement
+	 * If the state is final then display appropriate message in the output panel. 
+	 */
 	public void switchToActionPanel(StateBlock stateBlock) {
 		contentPanel.remove(playPanel);
 		contentPanel.add(actionPanel);
@@ -1907,8 +1695,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		currentPathState = stateBlock;
 		mario.setState("FALLING");
 		marioLabel = mario.getMario();
-		marioLabel
-				.setBounds(stateBlock.getX(), stateBlock.getY() - 150, 65, 65);
+		marioLabel.setBounds(stateBlock.getX(), stateBlock.getY() - 150, 65, 65);
 
 		if (stateBlock.isFinal()) {
 			output.removeAll();
@@ -1919,8 +1706,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 			mario.setState("FINISH");
 			isTestClicked = false; // so that he mario doesnt go to playview
 									// again.
-			marioLabel.setBounds(stateBlock.getX(), stateBlock.getY() - 50, 65,
-					65);
+			marioLabel.setBounds(stateBlock.getX(), stateBlock.getY() - 50, 65, 65);
 		}
 
 		timer.start();
