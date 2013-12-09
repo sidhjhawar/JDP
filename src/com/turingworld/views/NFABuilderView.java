@@ -23,6 +23,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.Line2D;
+import java.awt.geom.QuadCurve2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -92,11 +93,13 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 	private JPanel colorPallete;
 	private JTextField transit;
 	private String tranValue;
+	private ArrayList<QuadCurve2D.Double> curves;
 
 	public NFABuilderView(NFABuilderModel nfaBuilderModel) {
 
 		timer = new Timer(5, blinker);
 		timer.start();
+		curves = new ArrayList<QuadCurve2D.Double>();
 
 		lines = new ArrayList<Line2D.Double>();
 		startStateBlockList = new ArrayList<StateBlock>();
@@ -256,7 +259,22 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 				FABlock fblock;
 				nfaBlock = nfaBuilderController.getNFABlockObj(dragSource.getX(), dragSource.getY());
 				if (nfaBlock != null /* && nfaBlock.isState() */) {
+					
 					endStateBlock = (StateBlock) nfaBlock;
+					if(startStateBlock.equals(endStateBlock))
+					{
+						QuadCurve2D.Double curve = new QuadCurve2D.Double(startStateBlock.getX()+16,startStateBlock.getY()+7,
+								startStateBlock.getX()+32,startStateBlock.getY()-70,startStateBlock.getX()+48,startStateBlock.getY()+7);
+						g2 = (Graphics2D) actionPanel.getGraphics();
+						g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+						
+						curves.add(curve);
+						addColorPallette(curve.getCtrlX(),curve.getCtrlY());
+						
+					}
+					
+					else
+					{
 					NFABuilderView.this.isStartStateClicked = true;
 					g2 = (Graphics2D) actionPanel.getGraphics();
 					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -348,6 +366,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 					lines.add(line);
 					paintLines();
 					addColorPallette(x1, x2, y1, y2);
+				}
 					for (FABlock nfaBlockObj : nfaBuilderModel.getNfaBlockList()) {
 						JLabel label = nfaBlockObj.getDfaLabel();
 						label.removeMouseListener(hoverListener);
@@ -375,6 +394,38 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 		stateCirle.addMouseListener(listener);
 
 	}
+	public void addColorPallette(double d,double e) {
+		 
+		int x =(int) d;
+		int y = (int) e;
+		transition = new JLabel();
+		transition.setBounds(x,y+10,20,20);
+		colorPallete = new JPanel();
+		colorPallete.setBorder(new TitledBorder("Enter Transitions!"));
+		colorPallete.setBounds(x,y-40,130,80);
+		transit = new JTextField(4);
+		transit.setPreferredSize( new Dimension( 50, 24 ) );
+		colorPallete.add(transit);
+		actionPanel.add(colorPallete);
+		transit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				tranValue = transit.getText();
+				actionPanel.remove(colorPallete);
+				transition.setFont(new Font("Serif", Font.BOLD, 18));
+				transition.setText(tranValue);
+				actionPanel.add(transition);
+				actionPanel.revalidate();
+				actionPanel.repaint();
+			}
+		});
+		
+		
+		
+		actionPanel.revalidate();
+		actionPanel.repaint();
+			
+		}
 
 	public void addColorPallette(int x1, int x2, int y1, int y2) {
 
@@ -416,9 +467,14 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 		double theta;
 
 		for (Line2D.Double line : lines) {
+			
 			g2.draw(line);
 			theta = Math.atan2(line.getY2() - line.getY1(), line.getX2() - line.getX1());
 			drawArrow(theta, line.getX2(), line.getY2());
+		}
+		for (QuadCurve2D.Double curve : curves) {
+			g2.draw(curve);
+			
 		}
 
 	}
@@ -549,7 +605,8 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("Add Transition")) {
 				for (FABlock nfaBlockObj : nfaBuilderModel.getNfaBlockList()) {
-					if (!nfaBlockObj.equals(startStateBlock)) {
+				//	if (!nfaBlockObj.equals(startStateBlock)) 
+					{
 						JLabel label = nfaBlockObj.getDfaLabel();
 						label.addMouseListener(hoverListener);
 					}

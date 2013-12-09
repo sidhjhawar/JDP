@@ -2,11 +2,12 @@ package com.turingworld.views;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.Polygon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.QuadCurve2D;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -16,6 +17,8 @@ import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.TitledBorder;
+
+import com.turingworld.model.StateBlock;
 
 public class NFARunWindow extends JFrame {
 	private JPanel actionPanel;
@@ -53,6 +56,8 @@ public class NFARunWindow extends JFrame {
 	private Timer timer;
 	private ActionListener blinker;
 	private Graphics2D g;
+	private ArrayList<StateBlock> previousBlock;
+	private ArrayList<StateBlock> currentBlock;
 	
 	public NFARunWindow() {
 		
@@ -66,13 +71,19 @@ public class NFARunWindow extends JFrame {
 		} catch (Exception e) {
 		}
 		
+	/*	previousBlock = new ArrayList<StateBlock>();
+		previousBlock.add(firstState);*/
+		
 		setTitle("Welcome - NFA Visualize window!");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(50, 0,1259,719);
 		this.setVisible(true);
 		createBWScreen();
+	//	displayOutput();
 	
 	}
+	
+	
 
 	private void createBWScreen() {
 		float[] dash1 = { 2f, 0f, 2f };
@@ -98,8 +109,15 @@ public class NFARunWindow extends JFrame {
 		timer.start();
 		
 		treeBWLevel1 = new JLabel("");
+		treeBWLevel1.setLayout(new FlowLayout(FlowLayout.CENTER));
 		treeBWLevel1.setIcon(new ImageIcon("image/treeBW.png"));
 		treeBWLevel1.setBounds(553, 51, 58, 58);
+		JLabel text =  new JLabel("q0");
+		text.setFont(new Font("Serif", Font.BOLD, 16));
+		text.setForeground(Color.white);
+		treeBWLevel1.add(text);
+		
+		
 		actionPanel.add(treeBWLevel1);
 		
 		treeBWLevel21 = new JLabel("");
@@ -252,6 +270,8 @@ public class NFARunWindow extends JFrame {
 		treeBWLevel418.setIcon(new ImageIcon("image/treeBW.png"));
 		treeBWLevel418.setBounds(1113, 506, 58, 58);
 		actionPanel.add(treeBWLevel418);
+		
+
 		
 	}
 	
