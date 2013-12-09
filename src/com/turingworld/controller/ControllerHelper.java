@@ -42,7 +42,6 @@ public class ControllerHelper {
 			JSONObject jsonBlock = new JSONObject().element("Name", block.getName()).element("x", block.getX()).element("y", block.getY()).element("height", block.getHeight())
 					.element("width", block.getWidth()).element("isstate", block.isState()).element("Transition Type", block.getTransitionType())
 					.element("Block Label URL", block.getBlockLabelURL());
-			System.out.println(jsonBlock.toString());
 			jsonArray.add(jsonBlock);
 		}
 
@@ -83,7 +82,6 @@ public class ControllerHelper {
 
 		JSONObject read = new JSONObject();
 		read = (JSONObject) JSONSerializer.toJSON(reader);
-		System.out.println(read.toString());
 		JSONArray jsonArray = read.getJSONArray("Blocks");
 
 		ArrayList<Block> arr = new ArrayList<Block>();
@@ -118,11 +116,8 @@ public class ControllerHelper {
 			clip.open(audioInputStream);
 			clip.start();
 		} catch (UnsupportedAudioFileException uae) {
-			System.out.println(uae);
 		} catch (IOException ioe) {
-			System.out.println(ioe);
 		} catch (LineUnavailableException lua) {
-			System.out.println(lua);
 		}
 	}
 }

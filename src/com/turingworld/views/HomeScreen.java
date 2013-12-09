@@ -41,7 +41,7 @@ public class HomeScreen extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 600, 600);
 		getContentPane().setLayout(new BorderLayout(0, 0));
-		
+
 		createBuildandLearn();
 		createHelp();
 		createDFA();
@@ -49,7 +49,6 @@ public class HomeScreen extends JFrame {
 		createLoad();
 		setVisible(true);
 
-		
 	}
 
 	private void createLoad() {
@@ -58,7 +57,7 @@ public class HomeScreen extends JFrame {
 		btnNewButton.setIcon(new ImageIcon("image/load.png"));
 		btnNewButton.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 18));
 		getContentPane().add(btnNewButton, BorderLayout.SOUTH);
-		
+
 	}
 
 	private void createNFA() {
@@ -69,15 +68,17 @@ public class HomeScreen extends JFrame {
 		nfaBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				NFABuilderModel nfaBuilderModel = new NFABuilderModel();
-				NFABuilderView nfaBuilderView = new NFABuilderView(nfaBuilderModel);
+				NFABuilderView nfaBuilderView = new NFABuilderView(
+						nfaBuilderModel);
 
-				NFABuilderController nfaBuilderController = new NFABuilderController(nfaBuilderModel, nfaBuilderView);
+				NFABuilderController nfaBuilderController = new NFABuilderController(
+						nfaBuilderModel, nfaBuilderView);
 				nfaBuilderController.setNfaBuilderView(nfaBuilderView);
 				nfaBuilderView.setController(nfaBuilderController);
 				dispose();
 			}
 		});
-		
+
 	}
 
 	private void createDFA() {
@@ -86,9 +87,11 @@ public class HomeScreen extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 
 				DFABuilderModel dfaBuilderModel = new DFABuilderModel();
-				DFABuilderView dfaBuilderView = new DFABuilderView(dfaBuilderModel);
+				DFABuilderView dfaBuilderView = new DFABuilderView(
+						dfaBuilderModel);
 
-				DFABuilderController dfaBuilderController = new DFABuilderController(dfaBuilderModel, dfaBuilderView);
+				DFABuilderController dfaBuilderController = new DFABuilderController(
+						dfaBuilderModel, dfaBuilderView);
 				dfaBuilderController.setDfaBuilderView(dfaBuilderView);
 				dfaBuilderView.setController(dfaBuilderController);
 				dispose();
@@ -100,7 +103,6 @@ public class HomeScreen extends JFrame {
 		dfaBtn.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 18));
 		getContentPane().add(dfaBtn, BorderLayout.WEST);
 
-		
 	}
 
 	private void createHelp() {
@@ -116,8 +118,10 @@ public class HomeScreen extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 
 				BlockBuilderModel blockBuilderModel = new BlockBuilderModel();
-				BlockBuilderView blockBuilderView = new BlockBuilderView(blockBuilderModel);
-				BlockBuilderController blockBuilderController = new BlockBuilderController(blockBuilderModel, blockBuilderView);
+				BlockBuilderView blockBuilderView = new BlockBuilderView(
+						blockBuilderModel);
+				BlockBuilderController blockBuilderController = new BlockBuilderController(
+						blockBuilderModel, blockBuilderView);
 				blockBuilderView.setController(blockBuilderController);
 				dispose();
 
@@ -126,6 +130,6 @@ public class HomeScreen extends JFrame {
 		buildBtn.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 18));
 		buildBtn.setIcon(new ImageIcon("image/build.png"));
 		getContentPane().add(buildBtn, BorderLayout.NORTH);
-		
+
 	}
 }

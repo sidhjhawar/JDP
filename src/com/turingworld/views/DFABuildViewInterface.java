@@ -12,7 +12,6 @@ public interface DFABuildViewInterface {
 	public void removeFromPanel(FABlock dfaBlock);
 	
 	public DFABuildViewInterface getViewType();
-	public void moveState(JLabel label, int x1, int y1, int x2, int y2);
 	
 
 }

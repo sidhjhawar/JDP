@@ -12,7 +12,6 @@ import javax.swing.JLabel;
 import com.turingworld.command.AddBlockCommand;
 import com.turingworld.command.AddDFABlockCommand;
 import com.turingworld.command.Invoker;
-import com.turingworld.helper.TimerTask;
 import com.turingworld.model.Block;
 import com.turingworld.model.BlockBuilderModel;
 import com.turingworld.model.FABlock;
@@ -24,18 +23,11 @@ import com.turingworld.views.DFABuilderView;
 
 public class DFABuilderController {
 	public static boolean isTriviaClicked;
-
-	private TimerTask timerTask;
-
 	private DFABuilderModel dfaBuilderModel;
 	private DFABuilderView dfaBuilderView;
 	private DFABuildViewInterface dfaBuildViewInterface;
 	private AddDFABlockCommand addDFABlockCommand;
 	private Invoker invoker;
-
-	public TimerTask getTimerTask() {
-		return timerTask;
-	}
 
 	public DFABuildViewInterface getDfaBuildViewInterface() {
 		return dfaBuildViewInterface;
@@ -43,10 +35,6 @@ public class DFABuilderController {
 
 	public void setDfaBuildViewInterface(DFABuildViewInterface dfaBuildViewInterface) {
 		this.dfaBuildViewInterface = dfaBuildViewInterface;
-	}
-
-	public void setTimerTask(TimerTask timerTask) {
-		this.timerTask = timerTask;
 	}
 
 	public DFABuilderModel getDfaBuilderModel() {
@@ -68,7 +56,6 @@ public class DFABuilderController {
 	public DFABuilderController(DFABuilderModel dfaBuilderModel, DFABuildViewInterface dfaBuildViewInterface) {
 		this.dfaBuilderModel = dfaBuilderModel;
 		this.dfaBuildViewInterface = dfaBuildViewInterface;
-		this.timerTask = new TimerTask(this);
 		isTriviaClicked = false;
 		invoker = new Invoker();
 	}
@@ -157,7 +144,6 @@ public class DFABuilderController {
 	}
 
 	public void addBlockToList(FABlock dfaBlock) {
-		System.out.println(dfaBlock.getName());
 		ArrayList<FABlock> dfaBlockList = dfaBuilderModel.getDfaBlockList();
 		dfaBlockList.add(dfaBlock);
 		dfaBuildViewInterface.addToPanel(dfaBlock);
@@ -216,8 +202,6 @@ public class DFABuilderController {
 						StateBlock key = (StateBlock) iter.next();
 						TransitionBlock value = (TransitionBlock) stateTransitionList.get(key).get(0);
 						char check = value.getTransitionType().charAt(0);
-						System.out.println("check: " + check);
-
 						// char check = 'a';
 						if (check == dfaBuilderView.getInputPathString().charAt(dfaBuilderView.getCurrentPathIndex())) { // matching
 							// transition
@@ -246,30 +230,6 @@ public class DFABuilderController {
 			}
 		}
 		return true;
-	}
-
-	public void movetoNextState() {
-		// currentPathIndex = 0; //hard coded - have to remove
-		StateBlock nextState;
-		int currentPathIndex = dfaBuilderView.getCurrentPathIndex();
-		if (dfaBuilderView.getCurrentPathIndex() < dfaBuilderView.getInputPathString().length()) {
-			dfaBuilderView.setCurrentPathIndex(++currentPathIndex);
-			nextState = getNextState();
-			System.out.println("nextState: " + nextState.getName());
-
-			JLabel label = new JLabel();
-			label.setIcon(new ImageIcon("image/mario.png"));
-			dfaBuilderView.getActionPanel().add(label);
-			label.setBounds(dfaBuilderView.getCurrentPathState().getX(), dfaBuilderView.getCurrentPathState().getY(), 50, 50);
-
-			if (null != nextState) {
-				if (!getTimerTask().isRunning()) {
-					getTimerTask().run(label, dfaBuilderView.getCurrentPathState().getX(), dfaBuilderView.getCurrentPathState().getY(), nextState.getX(), nextState.getY());
-					dfaBuilderView.setCurrentPathState(nextState);
-				}
-			}
-		}
-
 	}
 
 }
