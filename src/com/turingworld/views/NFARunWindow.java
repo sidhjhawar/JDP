@@ -26,9 +26,9 @@ import com.turingworld.model.TransitionBlock;
 public class NFARunWindow extends JFrame {
 	private JPanel actionPanel;
 	private JLabel treeBWLevel1;
-	private JLabel treeBWLevel21;
-	private JLabel treeBWLevel22;
 	private JLabel treeBWLevel23;
+	private JLabel treeBWLevel22;
+	private JLabel treeBWLevel21;
 	private JLabel treeBWLevel31;
 	private JLabel treeBWLevel32;
 	private JLabel treeBWLevel33;
@@ -91,6 +91,8 @@ public class NFARunWindow extends JFrame {
 		displayOutput();
 
 	}
+
+	
 
 	private void displayOutput() {
 		level = 2;
@@ -168,12 +170,13 @@ public class NFARunWindow extends JFrame {
 		actionPanel.add(treeBWLevel1);
 		labelList.put(11, treeBWLevel1);
 
-		treeBWLevel21 = new JLabel("");
-		treeBWLevel21.setIcon(new ImageIcon("image/treeBW.png"));
-		treeBWLevel21.setBounds(975, 200, 58, 58);
-		treeBWLevel21.setName("21");
-		labelList.put(21, treeBWLevel21);
-		actionPanel.add(treeBWLevel21);
+		
+		treeBWLevel23 = new JLabel("");
+		treeBWLevel23.setIcon(new ImageIcon("image/treeBW.png"));
+		treeBWLevel23.setBounds(975, 200, 58, 58);
+		treeBWLevel23.setName("23");
+		labelList.put(23, treeBWLevel23);
+		actionPanel.add(treeBWLevel23);
 
 		treeBWLevel22 = new JLabel("");
 		treeBWLevel22.setIcon(new ImageIcon("image/treeBW.png"));
@@ -181,13 +184,13 @@ public class NFARunWindow extends JFrame {
 		treeBWLevel22.setName("22");
 		labelList.put(22, treeBWLevel22);
 		actionPanel.add(treeBWLevel22);
-
-		treeBWLevel23 = new JLabel("");
-		treeBWLevel23.setIcon(new ImageIcon("image/treeBW.png"));
-		treeBWLevel23.setBounds(166, 200, 58, 58);
-		treeBWLevel23.setName("23");
-		labelList.put(23, treeBWLevel23);
-		actionPanel.add(treeBWLevel23);
+		
+		treeBWLevel21 = new JLabel("");
+		treeBWLevel21.setIcon(new ImageIcon("image/treeBW.png"));
+		treeBWLevel21.setBounds(166, 200, 58, 58);
+		treeBWLevel21.setName("21");
+		labelList.put(21, treeBWLevel21);
+		actionPanel.add(treeBWLevel21);
 
 		treeBWLevel31 = new JLabel("");
 		treeBWLevel31.setIcon(new ImageIcon("image/treeBW.png"));
