@@ -420,14 +420,13 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 	}
 
 	class MenuActionListener implements ActionListener {
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("Add Initial State")) {
 				for (FABlock dfaBlockObj : dfaBuilderModel.getDfaBlockList()) {
 					if (dfaBlockObj.isState()) {
 						if (((StateBlock) dfaBlockObj).isInitial()) {
-
+							
 							actionPanel.remove(dfaBlockObj.getDfaLabel());
 							((StateBlock) dfaBlockObj).setInitial(false);
 							JLabel label = new JLabel((new ImageIcon(
