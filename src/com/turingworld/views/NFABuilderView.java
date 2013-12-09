@@ -6,6 +6,7 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
@@ -48,6 +49,7 @@ import com.turingworld.model.BlockBuilderModel;
 import com.turingworld.model.FABlock;
 import com.turingworld.model.NFABuilderModel;
 import com.turingworld.model.StateBlock;
+import com.turingworld.model.TransitionBlock;
 
 @SuppressWarnings("serial")
 public class NFABuilderView extends JFrame implements NFABuildViewInterface {
@@ -345,7 +347,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 					Line2D.Double line = new Line2D.Double(x1, y1, x2, y2);
 					lines.add(line);
 					paintLines();
-					addColorPallette(x1,x2,y1,y2);
+					addColorPallette(x1, x2, y1, y2);
 					for (FABlock nfaBlockObj : nfaBuilderModel.getNfaBlockList()) {
 						JLabel label = nfaBlockObj.getDfaLabel();
 						label.removeMouseListener(hoverListener);
@@ -374,37 +376,40 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 
 	}
 
-public void addColorPallette(int x1,int x2,int y1,int y2) {
-	 
-	transition = new JLabel();
-	transition.setBounds((x1+x2)/2,(y1+y2)/2,20,20);
-	colorPallete = new JPanel();
-	colorPallete.setBorder(new TitledBorder("Enter Transitions!"));
-	colorPallete.setBounds((x1+x2)/2,(y1+y2)/2,130,80);
-	transit = new JTextField(4);
-	transit.setPreferredSize( new Dimension( 50, 24 ) );
-	colorPallete.add(transit);
-	actionPanel.add(colorPallete);
-	transit.addActionListener(new ActionListener() {
+	public void addColorPallette(int x1, int x2, int y1, int y2) {
 
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			tranValue = transit.getText();
-			actionPanel.remove(colorPallete);
-			transition.setFont(new Font("Serif", Font.BOLD, 18));
-			transition.setText(tranValue);
-			actionPanel.add(transition);
-			actionPanel.revalidate();
-			actionPanel.repaint();
+		transition = new JLabel();
+		transition.setBounds((x1 + x2) / 2, (y1 + y2) / 2, 20, 20);
+		colorPallete = new JPanel();
+		colorPallete.setBorder(new TitledBorder("Enter Transitions!"));
+		colorPallete.setBounds((x1 + x2) / 2, (y1 + y2) / 2, 130, 80);
+		transit = new JTextField(4);
+		transit.setPreferredSize(new Dimension(50, 24));
 
-		}
-	});
-	
-	System.out.println(tranValue);
-	
-	actionPanel.revalidate();
-	actionPanel.repaint();
-		
+		colorPallete.add(transit);
+		actionPanel.add(colorPallete);
+		transit.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				tranValue = transit.getText();
+				actionPanel.remove(colorPallete);
+				transition.setFont(new Font("Serif", Font.BOLD, 18));
+				transition.setText(tranValue);
+				actionPanel.add(transition);
+				actionPanel.revalidate();
+				actionPanel.repaint();
+				TransitionBlock transitionBlock = new TransitionBlock();
+				transitionBlock.setName(tranValue);
+				nfaBuilderController.addTransitionBlocktoStateList(startStateBlock, endStateBlock, transitionBlock);
+			}
+		});
+
+		System.out.println(tranValue);
+
+		actionPanel.revalidate();
+		actionPanel.repaint();
+
 	}
 
 	void paintLines() {
