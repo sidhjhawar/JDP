@@ -99,7 +99,7 @@ public class NFABuilderController {
 		}
 		return dfaBlock;
 	}
-	
+
 	public void addTransitionBlocktoStateList(StateBlock startStateBlock, StateBlock finalStateBlcok, TransitionBlock b) {
 		ArrayList<TransitionBlock> transitionList = null;
 		if (startStateBlock.getStateTransitionList().get(finalStateBlcok) == null) {
