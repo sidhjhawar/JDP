@@ -41,8 +41,7 @@ public class DFABuilderController {
 		return dfaBuildViewInterface;
 	}
 
-	public void setDfaBuildViewInterface(
-			DFABuildViewInterface dfaBuildViewInterface) {
+	public void setDfaBuildViewInterface(DFABuildViewInterface dfaBuildViewInterface) {
 		this.dfaBuildViewInterface = dfaBuildViewInterface;
 	}
 
@@ -66,8 +65,7 @@ public class DFABuilderController {
 		this.dfaBuilderView = dfaBuilderView;
 	}
 
-	public DFABuilderController(DFABuilderModel dfaBuilderModel,
-			DFABuildViewInterface dfaBuildViewInterface) {
+	public DFABuilderController(DFABuilderModel dfaBuilderModel, DFABuildViewInterface dfaBuildViewInterface) {
 		this.dfaBuilderModel = dfaBuilderModel;
 		this.dfaBuildViewInterface = dfaBuildViewInterface;
 		this.timerTask = new TimerTask(this);
@@ -81,13 +79,11 @@ public class DFABuilderController {
 			for (FABlock dfaBlock : dfaBuilderModel.getDfaBlockList()) {
 
 				if (dfaBlock.isState()) {
-					if (((StateBlock) dfaBlock).getX() == x
-							&& ((StateBlock) dfaBlock).getY() == y) {
+					if (((StateBlock) dfaBlock).getX() == x && ((StateBlock) dfaBlock).getY() == y) {
 						selectedBlock = dfaBlock;
 					}
 				} else {
-					if (((TransitionBlock) dfaBlock).getX() == x
-							&& ((TransitionBlock) dfaBlock).getY() == y) {
+					if (((TransitionBlock) dfaBlock).getX() == x && ((TransitionBlock) dfaBlock).getY() == y) {
 						selectedBlock = dfaBlock;
 					}
 				}
@@ -101,13 +97,11 @@ public class DFABuilderController {
 		for (FABlock dfaBlock : dfaBuilderModel.getDfaBlockList()) {
 
 			if (dfaBlock.isState()) {
-				if (((StateBlock) dfaBlock).getX() == x
-						&& ((StateBlock) dfaBlock).getY() == y) {
+				if (((StateBlock) dfaBlock).getX() == x && ((StateBlock) dfaBlock).getY() == y) {
 					selectedBlock = true;
 				}
 			} else {
-				if (((TransitionBlock) dfaBlock).getX() == x
-						&& ((TransitionBlock) dfaBlock).getY() == y) {
+				if (((TransitionBlock) dfaBlock).getX() == x && ((TransitionBlock) dfaBlock).getY() == y) {
 					selectedBlock = true;
 				}
 			}
@@ -120,29 +114,24 @@ public class DFABuilderController {
 		dfaBlockList.remove(dfaBlock);
 	}
 
-	public void addTransitionBlocktoStateList(StateBlock startStateBlock,
-			StateBlock finalStateBlcok, TransitionBlock b) {
+	public void addTransitionBlocktoStateList(StateBlock startStateBlock, StateBlock finalStateBlcok, TransitionBlock b) {
 		ArrayList<TransitionBlock> transitionList = null;
 		if (startStateBlock.getStateTransitionList().get(finalStateBlcok) == null) {
 			transitionList = new ArrayList<TransitionBlock>();
 		} else {
-			transitionList = startStateBlock.getStateTransitionList().get(
-					finalStateBlcok);
+			transitionList = startStateBlock.getStateTransitionList().get(finalStateBlcok);
 		}
 		transitionList.add(b);
-		startStateBlock.getStateTransitionList().put(finalStateBlcok,
-				transitionList);
+		startStateBlock.getStateTransitionList().put(finalStateBlcok, transitionList);
 	}
 
-	public FABlock createBlockObj(String url, int x, int y, int width, int height,
-			JLabel label, boolean isState, String transitionType) {
+	public FABlock createBlockObj(String url, int x, int y, int width, int height, JLabel label, boolean isState, String transitionType) {
 		FABlock dfaBlock;
 		if (isState == true) {
 			dfaBlock = new StateBlock();
 		} else {
 			dfaBlock = new TransitionBlock();
 		}
-	
 
 		dfaBlock.setX(x);
 		dfaBlock.setY(y);
@@ -187,8 +176,7 @@ public class DFABuilderController {
 			if (dfaBlockObj != dfaBlock) {
 				if (dfaBlock.isState() == dfaBlockObj.isState()) {
 
-					if (dfaBlock.getCollisionBounds().intersects(
-							dfaBlockObj.getCollisionBounds())) {
+					if (dfaBlock.getCollisionBounds().intersects(dfaBlockObj.getCollisionBounds())) {
 						return true;
 					}
 				}
@@ -204,96 +192,84 @@ public class DFABuilderController {
 			return ((Math.atan2((y2 - y1), (x2 - x1)) * 180) / 3.14);
 		}
 	}
-	
-	  /*
-	    * fetches next state from the List for transition from the input string.
-	    * returns the NextState
-	    */
-	   public StateBlock getNextState() {
-	     ArrayList<FABlock> dfaBlockList = new ArrayList<FABlock>();
-	     dfaBlockList = dfaBuilderModel.getDfaBlockList();
-	 
-	     for (FABlock dfaBlock : dfaBlockList) {
-	       if (dfaBlock.isState()) {
-	         if (((StateBlock) dfaBlock).getName().equalsIgnoreCase(
-	             dfaBuilderView.getCurrentPathState().getName())) { // matchiing
-	                                       // the
-	                                       // states
-	 
-	           StateBlock stateBlock = (StateBlock) dfaBlock;
-	           HashMap<StateBlock, ArrayList<TransitionBlock>> stateTransitionList = stateBlock
-	               .getStateTransitionList();
-	           // if the statetransition list contains the state then check
-	           // if the transition is present
-	           Iterator iter = stateTransitionList.keySet().iterator();
-	           while (iter.hasNext()) {
-	             StateBlock key = (StateBlock) iter.next();
-	             TransitionBlock value = (TransitionBlock) stateTransitionList
-	                 .get(key).get(0);
-	             char check = value.getTransitionType().charAt(0);
-	             System.out.println("check: " + check);
-	 
-	             // char check = 'a';
-	             if (check == dfaBuilderView.getInputPathString()
-	                 .charAt(dfaBuilderView.getCurrentPathIndex())) { // matching
-	               // transition
-	               // found
-	               return key;
-	             }
-	           } // end of while
-	         }
-	       }
-	     }// end of for loop
-	     return null;
-	 
-	   }
-	
-	public boolean checkErrors(StateBlock firstBlock, StateBlock secondBlock,
-			       String db) {
-			     HashMap<StateBlock, ArrayList<TransitionBlock>> stateTransitionList = firstBlock
-			         .getStateTransitionList();
-			     for (ArrayList<TransitionBlock> list : stateTransitionList.values()) {
-			       for (TransitionBlock transitionBlock : list) {
-			         if (transitionBlock != null) {
-			           if (transitionBlock.getTransitionType() != null) {
-			             if (transitionBlock.getTransitionType().equals(db)) {
-			               return false;
-			             }
-			           }
-			         }
-			       }
-			     }
-			     return true;
-			   }
 
-	public void movetoNextState() {
-	     // currentPathIndex = 0; //hard coded - have to remove
-	     StateBlock nextState;
-	     int currentPathIndex = dfaBuilderView.getCurrentPathIndex();
-	     if (dfaBuilderView.getCurrentPathIndex() < dfaBuilderView
-	         .getInputPathString().length()) {
-	       dfaBuilderView.setCurrentPathIndex(++currentPathIndex);
-	       nextState = getNextState();
-	       System.out.println("nextState: " + nextState.getName());
-	 
-	       JLabel label = new JLabel();
-	       label.setIcon(new ImageIcon("image/mario.png"));
-	       dfaBuilderView.getActionPanel().add(label);
-	       label.setBounds(dfaBuilderView.getCurrentPathState().getX(),
-	           dfaBuilderView.getCurrentPathState().getY(), 50, 50);
-	 
-	       if (null != nextState) {
-	         if (!getTimerTask().isRunning()) {
-	           getTimerTask().run(label,
-	               dfaBuilderView.getCurrentPathState().getX(),
-	               dfaBuilderView.getCurrentPathState().getY(),
-	               nextState.getX(), nextState.getY());
-	           dfaBuilderView.setCurrentPathState(nextState);
-	         }
-	       }
-	     }
-		
+	/*
+	 * fetches next state from the List for transition from the input string.
+	 * returns the NextState
+	 */
+	public StateBlock getNextState() {
+		ArrayList<FABlock> dfaBlockList = new ArrayList<FABlock>();
+		dfaBlockList = dfaBuilderModel.getDfaBlockList();
+
+		for (FABlock dfaBlock : dfaBlockList) {
+			if (dfaBlock.isState()) {
+				if (((StateBlock) dfaBlock).getName().equalsIgnoreCase(dfaBuilderView.getCurrentPathState().getName())) { // matchiing
+					// the
+					// states
+
+					StateBlock stateBlock = (StateBlock) dfaBlock;
+					HashMap<StateBlock, ArrayList<TransitionBlock>> stateTransitionList = stateBlock.getStateTransitionList();
+					// if the statetransition list contains the state then check
+					// if the transition is present
+					Iterator iter = stateTransitionList.keySet().iterator();
+					while (iter.hasNext()) {
+						StateBlock key = (StateBlock) iter.next();
+						TransitionBlock value = (TransitionBlock) stateTransitionList.get(key).get(0);
+						char check = value.getTransitionType().charAt(0);
+						System.out.println("check: " + check);
+
+						// char check = 'a';
+						if (check == dfaBuilderView.getInputPathString().charAt(dfaBuilderView.getCurrentPathIndex())) { // matching
+							// transition
+							// found
+							return key;
+						}
+					} // end of while
+				}
+			}
+		}// end of for loop
+		return null;
+
 	}
 
+	public boolean checkErrors(StateBlock firstBlock, StateBlock secondBlock, String db) {
+		HashMap<StateBlock, ArrayList<TransitionBlock>> stateTransitionList = firstBlock.getStateTransitionList();
+		for (ArrayList<TransitionBlock> list : stateTransitionList.values()) {
+			for (TransitionBlock transitionBlock : list) {
+				if (transitionBlock != null) {
+					if (transitionBlock.getTransitionType() != null) {
+						if (transitionBlock.getTransitionType().equals(db)) {
+							return false;
+						}
+					}
+				}
+			}
+		}
+		return true;
+	}
+
+	public void movetoNextState() {
+		// currentPathIndex = 0; //hard coded - have to remove
+		StateBlock nextState;
+		int currentPathIndex = dfaBuilderView.getCurrentPathIndex();
+		if (dfaBuilderView.getCurrentPathIndex() < dfaBuilderView.getInputPathString().length()) {
+			dfaBuilderView.setCurrentPathIndex(++currentPathIndex);
+			nextState = getNextState();
+			System.out.println("nextState: " + nextState.getName());
+
+			JLabel label = new JLabel();
+			label.setIcon(new ImageIcon("image/mario.png"));
+			dfaBuilderView.getActionPanel().add(label);
+			label.setBounds(dfaBuilderView.getCurrentPathState().getX(), dfaBuilderView.getCurrentPathState().getY(), 50, 50);
+
+			if (null != nextState) {
+				if (!getTimerTask().isRunning()) {
+					getTimerTask().run(label, dfaBuilderView.getCurrentPathState().getX(), dfaBuilderView.getCurrentPathState().getY(), nextState.getX(), nextState.getY());
+					dfaBuilderView.setCurrentPathState(nextState);
+				}
+			}
+		}
+
+	}
 
 }

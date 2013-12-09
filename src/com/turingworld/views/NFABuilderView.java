@@ -4,7 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
@@ -33,6 +35,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
@@ -46,7 +49,9 @@ import com.turingworld.model.BlockBuilderModel;
 import com.turingworld.model.FABlock;
 import com.turingworld.model.NFABuilderModel;
 import com.turingworld.model.StateBlock;
+import com.turingworld.model.TransitionBlock;
 
+@SuppressWarnings("serial")
 public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 
 	JPanel contentPanel;
@@ -70,6 +75,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 	private FABlock b;
 	private String stateURL;
 	private FABlock faBlock;
+	private JLabel transition;
 	JLabel actionState;
 	private PopupForStateView popupForStateView;
 	private MouseListener hoverListener;
@@ -83,6 +89,9 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 	private ArrayList<StateBlock> endStateBlockList;
 	private Graphics2D g2;
 	private Timer timer;
+	private JPanel colorPallete;
+	private JTextField transit;
+	private String tranValue;
 
 	public NFABuilderView(NFABuilderModel nfaBuilderModel) {
 
@@ -231,8 +240,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 			public void mouseClicked(MouseEvent e) {
 				NFARunWindow nfaRun = new NFARunWindow();
 			}
-		
-		
+
 		});
 
 		panel.add(play);
@@ -241,7 +249,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 			private boolean shift;
 
 			public void mouseEntered(MouseEvent me) {
-				int x1 = 0,x2=0,y1 = 0,y2=02;
+				int x1 = 0, x2 = 0, y1 = 0, y2 = 02;
 				dragSource = (JLabel) me.getSource();
 				System.out.println("Listener");
 				FABlock sblock;
@@ -250,118 +258,96 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 				if (nfaBlock != null /* && nfaBlock.isState() */) {
 					endStateBlock = (StateBlock) nfaBlock;
 					NFABuilderView.this.isStartStateClicked = true;
-					g2 = (Graphics2D) actionPanel.getGraphics()		;
+					g2 = (Graphics2D) actionPanel.getGraphics();
 					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 					startStateBlockList.add(startStateBlock);
 					endStateBlockList.add(endStateBlock);
-					for (int i =0;i<startStateBlockList.size();i++) {
+					for (int i = 0; i < startStateBlockList.size(); i++) {
 						sblock = startStateBlockList.get(i);
 						fblock = endStateBlockList.get(i);
-						if(endStateBlock.equals(sblock)&&startStateBlock.equals(fblock))
-						{
+						if (endStateBlock.equals(sblock) && startStateBlock.equals(fblock)) {
 							shift = true;
 						}
 					}
-					
-					if((startStateBlock.getX()<endStateBlock.getX())&&(startStateBlock.getY()>endStateBlock.getY()))
-							{
-							if(!shift)
-							{
-								x1=startStateBlock.getX()+48;
-								y1=startStateBlock.getY()+7;
-								x2=endStateBlock.getX()+7;
-								y2=endStateBlock.getY()+48;
-							}
-							else
-								
-							{
-								
-								x1=startStateBlock.getX()+66;
-								y1=startStateBlock.getY()+16;
-								x2=endStateBlock.getX()+16;
-								y2=endStateBlock.getY()+66;
-								shift = false;
-								
-							}
-							
-							}
-					else if((startStateBlock.getX()>endStateBlock.getX())&&(startStateBlock.getY()<endStateBlock.getY()))
-					{
-						if(!shift)
+
+					if ((startStateBlock.getX() < endStateBlock.getX()) && (startStateBlock.getY() > endStateBlock.getY())) {
+						if (!shift) {
+							x1 = startStateBlock.getX() + 48;
+							y1 = startStateBlock.getY() + 7;
+							x2 = endStateBlock.getX() + 7;
+							y2 = endStateBlock.getY() + 48;
+						} else
+
 						{
-						x1=startStateBlock.getX()+7;
-						y1=startStateBlock.getY()+48;
-						x2=endStateBlock.getX()+48;
-						y2=endStateBlock.getY()+7;
+
+							x1 = startStateBlock.getX() + 66;
+							y1 = startStateBlock.getY() + 16;
+							x2 = endStateBlock.getX() + 16;
+							y2 = endStateBlock.getY() + 66;
+							shift = false;
+
 						}
-						
-						else
-						{
-							x1=startStateBlock.getX()+16;
-							y1=startStateBlock.getY()+66;
-							x2=endStateBlock.getX()+66;
-							y2=endStateBlock.getY()+16;
-							shift =false;
-							
+
+					} else if ((startStateBlock.getX() > endStateBlock.getX()) && (startStateBlock.getY() < endStateBlock.getY())) {
+						if (!shift) {
+							x1 = startStateBlock.getX() + 7;
+							y1 = startStateBlock.getY() + 48;
+							x2 = endStateBlock.getX() + 48;
+							y2 = endStateBlock.getY() + 7;
 						}
-						
-											
-											
+
+						else {
+							x1 = startStateBlock.getX() + 16;
+							y1 = startStateBlock.getY() + 66;
+							x2 = endStateBlock.getX() + 66;
+							y2 = endStateBlock.getY() + 16;
+							shift = false;
+
+						}
+
 					}
-					
-					else if((startStateBlock.getX()<endStateBlock.getX())&&(startStateBlock.getY()<endStateBlock.getY()))
-					{
-						if(!shift)
-						{
-						x1=startStateBlock.getX()+66;
-						y1=startStateBlock.getY()+48;
-						x2=endStateBlock.getX()+16;
-						y2=endStateBlock.getY()+7;
+
+					else if ((startStateBlock.getX() < endStateBlock.getX()) && (startStateBlock.getY() < endStateBlock.getY())) {
+						if (!shift) {
+							x1 = startStateBlock.getX() + 66;
+							y1 = startStateBlock.getY() + 48;
+							x2 = endStateBlock.getX() + 16;
+							y2 = endStateBlock.getY() + 7;
 						}
-						
-						else
-						{
-							x1=startStateBlock.getX()+48;
-							y1=startStateBlock.getY()+66;
-							x2=endStateBlock.getX()+7;
-							y2=endStateBlock.getY()+16;
-							shift =false;
-							
+
+						else {
+							x1 = startStateBlock.getX() + 48;
+							y1 = startStateBlock.getY() + 66;
+							x2 = endStateBlock.getX() + 7;
+							y2 = endStateBlock.getY() + 16;
+							shift = false;
+
 						}
-						
-											
-											
+
+					} else if ((startStateBlock.getX() > endStateBlock.getX()) && (startStateBlock.getY() > endStateBlock.getY())) {
+						if (!shift) {
+							x1 = startStateBlock.getX() + 16;
+							y1 = startStateBlock.getY() + 7;
+							x2 = endStateBlock.getX() + 76; // y =66
+															// (Remdodified)
+							y2 = endStateBlock.getY() + 48;
+						}
+
+						else {
+							x1 = startStateBlock.getX() + 7;
+							y1 = startStateBlock.getY() + 16;
+							x2 = endStateBlock.getX() + 66; // x = 48
+							y2 = endStateBlock.getY() + 66;
+							shift = false;
+
+						}
+
 					}
-						else if((startStateBlock.getX()>endStateBlock.getX())&&(startStateBlock.getY()>endStateBlock.getY()))
-					{
-						if(!shift)
-						{
-						x1=startStateBlock.getX()+16;
-						y1=startStateBlock.getY()+7;
-						x2=endStateBlock.getX()+76; // y =66 (Remdodified)
-						y2=endStateBlock.getY()+48;
-						}
-						
-						else
-						{
-							x1=startStateBlock.getX()+7;
-							y1=startStateBlock.getY()+16;
-							x2=endStateBlock.getX()+66; // x = 48
-							y2=endStateBlock.getY()+66;
-							shift =false;
-							
-						}
-						
-											
-											
-					}
-					
-					
-					
-					
+
 					Line2D.Double line = new Line2D.Double(x1, y1, x2, y2);
 					lines.add(line);
 					paintLines();
+					addColorPallette(x1, x2, y1, y2);
 					for (FABlock nfaBlockObj : nfaBuilderModel.getNfaBlockList()) {
 						JLabel label = nfaBlockObj.getDfaLabel();
 						label.removeMouseListener(hoverListener);
@@ -390,9 +376,45 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 
 	}
 
+	public void addColorPallette(int x1, int x2, int y1, int y2) {
+
+		transition = new JLabel();
+		transition.setBounds((x1 + x2) / 2, (y1 + y2) / 2, 20, 20);
+		colorPallete = new JPanel();
+		colorPallete.setBorder(new TitledBorder("Enter Transitions!"));
+		colorPallete.setBounds((x1 + x2) / 2, (y1 + y2) / 2, 130, 80);
+		transit = new JTextField(4);
+		transit.setPreferredSize(new Dimension(50, 24));
+
+		colorPallete.add(transit);
+		actionPanel.add(colorPallete);
+		transit.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				tranValue = transit.getText();
+				actionPanel.remove(colorPallete);
+				transition.setFont(new Font("Serif", Font.BOLD, 18));
+				transition.setText(tranValue);
+				actionPanel.add(transition);
+				actionPanel.revalidate();
+				actionPanel.repaint();
+				TransitionBlock transitionBlock = new TransitionBlock();
+				transitionBlock.setName(tranValue);
+				nfaBuilderController.addTransitionBlocktoStateList(startStateBlock, endStateBlock, transitionBlock);
+			}
+		});
+
+		System.out.println(tranValue);
+
+		actionPanel.revalidate();
+		actionPanel.repaint();
+
+	}
+
 	void paintLines() {
 		double theta;
-		
+
 		for (Line2D.Double line : lines) {
 			g2.draw(line);
 			theta = Math.atan2(line.getY2() - line.getY1(), line.getX2() - line.getX1());
@@ -510,7 +532,6 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 
 			dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
 			dtde.getDropTargetContext().dropComplete(true);
-			
 
 		}
 
