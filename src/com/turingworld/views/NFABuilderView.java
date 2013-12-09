@@ -5,8 +5,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
@@ -23,14 +21,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.Line2D;
-import java.awt.geom.QuadCurve2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
-import javax.swing.Action;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -47,12 +43,9 @@ import javax.swing.border.TitledBorder;
 
 import com.turingworld.controller.NFABuilderController;
 import com.turingworld.model.BlockBuilderModel;
-import com.turingworld.model.DFABuilderModel;
 import com.turingworld.model.FABlock;
 import com.turingworld.model.NFABuilderModel;
 import com.turingworld.model.StateBlock;
-
-import com.turingworld.views.DFABuilderView.MenuActionListener;
 
 public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 
@@ -232,6 +225,15 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 		play.setToolTipText("Play\r\n");
 		play.setIcon(new ImageIcon("image/run.png"));
 		play.setBounds(30, 549, 75, 75);
+		play.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				NFARunWindow nfaRun = new NFARunWindow();
+			}
+		
+		
+		});
 
 		panel.add(play);
 
