@@ -612,6 +612,58 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 					}
 				}
 			}
+			
+			else if (e.getActionCommand().equals("Add Initial State"))
+			{
+				
+				for (FABlock nfaBlockObj : nfaBuilderModel.getNfaBlockList()) {
+						if (nfaBlockObj.equals(startStateBlock)) 
+						{	
+							((StateBlock) nfaBlockObj).setInitial(true);
+							actionPanel.remove(nfaBlockObj.getDfaLabel());
+							JLabel initial = new JLabel();
+							initial.setName("");
+							initial.setIcon(new ImageIcon("image/initialStateCirlce.png"));
+							initial.setBounds(nfaBlockObj.getX(),
+									nfaBlockObj.getY(), 80, 80);
+							initial.setTransferHandler(new TransferHandler("text"));
+							initial.addMouseListener(listener);;
+							nfaBlockObj.setDfaLabel(initial);
+							
+							actionPanel.add(nfaBlockObj.getDfaLabel());
+							actionPanel.revalidate();
+							actionPanel.repaint();
+							
+						}
+					}
+				
+			}
+			
+			else if(e.getActionCommand().equals("Add Final State"))
+			{
+				
+				for (FABlock nfaBlockObj : nfaBuilderModel.getNfaBlockList()) {
+					if (nfaBlockObj.equals(startStateBlock)) 
+					{	
+						((StateBlock) nfaBlockObj).setFinal(true);
+						actionPanel.remove(nfaBlockObj.getDfaLabel());
+						JLabel initial = new JLabel();
+						initial.setName("");
+						initial.setIcon(new ImageIcon("image/finalStateCirlce.png"));
+						initial.setBounds(nfaBlockObj.getX(),
+								nfaBlockObj.getY(), 80, 80);
+						initial.setTransferHandler(new TransferHandler("text"));
+						initial.addMouseListener(listener);;
+						nfaBlockObj.setDfaLabel(initial);
+						
+						actionPanel.add(nfaBlockObj.getDfaLabel());
+						actionPanel.revalidate();
+						actionPanel.repaint();
+						
+					}
+				}
+				
+			}
 		}
 
 	}
