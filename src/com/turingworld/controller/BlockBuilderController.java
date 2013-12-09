@@ -26,14 +26,12 @@ public class BlockBuilderController {
 	private Block block;
 	private AddBlockCommand addBlockCommand;
 	private Invoker invoker;
-	// private BlockBuilderView blockBuilderView;
 	private BuildViewInterface buildViewInterface;
 
 	private StringBuilder outputString;
 	public static boolean isTriviaClicked;
 	private ControllerHelper blockBuilderControllerHelper;
-	/*private TimerTask timerTask;
-*/
+
 	public StringBuilder getOutputString() {
 		return outputString;
 	}
@@ -47,8 +45,7 @@ public class BlockBuilderController {
 		this.blockBuilderModel = blockBuilderModel;
 		this.buildViewInterface = buildViewInterface;
 		this.blockBuilderControllerHelper = new ControllerHelper();
-		/*this.timerTask = new TimerTask(this);
-*/
+
 		isTriviaClicked = false;
 		invoker = new Invoker();
 	}
@@ -78,10 +75,6 @@ public class BlockBuilderController {
 		return block;
 	}
 
-	/*public TimerTask getTimerTask() {
-		return timerTask;
-	}*/
-
 	public BuildViewInterface getBuildViewInterface() {
 		return buildViewInterface;
 	}
@@ -89,10 +82,6 @@ public class BlockBuilderController {
 	public void setBuildViewInterface(BuildViewInterface buildViewInterface) {
 		this.buildViewInterface = buildViewInterface;
 	}
-
-	/*public void setTimerTask(TimerTask timerTask) {
-		this.timerTask = timerTask;
-	}*/
 
 	public Block updateBlockObj(int x, int y, Block block) {
 		if (block != null) {
