@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -33,6 +34,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
@@ -71,6 +73,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 	private FABlock b;
 	private String stateURL;
 	private FABlock faBlock;
+	private JLabel transition;
 	JLabel actionState;
 	private PopupForStateView popupForStateView;
 	private MouseListener hoverListener;
@@ -84,6 +87,9 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 	private ArrayList<StateBlock> endStateBlockList;
 	private Graphics2D g2;
 	private Timer timer;
+	private JPanel colorPallete;
+	private JTextField transit;
+	private String tranValue;
 
 	public NFABuilderView(NFABuilderModel nfaBuilderModel) {
 
@@ -339,6 +345,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 					Line2D.Double line = new Line2D.Double(x1, y1, x2, y2);
 					lines.add(line);
 					paintLines();
+					addColorPallette(x1,x2,y1,y2);
 					for (FABlock nfaBlockObj : nfaBuilderModel.getNfaBlockList()) {
 						JLabel label = nfaBlockObj.getDfaLabel();
 						label.removeMouseListener(hoverListener);
@@ -365,6 +372,39 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 
 		stateCirle.addMouseListener(listener);
 
+	}
+
+public void addColorPallette(int x1,int x2,int y1,int y2) {
+	 
+	transition = new JLabel();
+	transition.setBounds((x1+x2)/2,(y1+y2)/2,20,20);
+	colorPallete = new JPanel();
+	colorPallete.setBorder(new TitledBorder("Enter Transitions!"));
+	colorPallete.setBounds((x1+x2)/2,(y1+y2)/2,130,80);
+	transit = new JTextField(4);
+	transit.setPreferredSize( new Dimension( 50, 24 ) );
+	colorPallete.add(transit);
+	actionPanel.add(colorPallete);
+	transit.addActionListener(new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			tranValue = transit.getText();
+			actionPanel.remove(colorPallete);
+			transition.setFont(new Font("Serif", Font.BOLD, 18));
+			transition.setText(tranValue);
+			actionPanel.add(transition);
+			actionPanel.revalidate();
+			actionPanel.repaint();
+
+		}
+	});
+	
+	System.out.println(tranValue);
+	
+	actionPanel.revalidate();
+	actionPanel.repaint();
+		
 	}
 
 	void paintLines() {
