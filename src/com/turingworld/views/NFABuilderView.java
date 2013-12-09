@@ -241,7 +241,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				NFARunWindow nfaRun = new NFARunWindow();
+				NFARunWindow nfaRun = new NFARunWindow(startStateBlock);
 			}
 
 		});
