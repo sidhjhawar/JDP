@@ -544,7 +544,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 	public void addColorPallette(int x1, int x2, int y1, int y2) {
 
 		transition = new JLabel();
-		transition.setBounds((x1 + x2) / 2, (y1 + y2) / 2, 40, 20);
+		transition.setBounds((x1 + x2) / 2, ((y1 + y2) / 2)-20, 40, 20);
 		colorPallete = new JPanel();
 		colorPallete.setBorder(new TitledBorder("Enter Transitions!"));
 		colorPallete.setBounds((x1 + x2) / 2, (y1 + y2) / 2, 130, 80);
