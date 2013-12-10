@@ -766,6 +766,11 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 				b = nfaBuilderController.createBlockObj(stateURL,
 						dtde.getLocation().x, dtde.getLocation().y, 50, 93,
 						actionState, true, null);
+				JLabel text = new JLabel("q" +NFABuilderModel.stateNo);
+				System.out.println(NFABuilderModel.stateNo);
+				text.setForeground(Color.WHITE);
+				text.setFont(new Font("Serif", Font.BOLD, 20));
+				actionState.add(text);
 
 				actionPanel.add(actionState);
 

@@ -50,8 +50,8 @@ public class NFABuilderController {
 		faBlock.setDfaLabelURL(url);
 
 		if (isState) {
-			faBlock.setName("q" + DFABuilderModel.stateNo);
-			DFABuilderModel.stateNo++;
+			faBlock.setName("q" + NFABuilderModel.stateNo);
+			NFABuilderModel.stateNo++;
 			faBlock.setState(true);
 		} else {
 			faBlock.setName("t" + BlockBuilderModel.transitionNo);
