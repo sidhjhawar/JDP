@@ -298,6 +298,9 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 
 	}
 
+	/*
+	 * 
+	 */
 	private void setActionListener() {
 		blinker = new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
@@ -323,9 +326,8 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 
 					}
 
-				} else if (isTestClicked && fromPlayView) { // condition for
-															// return from
-															// PlayView
+				// condition for return of control from PlayView
+				} else if (isTestClicked && fromPlayView) {
 					if (!marioLabel.getBounds().intersects(currentPathState.getBounds())) {
 						marioLabel.setBounds(marioLabel.getX(), marioLabel.getY() + mario.getySpeed(), 65, 65);
 						actionPanel.add(marioLabel);
@@ -405,6 +407,13 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 
 	}
 
+	/*
+	 * Listener and menu for all the right clck option in the Action panel which includes:
+	 * 	1. set Initial State
+	 * 	2. set Final State
+	 * 	3. Add Transition 
+	 */
+	
 	class MenuActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -530,6 +539,11 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 
 	}
 
+	/*
+	 * 
+	 * Displays message to the user in case he does some mistakes. 
+	 */
+	
 	public void showMessage(boolean show, String message) {
 		noticeLabel.setVisible(show);
 		noticeLabel.setText(message);
@@ -548,6 +562,11 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		Timer timer = new Timer(1000, blinker);
 		timer.start();
 	}
+	
+	/*
+	 * creates 4 symbols to be associated with the transitions and provides options to the user to select any two of it.  
+	 * 
+	 */
 
 	public void createCharSelectView() {
 		charSelectPanel = new JPanel();
@@ -619,7 +638,9 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 				}
 			}
 		});
-
+		
+		// Adding a button with coin symbol
+		
 		coin1 = new JButton();
 		JLabel coin = new JLabel("");
 		coin1.setIcon(new ImageIcon("image/coin.png"));
@@ -651,6 +672,8 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 			}
 		});
 
+		// Adding a button with enemy symbol
+		
 		enemy1 = new JButton();
 		JLabel enemy = new JLabel("");
 		enemy1.setIcon(new ImageIcon("image/enemy.png"));
@@ -702,6 +725,9 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 
 	}
 
+	/*
+	 * Create a new window with DFABuilderView
+	 */
 	public void createNewWindow() {
 		boolean isTriviaClicked = false;
 		if (dfaBuilderController.isTriviaClicked) {
@@ -765,6 +791,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		menuBar.add(mntmTutorial);
 	}
 
+	
 	public void loadpaint(BlockBuilderModel blockbuildermodel) {
 		actionPanel.removeAll();
 		for (Block block : blockbuildermodel.getBlockList()) {
@@ -833,6 +860,9 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		this.currentPathState = currentPathState;
 	}
 
+	/*
+	 * Create the Left Panel View. The left panel contains labels for adding transitions, undo remove
+	 */
 	private void createLeftPaneView() {
 		JPanel leftPanel = new JPanel();
 		leftPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -981,6 +1011,11 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		castle.addMouseListener(listener);
 	}
 
+	/*
+	 * Adds a Transition Path to Test the DFA .
+	 * The user can add symbols to the string and form any string of his choice. This string will be validated with the DFA
+	 * that is made by the user for corectness.
+	 */
 	protected void addTransitionPath() {
 		inputPathLabels = new ArrayList<JLabel>();
 		plus = new JButton();
@@ -1125,6 +1160,9 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 
 	}
 
+	/*
+	 *  The action that s performed on movenet of mario
+	 */
 	class PlayTimerTaskListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -1138,6 +1176,9 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		}
 	}
 
+	/*
+	 * Draw line connecting two points  
+	 */
 	
 	public void drawLine(String url2, JLabel stateTransit, int x1, int w1, int y1, int h1, int x2, int w2, int y2, int h2, Graphics g, String transitionType) {
 
@@ -1219,6 +1260,9 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		this.inputPathString = inputPathString;
 	}
 
+	/*
+	 * Draws self loop for the current state. 
+	 */
 	public void drawSelfLoop(Block b, Graphics g) {
 		Graphics2D g2d = (Graphics2D) g.create();
 
@@ -1228,6 +1272,9 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 
 	}
 
+	/*
+	 * 
+	 */
 	public void addColorPallette(StateBlock firstBlock, StateBlock secondBlock) {
 		db = new StateBlock();
 		final int newX;
@@ -1385,6 +1432,9 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 
 	}
 
+	/*
+	 * Remove a particular block from a panel.  
+	 */
 	public void removeFromPanel(FABlock dfaBlock) {
 		String name = dfaBlock.getName();
 		JLabel msg = new JLabel(++activityNo + ". " + name + " is removed from the panel");
@@ -1399,6 +1449,10 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		repaint();
 	}
 
+	/*
+	 * Adding a Block to the Panel. The block passed as argument to the method is added to the panel.
+	 *  
+	 */
 	public void addToPanel(FABlock dfaBlock) {
 		dfaBlock.getDfaLabel().setBounds(dfaBlock.getX(), dfaBlock.getY(), dfaBlock.getWidth(), dfaBlock.getHeight());
 		String name = dfaBlock.getName();
