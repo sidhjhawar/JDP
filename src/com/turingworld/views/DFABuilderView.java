@@ -36,6 +36,7 @@ import java.awt.geom.QuadCurve2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -791,6 +792,12 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		JMenuItem mntmTutorial = new JMenuItem("Tutorial");
 		mntmTutorial.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					TutorialMain tuts =  new TutorialMain();
+				} catch (URISyntaxException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		mntmTutorial.setIcon(new ImageIcon("image/helpIcon.png"));

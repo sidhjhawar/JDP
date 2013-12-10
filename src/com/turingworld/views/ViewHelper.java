@@ -9,6 +9,7 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URISyntaxException;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -233,6 +234,18 @@ public class ViewHelper extends JFrame {
 
 		JMenuItem tutorialMenu = new JMenuItem("Tutorial");
 		tutorialMenu.setIcon(new ImageIcon("image/helpIcon.png"));
+		tutorialMenu.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					TutorialMain tuts =  new TutorialMain();
+				} catch (URISyntaxException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}				
+			}
+		});
 		menuBar.add(tutorialMenu);
 	}
 

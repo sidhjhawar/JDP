@@ -31,10 +31,13 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.TitledBorder;
 
+import com.turingworld.controller.NFABuilderController;
+import com.turingworld.model.FABlock;
+import com.turingworld.model.NFABuilderModel;
 import com.turingworld.model.StateBlock;
 import com.turingworld.model.TransitionBlock;
 
-public class NFARunWindow extends JFrame {
+public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 	private JPanel actionPanel;
 	private JLabel treeBWLevel1;
 	private JLabel treeBWLevel23;
@@ -81,6 +84,10 @@ public class NFARunWindow extends JFrame {
 	private StateBlock initialState;
 	private Line2D line;
 
+	NFABuilderController nfaController;
+	NFABuilderModel nfaModel;
+
+
 	public NFARunWindow(StateBlock firstState) {
 
 		// Below try block is for the theme of the swing component which is
@@ -94,7 +101,10 @@ public class NFARunWindow extends JFrame {
 			}
 		} catch (Exception e) {
 		}
-
+		
+		/*this.nfaModel =  nfaBuilderModel;
+		NFARunWindow nfaWindow = new NFARunWindow(nfaModel);
+		nfaController = new NFABuilderController(nfaModel, nfaWindow);*/
 		previousBlock = new ArrayList<StateBlock>();
 		previousBlock.add(firstState);
 		currentBlock = new ArrayList<StateBlock>();
@@ -105,11 +115,14 @@ public class NFARunWindow extends JFrame {
 		setBounds(50, 0, 1259, 719);
 		this.setVisible(true);
 
+
 		setActionListener();
 		createBWScreen();
 		displayOutput();
 
 	}
+	
+
 
 	/*
 	 * Below method is called from the constructor when the object of this class
@@ -120,7 +133,7 @@ public class NFARunWindow extends JFrame {
 	 */
 	private void displayOutput() {
 		level = 2;
-
+		//Level 1 by default
 		treeBWLevel1.setIcon(new ImageIcon("image/tree.png"));
 		JLabel text = new JLabel("q0");
 		text.setFont(new Font("Serif", Font.BOLD, 16));
@@ -144,6 +157,8 @@ public class NFARunWindow extends JFrame {
 					}
 				}
 			}
+			
+			
 			int i = 0;
 			for (StateBlock block : currentBlock) {
 				i++;
@@ -476,6 +491,32 @@ public class NFARunWindow extends JFrame {
 
 			}
 		};
+	}
+	
+	
+
+	@Override
+	public void addToPanel(FABlock dfaBlock) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeFromPanel(FABlock dfaBlock) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public NFABuildViewInterface getViewType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void moveState(JLabel label, int x1, int y1, int x2, int y2) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
