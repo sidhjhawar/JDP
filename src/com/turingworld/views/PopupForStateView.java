@@ -3,6 +3,12 @@ package com.turingworld.views;
 /**
  * @author bbachuna, chauhanp, erajan, haashraf, sjhawar, vrajasek.
  */
+/*
+ * This class is for setting the following options to a state:
+ * 1. Initial State.
+ * 2. Final State.
+ * 3. Transition between two states.
+ */
 import java.awt.event.ActionListener;
 
 import javax.swing.JMenuItem;

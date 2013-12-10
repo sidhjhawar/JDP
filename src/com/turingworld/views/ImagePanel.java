@@ -3,6 +3,11 @@ package com.turingworld.views;
 /**
  * @author bbachuna, chauhanp, erajan, haashraf, sjhawar, vrajasek.
  */
+
+/*
+ * This class is for setting size and draw image on the panel.
+ */
+
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;

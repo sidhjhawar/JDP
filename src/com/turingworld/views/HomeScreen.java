@@ -3,6 +3,15 @@ package com.turingworld.views;
 /**
  * @author bbachuna, chauhanp, erajan, haashraf, sjhawar, vrajasek.
  */
+
+/*
+ * This class is for Displaying the Home screen. 
+ * users can select any of the options from the following.
+ * 1. Load Existing file.
+ * 2. Help
+ * 3. Build DFA
+ * 4. Build NFA
+ */
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;

@@ -3,7 +3,11 @@ package com.turingworld.views;
 /**
  * @author bbachuna, chauhanp, erajan, haashraf, sjhawar, vrajasek.
  */
-
+/*
+ * This class is for building the DFA.
+ * This class helps to build the DFA when the user clicks on the Build DFA option on the Home
+ * Screen.
+ */
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
