@@ -1,5 +1,8 @@
 package com.turingworld.model;
-
+/*
+ * Like BlockBuilderModel and DFABuilder model, the NFABuilderModel is used to store all the NFA Blocks in the 
+ * array list for further retrieval. 
+ */
 import java.util.ArrayList;
 
 public class NFABuilderModel {

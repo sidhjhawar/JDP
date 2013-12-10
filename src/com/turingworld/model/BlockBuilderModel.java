@@ -1,5 +1,9 @@
 package com.turingworld.model;
-
+/*
+ * This class is another model class which is used in the Build and Learn functionality. Here , we store the list of 
+ * blocks such as transition , states that are created by the user. Each of the arraylist has the list of all the 
+ * blocks that are used by the user to build.
+ */
 import java.util.ArrayList;
 
 public class BlockBuilderModel {
@@ -7,6 +11,7 @@ public class BlockBuilderModel {
 	public static int transitionNo = 0;
 	
 	private ArrayList<Block> blockList;
+	// The below arraylist is useful for storing the snapshot.
 	private ArrayList<Block> miniBlockList;
 	
 	public ArrayList<Block> getMiniBlockList() {
