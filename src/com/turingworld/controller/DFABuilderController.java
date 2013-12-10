@@ -1,5 +1,8 @@
 package com.turingworld.controller;
 
+/**
+ * @author bbachuna, chauhanp, erajan, haashraf, sjhawar, vrajasek.
+ */
 /* This class is the controller for DFABuilder view and model. 
  * When the states and transitions are being added to the action panel or undoed, 
  * methods of this class are being called. This class also contains methods which checks whether

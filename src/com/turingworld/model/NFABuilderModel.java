@@ -1,4 +1,8 @@
 package com.turingworld.model;
+
+/**
+ * @author bbachuna, chauhanp, erajan, haashraf, sjhawar, vrajasek.
+ */
 /*
  * Like BlockBuilderModel and DFABuilder model, the NFABuilderModel is used to store all the NFA Blocks in the 
  * array list for further retrieval. 
@@ -9,7 +13,7 @@ public class NFABuilderModel {
 
 	private ArrayList<FABlock> faBlockList;
 	public static int stateNo = 0;
-	public static int transitionNo=0;
+	public static int transitionNo = 0;
 
 	public ArrayList<FABlock> getNfaBlockList() {
 		return faBlockList;

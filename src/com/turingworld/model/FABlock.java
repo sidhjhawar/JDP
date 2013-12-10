@@ -1,4 +1,8 @@
 package com.turingworld.model;
+
+/**
+ * @author bbachuna, chauhanp, erajan, haashraf, sjhawar, vrajasek.
+ */
 /*
  * This interface is the parent for the States and Transition. Both these blocks are derived
  * from the FABlock interface. FABlock being the parent block. StateBlock and TransitionBlock have their own implementation of the 

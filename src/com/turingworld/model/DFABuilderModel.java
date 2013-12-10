@@ -1,4 +1,8 @@
 package com.turingworld.model;
+
+/**
+ * @author bbachuna, chauhanp, erajan, haashraf, sjhawar, vrajasek.
+ */
 /*
  * As the name suggests, this model class serves as the storage for storing the blocks that are created in the 
  * DFA functionality. The data structure is same as that of the BlockBuilderModel.
@@ -18,11 +22,9 @@ public class DFABuilderModel {
 	public void setDfaBlockList(ArrayList<FABlock> dfaBlockList) {
 		this.dfaBlockList = dfaBlockList;
 	}
-	
-	public DFABuilderModel()
-	{
+
+	public DFABuilderModel() {
 		dfaBlockList = new ArrayList<FABlock>();
 	}
-
 
 }

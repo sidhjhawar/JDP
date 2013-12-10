@@ -1,5 +1,8 @@
 package com.turingworld.helper;
 
+/**
+ * @author bbachuna, chauhanp, erajan, haashraf, sjhawar, vrajasek.
+ */
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 

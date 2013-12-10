@@ -1,4 +1,8 @@
 package com.turingworld.model;
+
+/**
+ * @author bbachuna, chauhanp, erajan, haashraf, sjhawar, vrajasek.
+ */
 /*
  * This class is a model for the blocks that are used in Build and Learn. This model class stores attributes
  * of all the blocks that are used by the user to build simple blocks in Build and Learn functionality.
@@ -9,14 +13,16 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import com.google.gson.annotations.Expose;
+
 public class Block {
-	
+
 	private String name;
 	private int x;
 	private int y;
 	private int height;
 	private int width;
-	@Expose private JLabel blockLabel;
+	@Expose
+	private JLabel blockLabel;
 	private String blockLabelURL;
 	private boolean isState;
 	private String transitionType;
@@ -38,7 +44,7 @@ public class Block {
 	}
 
 	public Rectangle getBounds() {
-		return new Rectangle(x-25, y-25, blockLabel.getIcon().getIconWidth()+50, blockLabel.getIcon().getIconHeight()+50);
+		return new Rectangle(x - 25, y - 25, blockLabel.getIcon().getIconWidth() + 50, blockLabel.getIcon().getIconHeight() + 50);
 	}
 
 	public String getName() {

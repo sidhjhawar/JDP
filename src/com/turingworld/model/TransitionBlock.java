@@ -1,4 +1,8 @@
 package com.turingworld.model;
+
+/**
+ * @author bbachuna, chauhanp, erajan, haashraf, sjhawar, vrajasek.
+ */
 /*
  * The class TransitionBlock is of type FABlock. The TransitionBlocks that are created by the user are stored 
  * and retrieved using this class. All the TransitionBlock's attributes and methods are implemented here. 
@@ -97,7 +101,6 @@ public class TransitionBlock implements FABlock {
 		return new Rectangle(x, y, dfaLabel.getIcon().getIconWidth(), dfaLabel.getIcon().getIconHeight());
 	}
 
-	
 	@Override
 	public Rectangle getCollisionBounds() {
 		return new Rectangle(x - 50, y - 50, dfaLabel.getIcon().getIconWidth() + 100, dfaLabel.getIcon().getIconHeight() + 100);
