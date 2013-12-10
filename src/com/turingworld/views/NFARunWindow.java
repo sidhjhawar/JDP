@@ -12,8 +12,10 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -74,6 +76,8 @@ public class NFARunWindow extends JFrame {
 	int y2 = 0;
 	private HashMap<Integer, JLabel> labelList;
 	private StateBlock initialState;
+	private Line2D line;
+	
 
 	public NFARunWindow(StateBlock firstState) {
 
@@ -92,12 +96,12 @@ public class NFARunWindow extends JFrame {
 		previousBlock.add(firstState);
 		currentBlock = new ArrayList<StateBlock>();
 		labelList = new HashMap<Integer, JLabel>();
+		
 		setTitle("Welcome - NFA Visualize window!");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(50, 0, 1259, 719);
 		this.setVisible(true);
-		timer = new Timer(5, blinker);
-		timer.start();
+		
 
 		setActionListener();
 		createBWScreen();
@@ -117,12 +121,14 @@ public class NFARunWindow extends JFrame {
 		text.setFont(new Font("Serif", Font.BOLD, 16));
 		text.setForeground(Color.white);
 		treeBWLevel1.add(text);
+		
+		line = new Line2D.Double(550,975,100,200);
+		
 //Since , NFA's are practically never ending, we have kept our implementation upto 4 levels.
 		while (level != 4) {
 
 			for (StateBlock block : previousBlock) {
-				x1 = block.getX();
-				y1 = block.getY();
+
 				HashMap<StateBlock, ArrayList<TransitionBlock>> list = block
 						.getStateTransitionList();
 				for (Map.Entry<StateBlock, ArrayList<TransitionBlock>> entry : list
@@ -137,8 +143,11 @@ public class NFARunWindow extends JFrame {
 			int i = 0;
 			for (StateBlock block : currentBlock) {
 				i++;
-				x2 = block.getX();
+				
+				/*x2 = block.getX();
 				y2 = block.getY();
+				line = new Line2D.Double(x1,y1,x2,y2);
+				transitionPath.add(line);*/
 				labelList.get(
 						new Integer(Integer.toString(level)
 								+ Integer.toString(i))).setIcon(
@@ -167,7 +176,7 @@ public class NFARunWindow extends JFrame {
 		float[] dash1 = { 2f, 0f, 2f };
 		Color myNewBlue = new Color(136, 69, 19);
 
-		BasicStroke bs1 = new BasicStroke(20, BasicStroke.CAP_BUTT,
+		BasicStroke bs1 = new BasicStroke(14, BasicStroke.CAP_ROUND,
 				BasicStroke.JOIN_BEVEL);
 
 		actionPanel = new ImagePanel(
@@ -183,6 +192,8 @@ public class NFARunWindow extends JFrame {
 		g = (Graphics2D) actionPanel.getGraphics();
 		g.setColor(myNewBlue);
 		g.setStroke(bs1);
+		timer = new Timer(5, blinker);
+		timer.start();
 
 		treeBWLevel1 = new JLabel("");
 		treeBWLevel1.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -410,8 +421,55 @@ public class NFARunWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-
-				g.drawLine(x1, y1, x2, y2);
+				//Level 1
+				g.draw(new Line2D.Double(580,120, 210, 195));
+				g.draw(new Line2D.Double(580,120, 580, 195));
+				g.draw(new Line2D.Double(580,120, 990, 195));
+				//Level 21
+				g.draw(new Line2D.Double(190,260, 98, 345));
+				g.draw(new Line2D.Double(190,260, 184, 345));
+				g.draw(new Line2D.Double(190,260, 265, 345));
+				//Level 22
+				g.draw(new Line2D.Double(586,260, 502, 345));
+				g.draw(new Line2D.Double(586,260, 586, 345));
+				g.draw(new Line2D.Double(586,260, 665, 345));
+				//Level 23
+				g.draw(new Line2D.Double(1007,260, 916, 345));
+				g.draw(new Line2D.Double(1007,260, 1007, 345));
+				g.draw(new Line2D.Double(1007,260, 1087, 345));
+				//Level 31
+				g.draw(new Line2D.Double(95,410, 40, 500));
+				g.draw(new Line2D.Double(95,410, 98, 500));
+				//Level 32
+				g.draw(new Line2D.Double(184,410, 157, 500));
+				g.draw(new Line2D.Double(184,410, 217, 500));
+				//Level 33
+				g.draw(new Line2D.Double(265,410, 274, 500));
+				g.draw(new Line2D.Double(265,410, 328, 500));
+				//Level 34
+				g.draw(new Line2D.Double(499,410, 446, 500));
+				g.draw(new Line2D.Double(499,410, 500, 500));
+				//Level 35
+				g.draw(new Line2D.Double(584,410, 553, 500));
+				g.draw(new Line2D.Double(584,410, 607, 500));
+				//Level 36
+				g.draw(new Line2D.Double(667,410, 667, 500));
+				g.draw(new Line2D.Double(667,410, 719, 500));
+				//Level 37
+				g.draw(new Line2D.Double(916,410, 857, 500));
+				g.draw(new Line2D.Double(916,410, 916, 500));
+				//Level 38
+				g.draw(new Line2D.Double(1005,410, 974, 500));
+				g.draw(new Line2D.Double(1005,410, 1025, 500));
+				//Level 39
+				g.draw(new Line2D.Double(1087,410, 1087, 500));
+				g.draw(new Line2D.Double(1087,410, 1144, 500));
+				
+				
+				
+		
+				
+				
 
 			}
 		};
