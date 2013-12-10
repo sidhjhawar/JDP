@@ -1,5 +1,8 @@
 package com.turingworld.views;
 
+/**
+ * @author bbachuna, chauhanp, erajan, haashraf, sjhawar, vrajasek.
+ */
 /*
  * This view class is to show the intuitive visualization of the NFA. The instance of this class is called from
  * the NFABuilderView which sends the initial stateblock to the constructor of this class.
@@ -77,11 +80,11 @@ public class NFARunWindow extends JFrame {
 	private HashMap<Integer, JLabel> labelList;
 	private StateBlock initialState;
 	private Line2D line;
-	
 
 	public NFARunWindow(StateBlock firstState) {
 
-		//Below try block is for the theme of the swing component which is "Nimbus" here.
+		// Below try block is for the theme of the swing component which is
+		// "Nimbus" here.
 		try {
 			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 				if ("Nimbus".equals(info.getName())) {
@@ -96,23 +99,25 @@ public class NFARunWindow extends JFrame {
 		previousBlock.add(firstState);
 		currentBlock = new ArrayList<StateBlock>();
 		labelList = new HashMap<Integer, JLabel>();
-		
+
 		setTitle("Welcome - NFA Visualize window!");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(50, 0, 1259, 719);
 		this.setVisible(true);
-		
 
 		setActionListener();
 		createBWScreen();
 		displayOutput();
 
 	}
-/*
- * Below method is called from the constructor when the object of this class is instantiated.
- * The method iterate over the data structure which is used to store what user has made in the NFABuilderView
- * and plots on the screen with a complete new visual aid. This would give a better understanding of the NFA
- */
+
+	/*
+	 * Below method is called from the constructor when the object of this class
+	 * is instantiated. The method iterate over the data structure which is used
+	 * to store what user has made in the NFABuilderView and plots on the screen
+	 * with a complete new visual aid. This would give a better understanding of
+	 * the NFA
+	 */
 	private void displayOutput() {
 		level = 2;
 
@@ -121,18 +126,17 @@ public class NFARunWindow extends JFrame {
 		text.setFont(new Font("Serif", Font.BOLD, 16));
 		text.setForeground(Color.white);
 		treeBWLevel1.add(text);
-		
-		line = new Line2D.Double(550,975,100,200);
-		
-//Since , NFA's are practically never ending, we have kept our implementation upto 4 levels.
+
+		line = new Line2D.Double(550, 975, 100, 200);
+
+		// Since , NFA's are practically never ending, we have kept our
+		// implementation upto 4 levels.
 		while (level != 5) {
 
 			for (StateBlock block : previousBlock) {
 
-				HashMap<StateBlock, ArrayList<TransitionBlock>> list = block
-						.getStateTransitionList();
-				for (Map.Entry<StateBlock, ArrayList<TransitionBlock>> entry : list
-						.entrySet()) {
+				HashMap<StateBlock, ArrayList<TransitionBlock>> list = block.getStateTransitionList();
+				for (Map.Entry<StateBlock, ArrayList<TransitionBlock>> entry : list.entrySet()) {
 					StateBlock key = entry.getKey();
 					ArrayList<TransitionBlock> value = entry.getValue();
 					for (TransitionBlock transitionBlock : value) {
@@ -143,43 +147,31 @@ public class NFARunWindow extends JFrame {
 			int i = 0;
 			for (StateBlock block : currentBlock) {
 				i++;
-				labelList.get(
-						new Integer(Integer.toString(level)
-								+ Integer.toString(i))).setIcon(
-						new ImageIcon("image/tree.png"));
+				labelList.get(new Integer(Integer.toString(level) + Integer.toString(i))).setIcon(new ImageIcon("image/tree.png"));
 				String stateName = "" + block.getName().toString();
 				JLabel stateNo = new JLabel(stateName);
 				stateNo.setFont(new Font("Serif", Font.BOLD, 16));
 				stateNo.setForeground(Color.white);
-				JLabel trans =  new JLabel("A");
+				JLabel trans = new JLabel("A");
 				trans.setText("A");
 				trans.setFont(new Font("Serif", Font.BOLD, 16));
 				trans.setForeground(Color.white);
-				JLabel transitionChar =  new JLabel();
-				FlowLayout fl =  new FlowLayout(FlowLayout.CENTER);
+				JLabel transitionChar = new JLabel();
+				FlowLayout fl = new FlowLayout(FlowLayout.CENTER);
 				fl.setVgap(15);
 				transitionChar.setLayout(fl);
-				int x = labelList.get(
-						new Integer(Integer.toString(level)
-								+ Integer.toString(i))).getX();
-				int y = labelList.get(
-						new Integer(Integer.toString(level)
-								+ Integer.toString(i))).getY();
-				if(level == 4)
-				transitionChar.setBounds(x, y + 60, 40, 40);
+				int x = labelList.get(new Integer(Integer.toString(level) + Integer.toString(i))).getX();
+				int y = labelList.get(new Integer(Integer.toString(level) + Integer.toString(i))).getY();
+				if (level == 4)
+					transitionChar.setBounds(x, y + 60, 40, 40);
 				else
-				transitionChar.setBounds(x + 55, y, 40, 40);
+					transitionChar.setBounds(x + 55, y, 40, 40);
 				transitionChar.setIcon(new ImageIcon("image/apple.png"));
 				transitionChar.add(trans);
 				actionPanel.add(transitionChar);
-				
-				labelList.get(
-						new Integer(Integer.toString(level)
-								+ Integer.toString(i))).setLayout(
-						new FlowLayout(FlowLayout.CENTER));
-				labelList.get(
-						new Integer(Integer.toString(level)
-								+ Integer.toString(i))).add(stateNo);
+
+				labelList.get(new Integer(Integer.toString(level) + Integer.toString(i))).setLayout(new FlowLayout(FlowLayout.CENTER));
+				labelList.get(new Integer(Integer.toString(level) + Integer.toString(i))).add(stateNo);
 			}
 			level++;
 			previousBlock = (ArrayList<StateBlock>) currentBlock.clone();
@@ -188,22 +180,20 @@ public class NFARunWindow extends JFrame {
 		}
 
 	}
-// Plots the J Components on the screen. Called from the constuctor.
+
+	// Plots the J Components on the screen. Called from the constuctor.
 	private void createBWScreen() {
 		float[] dash1 = { 2f, 0f, 2f };
 		Color myNewBlue = new Color(136, 69, 19);
 
-		BasicStroke bs1 = new BasicStroke(14, BasicStroke.CAP_ROUND,
-				BasicStroke.JOIN_BEVEL);
+		BasicStroke bs1 = new BasicStroke(14, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL);
 
-		actionPanel = new ImagePanel(
-				new ImageIcon("image/BackgroundNFA.png").getImage());
+		actionPanel = new ImagePanel(new ImageIcon("image/BackgroundNFA.png").getImage());
 		actionPanel.setBackground(Color.white);
 		actionPanel.setBounds(0, 0, 1259, 719);
 		getContentPane().add(actionPanel);
 
-		actionPanel.setBorder(new TitledBorder(null, "", TitledBorder.LEADING,
-				TitledBorder.TOP, null, null));
+		actionPanel.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		actionPanel.setLayout(null);
 
 		g = (Graphics2D) actionPanel.getGraphics();
@@ -217,7 +207,7 @@ public class NFARunWindow extends JFrame {
 		treeBWLevel1.setIcon(new ImageIcon("image/treeBW.png"));
 		treeBWLevel1.setBounds(553, 51, 58, 58);
 		treeBWLevel1.setName("1");
-		
+
 		actionPanel.add(treeBWLevel1);
 		labelList.put(11, treeBWLevel1);
 
@@ -432,61 +422,57 @@ public class NFARunWindow extends JFrame {
 		actionPanel.add(treeBWLevel418);
 
 	}
-// The timer actionlistener is used to continuously plot the transitions which are drawn using Graphics component.
+
+	// The timer actionlistener is used to continuously plot the transitions
+	// which are drawn using Graphics component.
 	private void setActionListener() {
 		blinker = new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				//Level 1
-				g.draw(new Line2D.Double(580,120, 210, 195));
-				g.draw(new Line2D.Double(580,120, 580, 195));
-				g.draw(new Line2D.Double(580,120, 990, 195));
-				//Level 21
-				g.draw(new Line2D.Double(190,260, 98, 345));
-				g.draw(new Line2D.Double(190,260, 184, 345));
-				g.draw(new Line2D.Double(190,260, 265, 345));
-				//Level 22
-				g.draw(new Line2D.Double(586,260, 502, 345));
-				g.draw(new Line2D.Double(586,260, 586, 345));
-				g.draw(new Line2D.Double(586,260, 665, 345));
-				//Level 23
-				g.draw(new Line2D.Double(1007,260, 916, 345));
-				g.draw(new Line2D.Double(1007,260, 1007, 345));
-				g.draw(new Line2D.Double(1007,260, 1087, 345));
-				//Level 31
-				g.draw(new Line2D.Double(95,410, 40, 500));
-				g.draw(new Line2D.Double(95,410, 98, 500));
-				//Level 32
-				g.draw(new Line2D.Double(184,410, 157, 500));
-				g.draw(new Line2D.Double(184,410, 217, 500));
-				//Level 33
-				g.draw(new Line2D.Double(265,410, 274, 500));
-				g.draw(new Line2D.Double(265,410, 328, 500));
-				//Level 34
-				g.draw(new Line2D.Double(499,410, 446, 500));
-				g.draw(new Line2D.Double(499,410, 500, 500));
-				//Level 35
-				g.draw(new Line2D.Double(584,410, 553, 500));
-				g.draw(new Line2D.Double(584,410, 607, 500));
-				//Level 36
-				g.draw(new Line2D.Double(667,410, 667, 500));
-				g.draw(new Line2D.Double(667,410, 719, 500));
-				//Level 37
-				g.draw(new Line2D.Double(916,410, 857, 500));
-				g.draw(new Line2D.Double(916,410, 916, 500));
-				//Level 38
-				g.draw(new Line2D.Double(1005,410, 974, 500));
-				g.draw(new Line2D.Double(1005,410, 1025, 500));
-				//Level 39
-				g.draw(new Line2D.Double(1087,410, 1087, 500));
-				g.draw(new Line2D.Double(1087,410, 1144, 500));
-				
-				
-				
-		
-				
-				
+				// Level 1
+				g.draw(new Line2D.Double(580, 120, 210, 195));
+				g.draw(new Line2D.Double(580, 120, 580, 195));
+				g.draw(new Line2D.Double(580, 120, 990, 195));
+				// Level 21
+				g.draw(new Line2D.Double(190, 260, 98, 345));
+				g.draw(new Line2D.Double(190, 260, 184, 345));
+				g.draw(new Line2D.Double(190, 260, 265, 345));
+				// Level 22
+				g.draw(new Line2D.Double(586, 260, 502, 345));
+				g.draw(new Line2D.Double(586, 260, 586, 345));
+				g.draw(new Line2D.Double(586, 260, 665, 345));
+				// Level 23
+				g.draw(new Line2D.Double(1007, 260, 916, 345));
+				g.draw(new Line2D.Double(1007, 260, 1007, 345));
+				g.draw(new Line2D.Double(1007, 260, 1087, 345));
+				// Level 31
+				g.draw(new Line2D.Double(95, 410, 40, 500));
+				g.draw(new Line2D.Double(95, 410, 98, 500));
+				// Level 32
+				g.draw(new Line2D.Double(184, 410, 157, 500));
+				g.draw(new Line2D.Double(184, 410, 217, 500));
+				// Level 33
+				g.draw(new Line2D.Double(265, 410, 274, 500));
+				g.draw(new Line2D.Double(265, 410, 328, 500));
+				// Level 34
+				g.draw(new Line2D.Double(499, 410, 446, 500));
+				g.draw(new Line2D.Double(499, 410, 500, 500));
+				// Level 35
+				g.draw(new Line2D.Double(584, 410, 553, 500));
+				g.draw(new Line2D.Double(584, 410, 607, 500));
+				// Level 36
+				g.draw(new Line2D.Double(667, 410, 667, 500));
+				g.draw(new Line2D.Double(667, 410, 719, 500));
+				// Level 37
+				g.draw(new Line2D.Double(916, 410, 857, 500));
+				g.draw(new Line2D.Double(916, 410, 916, 500));
+				// Level 38
+				g.draw(new Line2D.Double(1005, 410, 974, 500));
+				g.draw(new Line2D.Double(1005, 410, 1025, 500));
+				// Level 39
+				g.draw(new Line2D.Double(1087, 410, 1087, 500));
+				g.draw(new Line2D.Double(1087, 410, 1144, 500));
 
 			}
 		};

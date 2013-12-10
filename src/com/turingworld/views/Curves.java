@@ -1,4 +1,8 @@
 package com.turingworld.views;
+
+/**
+ * @author bbachuna, chauhanp, erajan, haashraf, sjhawar, vrajasek.
+ */
 /*
  * The class is used for storing all the curves or quadcurve which are drawn between any two states and state
  * itself. We are storing them to continuously maintain them on screen.
@@ -18,24 +22,26 @@ public class Curves {
 	private ArrayList<QuadCurve2D.Double> curves;
 	private QuadCurve2D.Double curve;
 	private ArrayList<JLabel> stateTransits;
-	
-public Curves()
-	{
+
+	public Curves() {
 		curves = new ArrayList<QuadCurve2D.Double>();
 		startStateBlock = new ArrayList<StateBlock>();
 		finalEndStateBlock = new ArrayList<StateBlock>();
-		stateTransits= new ArrayList<JLabel>();
+		stateTransits = new ArrayList<JLabel>();
 	}
-	
+
 	public ArrayList<QuadCurve2D.Double> getCurves() {
 		return curves;
 	}
+
 	public void setCurves(QuadCurve2D.Double curves) {
 		this.curves.add(curves);
 	}
+
 	public QuadCurve2D.Double getCurve() {
 		return curve;
 	}
+
 	public void setCurve(QuadCurve2D.Double curve) {
 		this.curve = curve;
 	}

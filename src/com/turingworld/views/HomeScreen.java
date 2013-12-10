@@ -1,5 +1,8 @@
 package com.turingworld.views;
 
+/**
+ * @author bbachuna, chauhanp, erajan, haashraf, sjhawar, vrajasek.
+ */
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -68,11 +71,9 @@ public class HomeScreen extends JFrame {
 		nfaBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				NFABuilderModel nfaBuilderModel = new NFABuilderModel();
-				NFABuilderView nfaBuilderView = new NFABuilderView(
-						nfaBuilderModel);
+				NFABuilderView nfaBuilderView = new NFABuilderView(nfaBuilderModel);
 
-				NFABuilderController nfaBuilderController = new NFABuilderController(
-						nfaBuilderModel, nfaBuilderView);
+				NFABuilderController nfaBuilderController = new NFABuilderController(nfaBuilderModel, nfaBuilderView);
 				nfaBuilderController.setNfaBuilderView(nfaBuilderView);
 				nfaBuilderView.setController(nfaBuilderController);
 				dispose();
@@ -87,11 +88,9 @@ public class HomeScreen extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 
 				DFABuilderModel dfaBuilderModel = new DFABuilderModel();
-				DFABuilderView dfaBuilderView = new DFABuilderView(
-						dfaBuilderModel);
+				DFABuilderView dfaBuilderView = new DFABuilderView(dfaBuilderModel);
 
-				DFABuilderController dfaBuilderController = new DFABuilderController(
-						dfaBuilderModel, dfaBuilderView);
+				DFABuilderController dfaBuilderController = new DFABuilderController(dfaBuilderModel, dfaBuilderView);
 				dfaBuilderController.setDfaBuilderView(dfaBuilderView);
 				dfaBuilderView.setController(dfaBuilderController);
 				dispose();
@@ -118,10 +117,8 @@ public class HomeScreen extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 
 				BlockBuilderModel blockBuilderModel = new BlockBuilderModel();
-				BlockBuilderView blockBuilderView = new BlockBuilderView(
-						blockBuilderModel);
-				BlockBuilderController blockBuilderController = new BlockBuilderController(
-						blockBuilderModel, blockBuilderView);
+				BlockBuilderView blockBuilderView = new BlockBuilderView(blockBuilderModel);
+				BlockBuilderController blockBuilderController = new BlockBuilderController(blockBuilderModel, blockBuilderView);
 				blockBuilderView.setController(blockBuilderController);
 				dispose();
 
