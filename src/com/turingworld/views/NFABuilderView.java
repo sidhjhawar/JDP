@@ -43,6 +43,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -133,7 +135,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 		recentActivityPanel = new JPanel();
 		recentActivityPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null,
 				null, null));
-		recentActivityPanel.setBounds(939, 0, 296, 681);
+		recentActivityPanel.setBounds(939, 0, 296, 665);
 		contentPanel.add(recentActivityPanel);
 		recentActivityPanel.setLayout(new BorderLayout(0, 0));
 
@@ -151,6 +153,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 		panelActivity.setLayout(new BoxLayout(panelActivity, BoxLayout.Y_AXIS));
 		actionPanel = new JPanel();
 		actionPanel.setBounds(155, 3, 785, 514);
+	//	actionPanel.setBounds(155, 3, 785, 514);
 		contentPanel.add(actionPanel);
 		actionPanel.setBorder(new TitledBorder(null, "", TitledBorder.LEADING,
 				TitledBorder.TOP, null, null));
@@ -173,7 +176,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 		output.setLayout(null);
 		output.setLayout(null);
 		outputScrollPanel.setViewportView(output);
-		
+		creatHeaderMenu();
 		
 		
 
@@ -190,13 +193,75 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 
 	}
 
+	private void creatHeaderMenu() {
+		JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+
+		JMenuItem mntmHome = new JMenuItem("Home");
+		mntmHome.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				HomeScreen homeScreen = new HomeScreen();
+				dispose();
+			}
+		});
+		mntmHome.setIcon(new ImageIcon("image/homeIcon.png"));
+		menuBar.add(mntmHome);
+
+		JMenuItem mntmNew = new JMenuItem("New");
+		mntmNew.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				createNewWindow();
+			}
+		});
+		mntmNew.setIcon(new ImageIcon("image/newIcon.png"));
+		menuBar.add(mntmNew);
+		JMenuItem mntmTrivia = new JMenuItem("Trivia");
+		mntmTrivia.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				removeFromPanel();
+			}
+
+		});
+		mntmTrivia.setIcon(new ImageIcon("image/exclamationIcon.png"));
+		menuBar.add(mntmTrivia);
+
+		JMenuItem mntmTutorial = new JMenuItem("Tutorial");
+		mntmTutorial.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		mntmTutorial.setIcon(new ImageIcon("image/helpIcon.png"));
+		menuBar.add(mntmTutorial);
+	}
+	public void removeFromPanel() {
+		actionPanel.removeAll();
+		actionPanel.revalidate();
+	}
+	
+	public void createNewWindow() {
+		boolean isTriviaClicked = false;
+		if (nfaBuilderController.isTriviaClicked) {
+			isTriviaClicked = true;
+		}
+		nfaBuilderModel = new NFABuilderModel();
+		NFABuilderView nfaBuilderView = new NFABuilderView(nfaBuilderModel);
+		nfaBuilderController = new NFABuilderController(nfaBuilderModel, nfaBuilderView);
+		nfaBuilderView.setController(nfaBuilderController);
+		NFABuilderModel.stateNo = 0;
+		NFABuilderModel.transitionNo = 0;
+		if (isTriviaClicked) {
+			NFABuilderController.isTriviaClicked = true;
+		}
+		dispose();
+	}
+
 	private void createLeftPaneView() {
 		JPanel leftPanel = new JPanel();
 		leftPanel.setBorder(new TitledBorder(UIManager
 				.getBorder("TitledBorder.border"), "", TitledBorder.LEADING,
 				TitledBorder.TOP, null, null));
 		leftPanel.setBackground(new Color(211, 211, 211));
-		leftPanel.setBounds(0, 3, 153, 678);
+		leftPanel.setBounds(0, 3, 153, 662);
 		contentPanel.add(leftPanel);
 		leftPanel.setLayout(null);
 

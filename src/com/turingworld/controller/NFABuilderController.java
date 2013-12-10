@@ -20,6 +20,8 @@ public class NFABuilderController {
 	private NFABuildViewInterface nfaBuildViewInterface;
 	private AddNFABlockCommand addNFABlockCommand;
 	private Invoker invoker;
+	public static boolean isTriviaClicked;
+
 
 	public NFABuilderController(NFABuilderModel nfaBuilderModel, NFABuildViewInterface nfaBuildViewInterface) {
 		this.nfaBuilderModel = nfaBuilderModel;
