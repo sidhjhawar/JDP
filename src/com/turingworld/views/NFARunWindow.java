@@ -125,7 +125,7 @@ public class NFARunWindow extends JFrame {
 		line = new Line2D.Double(550,975,100,200);
 		
 //Since , NFA's are practically never ending, we have kept our implementation upto 4 levels.
-		while (level != 4) {
+		while (level != 5) {
 
 			for (StateBlock block : previousBlock) {
 
@@ -143,11 +143,6 @@ public class NFARunWindow extends JFrame {
 			int i = 0;
 			for (StateBlock block : currentBlock) {
 				i++;
-				
-				/*x2 = block.getX();
-				y2 = block.getY();
-				line = new Line2D.Double(x1,y1,x2,y2);
-				transitionPath.add(line);*/
 				labelList.get(
 						new Integer(Integer.toString(level)
 								+ Integer.toString(i))).setIcon(
@@ -156,6 +151,28 @@ public class NFARunWindow extends JFrame {
 				JLabel stateNo = new JLabel(stateName);
 				stateNo.setFont(new Font("Serif", Font.BOLD, 16));
 				stateNo.setForeground(Color.white);
+				JLabel trans =  new JLabel("A");
+				trans.setText("A");
+				trans.setFont(new Font("Serif", Font.BOLD, 16));
+				trans.setForeground(Color.white);
+				JLabel transitionChar =  new JLabel();
+				FlowLayout fl =  new FlowLayout(FlowLayout.CENTER);
+				fl.setVgap(15);
+				transitionChar.setLayout(fl);
+				int x = labelList.get(
+						new Integer(Integer.toString(level)
+								+ Integer.toString(i))).getX();
+				int y = labelList.get(
+						new Integer(Integer.toString(level)
+								+ Integer.toString(i))).getY();
+				if(level == 4)
+				transitionChar.setBounds(x, y + 60, 40, 40);
+				else
+				transitionChar.setBounds(x + 55, y, 40, 40);
+				transitionChar.setIcon(new ImageIcon("image/apple.png"));
+				transitionChar.add(trans);
+				actionPanel.add(transitionChar);
+				
 				labelList.get(
 						new Integer(Integer.toString(level)
 								+ Integer.toString(i))).setLayout(
