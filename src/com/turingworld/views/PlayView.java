@@ -1,5 +1,8 @@
 package com.turingworld.views;
 
+/**
+ * @author bbachuna, chauhanp, erajan, haashraf, sjhawar, vrajasek.
+ */
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -29,15 +32,15 @@ public class PlayView extends JPanel {
 	private JLabel panelLeft;
 	private JLabel ladder;
 	private JLabel marioLabel;
-	
+
 	private Mario mario;
 	private DFABuilderController dfaBuilderController;
 	private int marioY;
 	private int marioX = 66;
 	private JLabel firstTransition;
 	private int horizontalGap;
-	private boolean isJumping =false;
-	private boolean isFalling =true;
+	private boolean isJumping = false;
+	private boolean isFalling = true;
 	private boolean checkLevel = true;
 	private ArrayList<JLabel> stateLevels;
 	private ArrayList<JLabel> transitionLevels;
@@ -48,8 +51,7 @@ public class PlayView extends JPanel {
 	public PlayView(DFABuilderController dfaBuilderController) {
 		this.dfaBuilderController = dfaBuilderController;
 		setLayout(null);
-		
-		
+
 	}
 
 	private JPanel playView;
@@ -89,12 +91,11 @@ public class PlayView extends JPanel {
 		panelLeft.setIcon(new ImageIcon("image/panelLeft.png"));
 		panelLeft.setBounds(0, 0, 48, 441);
 		add(panelLeft);
-		
+
 		ladder = new JLabel("");
 		ladder.setIcon(new ImageIcon("image/ladder.png"));
 		ladder.setHorizontalAlignment(SwingConstants.CENTER);
 		ladder.setBounds(148, 282, 35, 89);
-		
 
 		playView.add(panelBottom);
 		playView.add(panelRight);
@@ -107,10 +108,10 @@ public class PlayView extends JPanel {
 	}
 
 	public void dropMario() {
-		//resetting
+		// resetting
 		isFalling = true;
-		isJumping =false;
-		isFalling =true;
+		isJumping = false;
+		isFalling = true;
 		checkLevel = true;
 		horizontalGap = 0;
 		playView.removeAll();
@@ -119,16 +120,18 @@ public class PlayView extends JPanel {
 		playView.add(panelMiddle);
 		playView.add(panelUp);
 		playView.add(panelLeft);
-		playView.add(ladder); 
+		playView.add(ladder);
 		marioX = 66;
-		
+
 		marioY = 0;
-		/*marioLabel = new JLabel("mario");
-		marioLabel.setIcon(new ImageIcon("image/mario.png"));*/
+		/*
+		 * marioLabel = new JLabel("mario"); marioLabel.setIcon(new
+		 * ImageIcon("image/mario.png"));
+		 */
 		mario = new Mario();
 		mario.setState("FALLING");
 		marioLabel = mario.getMario();
-		
+
 		timer = new Timer(10, new TimerTaskListener());
 		timer.start();
 	}
@@ -140,62 +143,62 @@ public class PlayView extends JPanel {
 				marioY += 1;
 				marioLabel.setBounds(66, marioY, 65, 65);
 				playView.add(marioLabel);
-			}else if(marioLabel.getBounds().intersects(panelRight.getBounds())){
+			} else if (marioLabel.getBounds().intersects(panelRight.getBounds())) {
 				timer.stop();
 				playView.remove(marioLabel);
-				
+
 				// not equal to final state
-				//if(dfaBuilderController.getDfaBuilderView().getInputPathIndex() != dfaBuilderController.getDfaBuilderView().getInputPathLabels().size()){
-					dfaBuilderController.getDfaBuilderView().fromPlayView = true;
-					dfaBuilderController.getDfaBuilderView().switchToActionPanel(stateBlocks.get(level));
-					
-					//dropMario();
-					
-					//runMario(stateBlocks.get(level));
-						
-				//}
-				
-				
-			}else if (marioLabel.getBounds().intersects(panelBottom.getBounds()) || isJumping) {
+				// if(dfaBuilderController.getDfaBuilderView().getInputPathIndex()
+				// !=
+				// dfaBuilderController.getDfaBuilderView().getInputPathLabels().size()){
+				dfaBuilderController.getDfaBuilderView().fromPlayView = true;
+				dfaBuilderController.getDfaBuilderView().switchToActionPanel(stateBlocks.get(level));
+
+				// dropMario();
+
+				// runMario(stateBlocks.get(level));
+
+				// }
+
+			} else if (marioLabel.getBounds().intersects(panelBottom.getBounds()) || isJumping) {
 				isFalling = false;
-				
-				if(checkLevel)
+
+				if (checkLevel)
 					level = getStateLevel();
-				//timer.stop();
-				if(level == 0){
+				// timer.stop();
+				if (level == 0) {
 					mario.setState("RUNNING");
 					marioLabel = mario.getMario();
 					marioX += 1;
 					marioLabel.setBounds(marioX, marioY, 65, 65);
 					playView.add(marioLabel);
-				}else{		//level 1
-					if(marioLabel.getY() == 173){
+				} else { // level 1
+					if (marioLabel.getY() == 173) {
 						mario.setState("RUNNING");
 						marioLabel = mario.getMario();
 						marioX += 1;
 						marioLabel.setBounds(marioX, marioY, 65, 65);
-					}else if(marioLabel.getX() == ladder.getX() || isJumping){
+					} else if (marioLabel.getX() == ladder.getX() || isJumping) {
 						isJumping = true;
 						mario.setState("JUMPING");
 						marioLabel = mario.getMario();
 						marioY += -1;
-						marioLabel.setBounds(marioX,marioY, 65,65);
-					}else{
-						
+						marioLabel.setBounds(marioX, marioY, 65, 65);
+					} else {
+
 						mario.setState("RUNNING");
 						marioLabel = mario.getMario();
 						marioX += 1;
 						marioLabel.setBounds(marioX, marioY, 65, 65);
-						
+
 					}
 					playView.add(marioLabel);
 				}
 			}
-			
+
 			playView.revalidate();
 			playView.repaint();
-			
-			
+
 		}
 	}
 
@@ -211,23 +214,23 @@ public class PlayView extends JPanel {
 			for (TransitionBlock transitionBlock : transitionBlocks) {
 				JLabel transitionLabel = new JLabel();
 				JLabel stateLabel = new JLabel();
-				
+
 				stateBlocks.add(stateBlockKey);
-				
+
 				transitionLabel = transitionBlock.getDfaLabel();
-				transitionLabel.setBounds(350, 390-horizontalGap, 65, 65);
+				transitionLabel.setBounds(350, 390 - horizontalGap, 65, 65);
 				transitionLabel.setName(transitionBlock.getTransitionType());
-				
+
 				stateLabel.setText(stateBlockKey.getName());
 				stateLabel.setForeground(Color.BLACK);
 				stateLabel.setFont(new Font("Serif", Font.BOLD, 20));
-				stateLabel.setBounds(47, 376-horizontalGap, 30, 30);
-				
+				stateLabel.setBounds(47, 376 - horizontalGap, 30, 30);
+
 				horizontalGap += 203;
-				
+
 				playView.add(transitionLabel);
 				panelRight.add(stateLabel);
-				
+
 				stateLevels.add(stateLabel);
 				transitionLevels.add(transitionLabel);
 				playView.revalidate();
@@ -242,15 +245,15 @@ public class PlayView extends JPanel {
 		JLabel nextTransition = dfaBuilderController.getDfaBuilderView().getInputPathLabels().get(currentIndex);
 		int counter = 0;
 		for (JLabel transition : transitionLevels) {
-			if(nextTransition.getName().equalsIgnoreCase(transition.getName())){
-				
+			if (nextTransition.getName().equalsIgnoreCase(transition.getName())) {
+
 				dfaBuilderController.getDfaBuilderView().setInputPathIndex(++currentIndex);
-				//return transitionLevels.indexOf(transition);
+				// return transitionLevels.indexOf(transition);
 				return counter;
 			}
 			counter++;
 		}
 		return -1;
-		
+
 	}
 }

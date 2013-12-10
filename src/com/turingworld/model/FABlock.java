@@ -1,5 +1,9 @@
 package com.turingworld.model;
-
+/*
+ * This interface is the parent for the States and Transition. Both these blocks are derived
+ * from the FABlock interface. FABlock being the parent block. StateBlock and TransitionBlock have their own implementation of the 
+ * methods and variables of this interface depending on their attributes.
+ */
 import java.awt.Rectangle;
 
 import javax.swing.JLabel;

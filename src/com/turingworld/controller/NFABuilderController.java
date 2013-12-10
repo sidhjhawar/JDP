@@ -25,6 +25,8 @@ public class NFABuilderController {
 	private NFABuildViewInterface nfaBuildViewInterface;
 	private AddNFABlockCommand addNFABlockCommand;
 	private Invoker invoker;
+	public static boolean isTriviaClicked;
+
 
 	// constructor
 	public NFABuilderController(NFABuilderModel nfaBuilderModel, NFABuildViewInterface nfaBuildViewInterface) {
@@ -57,8 +59,8 @@ public class NFABuilderController {
 		faBlock.setDfaLabelURL(url);
 
 		if (isState) {
-			faBlock.setName("q" + DFABuilderModel.stateNo);
-			DFABuilderModel.stateNo++;
+			faBlock.setName("q" + NFABuilderModel.stateNo);
+			NFABuilderModel.stateNo++;
 			faBlock.setState(true);
 		} else {
 			faBlock.setName("t" + BlockBuilderModel.transitionNo);

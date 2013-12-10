@@ -1,5 +1,8 @@
 package com.turingworld.model;
-
+/*
+ * The class StateBlock is of type FABlock. The StateBlocks that are created by the user are stored and retreived
+ * using this class. All the StateBlock's attributes and methods are implemented here. 
+ */
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,9 +17,17 @@ public class StateBlock implements FABlock {
 	private int width;
 	private JLabel dfaLabel;
 	private String dfaLabelURL;
+	
+	//isInitial is the flag that is set when the user marks the state as the initial state
 	private boolean isInitial;
+	
+	//isFinal is the flag that is set when the user marks the state as final state.
 	private boolean isFinal;
+	
+	//FABlock has this boolean field to mark the difference between state and transition. True in this class.
 	private boolean isState;
+	
+	// The hashmap stateTransitionList stores a state and its various transitions in the form of key,value pair
 	private HashMap<StateBlock, ArrayList<TransitionBlock>> stateTransitionList;
 
 	public StateBlock() {

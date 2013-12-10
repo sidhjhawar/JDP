@@ -1,5 +1,8 @@
 package com.turingworld.model;
-
+/*
+ * The class TransitionBlock is of type FABlock. The TransitionBlocks that are created by the user are stored 
+ * and retrieved using this class. All the TransitionBlock's attributes and methods are implemented here. 
+ */
 import java.awt.Rectangle;
 
 import javax.swing.JLabel;
@@ -88,11 +91,13 @@ public class TransitionBlock implements FABlock {
 		this.transitionType = transitionType;
 	}
 
+	// This method returns the bounds as a Rectangle.
 	@Override
 	public Rectangle getBounds() {
 		return new Rectangle(x, y, dfaLabel.getIcon().getIconWidth(), dfaLabel.getIcon().getIconHeight());
 	}
 
+	
 	@Override
 	public Rectangle getCollisionBounds() {
 		return new Rectangle(x - 50, y - 50, dfaLabel.getIcon().getIconWidth() + 100, dfaLabel.getIcon().getIconHeight() + 100);

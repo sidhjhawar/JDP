@@ -1,5 +1,8 @@
 package com.turingworld.model;
-
+/*
+ * This class is a model for the blocks that are used in Build and Learn. This model class stores attributes
+ * of all the blocks that are used by the user to build simple blocks in Build and Learn functionality.
+ */
 import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;

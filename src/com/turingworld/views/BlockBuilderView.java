@@ -1,4 +1,8 @@
 package com.turingworld.views;
+
+/**
+ * @author bbachuna, chauhanp, erajan, haashraf, sjhawar, vrajasek.
+ */
 /*
  * This class is for building the first basic learning machine for the noobs. Build and learn is for the 
  * users who do not have any prior experience with the Turing machine.

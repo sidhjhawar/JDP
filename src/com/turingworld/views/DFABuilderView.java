@@ -1,5 +1,13 @@
 package com.turingworld.views;
 
+/**
+ * @author bbachuna, chauhanp, erajan, haashraf, sjhawar, vrajasek.
+ */
+/*
+ * This class is for building the DFA.
+ * This class helps to build the DFA when the user clicks on the Build DFA option on the Home
+ * Screen.
+ */
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -326,7 +334,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 
 					}
 
-				// condition for return of control from PlayView
+					// condition for return of control from PlayView
 				} else if (isTestClicked && fromPlayView) {
 					if (!marioLabel.getBounds().intersects(currentPathState.getBounds())) {
 						marioLabel.setBounds(marioLabel.getX(), marioLabel.getY() + mario.getySpeed(), 65, 65);
@@ -408,12 +416,10 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 	}
 
 	/*
-	 * Listener and menu for all the right clck option in the Action panel which includes:
-	 * 	1. set Initial State
-	 * 	2. set Final State
-	 * 	3. Add Transition 
+	 * Listener and menu for all the right clck option in the Action panel which
+	 * includes: 1. set Initial State 2. set Final State 3. Add Transition
 	 */
-	
+
 	class MenuActionListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -541,9 +547,9 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 
 	/*
 	 * 
-	 * Displays message to the user in case he does some mistakes. 
+	 * Displays message to the user in case he does some mistakes.
 	 */
-	
+
 	public void showMessage(boolean show, String message) {
 		noticeLabel.setVisible(show);
 		noticeLabel.setText(message);
@@ -562,10 +568,10 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		Timer timer = new Timer(1000, blinker);
 		timer.start();
 	}
-	
+
 	/*
-	 * creates 4 symbols to be associated with the transitions and provides options to the user to select any two of it.  
-	 * 
+	 * creates 4 symbols to be associated with the transitions and provides
+	 * options to the user to select any two of it.
 	 */
 
 	public void createCharSelectView() {
@@ -638,9 +644,9 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 				}
 			}
 		});
-		
+
 		// Adding a button with coin symbol
-		
+
 		coin1 = new JButton();
 		JLabel coin = new JLabel("");
 		coin1.setIcon(new ImageIcon("image/coin.png"));
@@ -673,7 +679,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		});
 
 		// Adding a button with enemy symbol
-		
+
 		enemy1 = new JButton();
 		JLabel enemy = new JLabel("");
 		enemy1.setIcon(new ImageIcon("image/enemy.png"));
@@ -791,7 +797,6 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		menuBar.add(mntmTutorial);
 	}
 
-	
 	public void loadpaint(BlockBuilderModel blockbuildermodel) {
 		actionPanel.removeAll();
 		for (Block block : blockbuildermodel.getBlockList()) {
@@ -861,7 +866,8 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 	}
 
 	/*
-	 * Create the Left Panel View. The left panel contains labels for adding transitions, undo remove
+	 * Create the Left Panel View. The left panel contains labels for adding
+	 * transitions, undo remove
 	 */
 	private void createLeftPaneView() {
 		JPanel leftPanel = new JPanel();
@@ -1012,9 +1018,9 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 	}
 
 	/*
-	 * Adds a Transition Path to Test the DFA .
-	 * The user can add symbols to the string and form any string of his choice. This string will be validated with the DFA
-	 * that is made by the user for corectness.
+	 * Adds a Transition Path to Test the DFA . The user can add symbols to the
+	 * string and form any string of his choice. This string will be validated
+	 * with the DFA that is made by the user for corectness.
 	 */
 	protected void addTransitionPath() {
 		inputPathLabels = new ArrayList<JLabel>();
@@ -1161,7 +1167,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 	}
 
 	/*
-	 *  The action that s performed on movenet of mario
+	 * The action that s performed on movenet of mario
 	 */
 	class PlayTimerTaskListener implements ActionListener {
 		@Override
@@ -1177,9 +1183,9 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 	}
 
 	/*
-	 * Draw line connecting two points  
+	 * Draw line connecting two points
 	 */
-	
+
 	public void drawLine(String url2, JLabel stateTransit, int x1, int w1, int y1, int h1, int x2, int w2, int y2, int h2, Graphics g, String transitionType) {
 
 		float[] dash1 = { 2f, 0f, 2f };
@@ -1261,7 +1267,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 	}
 
 	/*
-	 * Draws self loop for the current state. 
+	 * Draws self loop for the current state.
 	 */
 	public void drawSelfLoop(Block b, Graphics g) {
 		Graphics2D g2d = (Graphics2D) g.create();
@@ -1433,7 +1439,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 	}
 
 	/*
-	 * Remove a particular block from a panel.  
+	 * Remove a particular block from a panel.
 	 */
 	public void removeFromPanel(FABlock dfaBlock) {
 		String name = dfaBlock.getName();
@@ -1450,8 +1456,8 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 	}
 
 	/*
-	 * Adding a Block to the Panel. The block passed as argument to the method is added to the panel.
-	 *  
+	 * Adding a Block to the Panel. The block passed as argument to the method
+	 * is added to the panel.
 	 */
 	public void addToPanel(FABlock dfaBlock) {
 		dfaBlock.getDfaLabel().setBounds(dfaBlock.getX(), dfaBlock.getY(), dfaBlock.getWidth(), dfaBlock.getHeight());
@@ -1737,10 +1743,10 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		return this;
 	}
 
-	
 	/*
-	 * method is used to change the view from PlayGameView to DFABuilder View depending on the mario movement
-	 * If the state is final then display appropriate message in the output panel. 
+	 * method is used to change the view from PlayGameView to DFABuilder View
+	 * depending on the mario movement If the state is final then display
+	 * appropriate message in the output panel.
 	 */
 	public void switchToActionPanel(StateBlock stateBlock) {
 		contentPanel.remove(playPanel);

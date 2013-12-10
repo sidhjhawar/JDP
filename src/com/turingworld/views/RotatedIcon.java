@@ -1,5 +1,8 @@
 package com.turingworld.views;
 
+/**
+ * @author bbachuna, chauhanp, erajan, haashraf, sjhawar, vrajasek.
+ */
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -50,8 +53,7 @@ public class RotatedIcon implements Icon {
 			radians = Math.toRadians(angle);
 			sin = Math.abs(Math.sin(radians));
 			cos = Math.abs(Math.cos(radians));
-			width = (int) Math.floor(icon.getIconWidth() * cos
-					+ icon.getIconHeight() * sin);
+			width = (int) Math.floor(icon.getIconWidth() * cos + icon.getIconHeight() * sin);
 			return width;
 		} else if (rotate == Rotate.UPSIDE_DOWN)
 			return icon.getIconWidth();
@@ -65,8 +67,7 @@ public class RotatedIcon implements Icon {
 			radians = Math.toRadians(angle);
 			sin = Math.abs(Math.sin(radians));
 			cos = Math.abs(Math.cos(radians));
-			height = (int) Math.floor(icon.getIconHeight() * cos
-					+ icon.getIconWidth() * sin);
+			height = (int) Math.floor(icon.getIconHeight() * cos + icon.getIconWidth() * sin);
 			return height;
 		} else if (rotate == Rotate.UPSIDE_DOWN)
 			return icon.getIconHeight();
@@ -96,13 +97,11 @@ public class RotatedIcon implements Icon {
 			g2.rotate(Math.toRadians(180));
 			icon.paintIcon(c, g2, xAdjustment - cWidth, yAdjustment - cHeight);
 		} else if (rotate == Rotate.ABOUT_CENTER) {
-			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-					RenderingHints.VALUE_ANTIALIAS_ON);
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			AffineTransform original = g2.getTransform();
 			AffineTransform at = new AffineTransform();
 			at.concatenate(original);
-			at.translate((getIconWidth() - icon.getIconWidth()) / 2,
-					(getIconHeight() - icon.getIconHeight()) / 2);
+			at.translate((getIconWidth() - icon.getIconWidth()) / 2, (getIconHeight() - icon.getIconHeight()) / 2);
 			at.rotate(Math.toRadians(angle), x + cWidth, y + cHeight);
 			g2.setTransform(at);
 			icon.paintIcon(c, g2, x, y);
