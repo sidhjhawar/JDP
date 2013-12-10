@@ -1,5 +1,10 @@
 package com.turingworld.controller;
 
+/* This class is the controller for DFABuilder view and model. 
+ * When the states and transitions are being added to the action panel or undoed, 
+ * methods of this class are being called. This class also contains methods which checks whether
+ * there is only one outward transition from each state. 
+ */
 import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
@@ -53,6 +58,7 @@ public class DFABuilderController {
 		this.dfaBuilderView = dfaBuilderView;
 	}
 
+	// constructor
 	public DFABuilderController(DFABuilderModel dfaBuilderModel, DFABuildViewInterface dfaBuildViewInterface) {
 		this.dfaBuilderModel = dfaBuilderModel;
 		this.dfaBuildViewInterface = dfaBuildViewInterface;
@@ -60,6 +66,7 @@ public class DFABuilderController {
 		invoker = new Invoker();
 	}
 
+	// Returns the DFAblock which is being selected.
 	public FABlock getDFABlockObj(int x, int y) {
 		FABlock selectedBlock = null;
 		if (dfaBuilderModel.getDfaBlockList().size() > 0) {
@@ -79,6 +86,8 @@ public class DFABuilderController {
 		return selectedBlock;
 	}
 
+	// Checks whether any DFAblock exists or not when the user clicks in the
+	// action panel
 	public Boolean getDFABlockObject(int x, int y) {
 		Boolean selectedBlock = false;
 		for (FABlock dfaBlock : dfaBuilderModel.getDfaBlockList()) {
@@ -96,11 +105,14 @@ public class DFABuilderController {
 		return selectedBlock;
 	}
 
+	// removes the DFAblock from the list and the panel
 	public void removeBlockFromListAndPanel(FABlock dfaBlock) {
 		ArrayList<FABlock> dfaBlockList = dfaBuilderModel.getDfaBlockList();
 		dfaBlockList.remove(dfaBlock);
 	}
 
+	// when transition is been added between two states, that particular
+	// transition is added to the state list
 	public void addTransitionBlocktoStateList(StateBlock startStateBlock, StateBlock finalStateBlcok, TransitionBlock b) {
 		ArrayList<TransitionBlock> transitionList = null;
 		if (startStateBlock.getStateTransitionList().get(finalStateBlcok) == null) {
@@ -112,6 +124,9 @@ public class DFABuilderController {
 		startStateBlock.getStateTransitionList().put(finalStateBlcok, transitionList);
 	}
 
+	// This creates the DFAblock when a state or transition is dropped on the
+	// panel.
+	// Properties are been set to the block being dropped to the panel.
 	public FABlock createBlockObj(String url, int x, int y, int width, int height, JLabel label, boolean isState, String transitionType) {
 		FABlock dfaBlock;
 		if (isState == true) {
@@ -143,12 +158,17 @@ public class DFABuilderController {
 		return dfaBlock;
 	}
 
+	// DFABlock is added to the arraylist. This is done when the state or
+	// transition is dropped on the panel.
 	public void addBlockToList(FABlock dfaBlock) {
 		ArrayList<FABlock> dfaBlockList = dfaBuilderModel.getDfaBlockList();
 		dfaBlockList.add(dfaBlock);
 		dfaBuildViewInterface.addToPanel(dfaBlock);
 	}
 
+	// DFABlock x and y position are updated. This happens when the block is
+	// being moved
+	// from one position to other in the actionpanel.
 	public FABlock updateBlockObj(int x, int y, FABlock dfaBlock) {
 		if (dfaBlock != null) {
 			dfaBlock.setX(x);
@@ -171,6 +191,9 @@ public class DFABuilderController {
 		return false;
 	}
 
+	// calculates slope between two states. This is needed when transition is
+	// selected between two states.
+	// A path is created between those two states
 	public double calculateSlope(int x1, int y1, int x2, int y2) {
 		if (x1 > x2) {
 			return -(180 - ((Math.atan2((y2 - y1), (x2 - x1)) * 180) / 3.14));
@@ -189,10 +212,8 @@ public class DFABuilderController {
 
 		for (FABlock dfaBlock : dfaBlockList) {
 			if (dfaBlock.isState()) {
-				if (((StateBlock) dfaBlock).getName().equalsIgnoreCase(dfaBuilderView.getCurrentPathState().getName())) { // matchiing
-					// the
-					// states
-
+				if (((StateBlock) dfaBlock).getName().equalsIgnoreCase(dfaBuilderView.getCurrentPathState().getName())) {
+					// matchiing the states
 					StateBlock stateBlock = (StateBlock) dfaBlock;
 					HashMap<StateBlock, ArrayList<TransitionBlock>> stateTransitionList = stateBlock.getStateTransitionList();
 					// if the statetransition list contains the state then check
@@ -216,6 +237,8 @@ public class DFABuilderController {
 
 	}
 
+	// This checks if there is only one outward transition from any particular
+	// state.
 	public boolean checkErrors(StateBlock firstBlock, StateBlock secondBlock, String db) {
 		HashMap<StateBlock, ArrayList<TransitionBlock>> stateTransitionList = firstBlock.getStateTransitionList();
 		for (ArrayList<TransitionBlock> list : stateTransitionList.values()) {

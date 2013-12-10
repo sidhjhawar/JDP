@@ -1,5 +1,9 @@
 package com.turingworld.controller;
 
+/* This class is used when the blocks are being saved and loaded from the action panel
+ * This is used only for the BlockBuilder where the user creates the puzzle.
+ */
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -54,9 +58,11 @@ public class ControllerHelper {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 
+	/*
+	 * Function to convert the JSON objects into model
+	 */
 	public BlockBuilderModel importJSON(File file) {
 
 		BufferedReader br = null;
@@ -103,13 +109,12 @@ public class ControllerHelper {
 		model.setBlockList(arr);
 		return model;
 	}
-	
-	public void playSound(String audioFile)
-			throws UnsupportedAudioFileException, IOException,
-			LineUnavailableException {
+
+	// Method which plays sound as per the event occured in the Block builder
+	// view
+	public void playSound(String audioFile) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
 		try {
-			AudioInputStream audioInputStream = AudioSystem
-					.getAudioInputStream(new File(audioFile));
+			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(audioFile));
 
 			Clip clip = AudioSystem.getClip();
 

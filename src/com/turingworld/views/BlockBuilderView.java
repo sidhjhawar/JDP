@@ -132,7 +132,7 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 
 		creatHeaderMenu();
 		createLeftPaneView();
-
+		
 		controllerHelper = new ControllerHelper();
 		dropTarget = new DropTarget(viewHelper.getActionPanel(), new DropListener());
 

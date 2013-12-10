@@ -170,7 +170,18 @@
 	<target name="build-webstart" depends="compile" description="Create a webstartable jar file">
 		<delete file="${base.project.name}.jar" />
 		<unzip src="${lib}/junit-4.8.2.jar" dest="${project.build.home}" />
-
+		<unzip src="${lib}/mp3plugin.jar" dest="${project.build.home}" />
+		<unzip src="${lib}/json-lib-2.4-jdk15.jar" dest="${project.build.home}" />
+		<unzip src="${lib}/jmf.jar" dest="${project.build.home}" />
+		<unzip src="${lib}/gson-2.2.4.jar" dest="${project.build.home}" />
+		<unzip src="${lib}/ezmorph-1.0.6.jar" dest="${project.build.home}" />
+		<unzip src="${lib}/commons-logging-1.1.2.jar" dest="${project.build.home}" />
+		<unzip src="${lib}/commons-lang-2.6.jar" dest="${project.build.home}" />
+		<unzip src="${lib}/commons-collections-3.1.jar" dest="${project.build.home}" />
+		<unzip src="${lib}/commons-beanutils-1.3.jar" dest="${project.build.home}" />
+		<unzip src="${lib}/emma_ant.jar" dest="${project.build.home}" />
+		<unzip src="${lib}/emma.jar" dest="${project.build.home}" />
+		
 		<copy todir="${project.build.home}" flatten="false">
 			<fileset dir="${src}">
 				<include name="**/*.gif" />

@@ -1,10 +1,14 @@
 package com.turingworld.controller;
 
+/* This class is the controller for BlockBuilder view and model. 
+ * When the states and transitions are being added to the action panel or undoed, 
+ * methods of this class are being called. This class also contains methods which check whether
+ * two blocks are similar or not. 
+ */
+
 import java.io.File;
 import java.util.ArrayList;
-
 import javax.swing.JLabel;
-
 import com.turingworld.command.AddBlockCommand;
 import com.turingworld.command.Invoker;
 import com.turingworld.model.Block;
@@ -14,6 +18,13 @@ import com.turingworld.views.BuildViewInterface;
 public class BlockBuilderController {
 
 	private BlockBuilderModel blockBuilderModel;
+	private Block block;
+	private AddBlockCommand addBlockCommand;
+	private Invoker invoker;
+	private BuildViewInterface buildViewInterface;
+	private StringBuilder outputString;
+	public static boolean isTriviaClicked;
+	private ControllerHelper blockBuilderControllerHelper;
 
 	public BlockBuilderModel getBlockBuilderModel() {
 		return blockBuilderModel;
@@ -23,15 +34,6 @@ public class BlockBuilderController {
 		this.blockBuilderModel = blockBuilderModel;
 	}
 
-	private Block block;
-	private AddBlockCommand addBlockCommand;
-	private Invoker invoker;
-	private BuildViewInterface buildViewInterface;
-
-	private StringBuilder outputString;
-	public static boolean isTriviaClicked;
-	private ControllerHelper blockBuilderControllerHelper;
-
 	public StringBuilder getOutputString() {
 		return outputString;
 	}
@@ -40,16 +42,27 @@ public class BlockBuilderController {
 		this.outputString = outputString;
 	}
 
+	public BuildViewInterface getBuildViewInterface() {
+		return buildViewInterface;
+	}
+
+	public void setBuildViewInterface(BuildViewInterface buildViewInterface) {
+		this.buildViewInterface = buildViewInterface;
+	}
+
+	// constructor
 	public BlockBuilderController(BlockBuilderModel blockBuilderModel, BuildViewInterface buildViewInterface) {
 
 		this.blockBuilderModel = blockBuilderModel;
 		this.buildViewInterface = buildViewInterface;
 		this.blockBuilderControllerHelper = new ControllerHelper();
-
 		isTriviaClicked = false;
 		invoker = new Invoker();
 	}
 
+	// This creates the block when a state or transition is dropped on the
+	// panel.
+	// Properties are been set to the block being dropped to the panel.
 	public Block createBlockObj(int x, int y, int width, int height, JLabel label, boolean isState, String transitionType) {
 		block = new Block();
 		block.setX(x);
@@ -75,14 +88,9 @@ public class BlockBuilderController {
 		return block;
 	}
 
-	public BuildViewInterface getBuildViewInterface() {
-		return buildViewInterface;
-	}
-
-	public void setBuildViewInterface(BuildViewInterface buildViewInterface) {
-		this.buildViewInterface = buildViewInterface;
-	}
-
+	// Block x and y position are updated. This happens when the block is being
+	// moved
+	// from one position to other in the actionpanel.
 	public Block updateBlockObj(int x, int y, Block block) {
 		if (block != null) {
 			block.setX(x);
@@ -91,6 +99,7 @@ public class BlockBuilderController {
 		return block;
 	}
 
+	// Returns the block which is being selected.
 	public Block getBlockObj(int x, int y) {
 		Block selectedBlock = null;
 		for (Block block : blockBuilderModel.getBlockList()) {
@@ -102,6 +111,8 @@ public class BlockBuilderController {
 		return selectedBlock;
 	}
 
+	// Checks whether any block exists or not when the user clicks in the action
+	// panel
 	public Boolean getBlockObject(int x, int y) {
 		Boolean selectedBlock = false;
 		for (Block block : blockBuilderModel.getBlockList()) {
@@ -112,6 +123,10 @@ public class BlockBuilderController {
 		return selectedBlock;
 	}
 
+	// Checks if the two blocks are similar or not. If both are states or
+	// transitions.
+	// This is checked when a state or transition is dropped on the panel.
+	// It checks if the adjacent block is similar or not
 	public boolean isAdjacentToSimilarBlock(Block block) {
 		for (Block blockObj : blockBuilderModel.getBlockList()) {
 			if (blockObj != block) {
@@ -126,6 +141,7 @@ public class BlockBuilderController {
 		return false;
 	}
 
+	// returns the block if the adjacent block is not similar
 	public Block isAdjacentToDissimilarBlock(Block block) {
 		for (Block blockObj : blockBuilderModel.getBlockList()) {
 			if (blockObj != block) {
@@ -139,43 +155,45 @@ public class BlockBuilderController {
 		return null;
 	}
 
+	// Block is added to the arraylist. This is done when the state or
+	// transition is dropped on the panel.
 	public void addBlockToList(Block block) {
 		ArrayList<Block> blockList = blockBuilderModel.getBlockList();
 		blockList.add(block);
 		buildViewInterface.addBlockToPanel(block);
 	}
 
+	// last block is being removed from the undo command history when undo
+	// button is clicked.
 	public void removeBlock() {
 		if (invoker.undocommandHistory.size() > 0) {
 			AddBlockCommand addBlockCommand = (AddBlockCommand) invoker.undocommandHistory.removeLast();
 			invoker.setCommand(addBlockCommand);
 			invoker.revoke();
 		}
-
 	}
 
+	// last block is being removed from the redo command history when undo
+	// button is clicked.
 	public void redoBlock() {
-
-		// invoker.redo();
 		if (invoker.redocommandHistory.size() > 0) {
-
 			AddBlockCommand addBlockCommand = (AddBlockCommand) invoker.redocommandHistory.removeLast();
 			invoker.setCommand(addBlockCommand);
 			invoker.redo();
-
 		}
-
 	}
 
+	// Block is being removed from the list and panel when undo button is
+	// clicked
 	public void removeBlockFromListAndPanel(Block block) {
 		ArrayList<Block> blockList = blockBuilderModel.getBlockList();
 		blockList.remove(block);
 		buildViewInterface.removeBlockFromPanel(block);
 	}
 
-	public void sortTransitions()
-
-	{
+	// This happens when the snapshot of blocks are being taken from the action
+	// panel
+	public void sortTransitions() {
 		outputString = new StringBuilder();
 		ArrayList<Block> blockList = blockBuilderModel.getBlockList();
 		int length = blockList.size();
@@ -207,7 +225,6 @@ public class BlockBuilderController {
 	 */
 
 	public void saveTuringWorld() {
-
 		blockBuilderControllerHelper.convertToJSON(blockBuilderModel);
 	}
 
@@ -220,14 +237,11 @@ public class BlockBuilderController {
 	 * coordinate(x) between two points (x1,y1) and (x2,y2)
 	 */
 	public int getYforTrajectory(int x, int x1, int x2, int y1, int y2) {
-
 		// (h,k)
-
 		int h = x1 + (x2 - x1) / 2;
 		int k = y1 - 50;
 		int sq = (int) (Math.pow(((x - h) / 10), 2));
 		int y = sq + k;
 		return y;
 	}
-
 }

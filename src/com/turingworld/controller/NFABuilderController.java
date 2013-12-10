@@ -1,5 +1,10 @@
 package com.turingworld.controller;
 
+/* This class is the controller for NFABuilder view and model. 
+ * When the states and transitions are being added to the action panel or undoed, 
+ * methods of this class are being called. 
+ */
+
 import java.util.ArrayList;
 
 import javax.swing.JLabel;
@@ -21,6 +26,7 @@ public class NFABuilderController {
 	private AddNFABlockCommand addNFABlockCommand;
 	private Invoker invoker;
 
+	// constructor
 	public NFABuilderController(NFABuilderModel nfaBuilderModel, NFABuildViewInterface nfaBuildViewInterface) {
 		this.nfaBuilderModel = nfaBuilderModel;
 		this.nfaBuildViewInterface = nfaBuildViewInterface;
@@ -31,6 +37,9 @@ public class NFABuilderController {
 
 	}
 
+	// This creates the NFAblock when a state or transition is dropped on the
+	// panel.
+	// Properties are been set to the block being dropped to the panel.
 	public FABlock createBlockObj(String url, int x, int y, int width, int height, JLabel label, boolean isState, String transitionType) {
 		FABlock faBlock;
 		if (isState == true) {
@@ -62,17 +71,21 @@ public class NFABuilderController {
 		return faBlock;
 	}
 
+	// NFABlock is added to the arraylist. This is done when the state or
+	// transition is dropped on the panel.
 	public void addBlockToList(FABlock dfaBlock) {
 		ArrayList<FABlock> faBlockList = nfaBuilderModel.getNfaBlockList();
 		faBlockList.add(dfaBlock);
 		nfaBuildViewInterface.addToPanel(dfaBlock);
 	}
 
+	// removes the NFAblock from the list and the panel
 	public void removeBlockFromListAndPanel(FABlock faBlock) {
 		ArrayList<FABlock> nfaBlockList = nfaBuilderModel.getNfaBlockList();
 		nfaBlockList.remove(faBlock);
 	}
 
+	// Returns the NFAblock which is being selected.
 	public FABlock getNFABlockObj(int x, int y) {
 		FABlock selectedBlock = null;
 		if (nfaBuilderModel.getNfaBlockList().size() > 0) {
@@ -92,6 +105,9 @@ public class NFABuilderController {
 		return selectedBlock;
 	}
 
+	// NFABlock x and y position are updated. This happens when the block is
+	// being moved
+	// from one position to other in the actionpanel.
 	public FABlock updateBlockObj(int x, int y, FABlock dfaBlock) {
 		if (dfaBlock != null) {
 			dfaBlock.setX(x);
@@ -100,6 +116,8 @@ public class NFABuilderController {
 		return dfaBlock;
 	}
 
+	// when transition is been added between two states, that particular
+	// transition is added to the state list
 	public void addTransitionBlocktoStateList(StateBlock startStateBlock, StateBlock finalStateBlcok, TransitionBlock b) {
 		ArrayList<TransitionBlock> transitionList = null;
 		if (startStateBlock.getStateTransitionList().get(finalStateBlcok) == null) {
