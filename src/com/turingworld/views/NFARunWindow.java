@@ -15,13 +15,14 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -87,7 +88,6 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 	NFABuilderController nfaController;
 	NFABuilderModel nfaModel;
 
-
 	public NFARunWindow(StateBlock firstState) {
 
 		// Below try block is for the theme of the swing component which is
@@ -101,28 +101,27 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 			}
 		} catch (Exception e) {
 		}
-		
-		/*this.nfaModel =  nfaBuilderModel;
-		NFARunWindow nfaWindow = new NFARunWindow(nfaModel);
-		nfaController = new NFABuilderController(nfaModel, nfaWindow);*/
+
+		/*
+		 * this.nfaModel = nfaBuilderModel; NFARunWindow nfaWindow = new
+		 * NFARunWindow(nfaModel); nfaController = new
+		 * NFABuilderController(nfaModel, nfaWindow);
+		 */
 		previousBlock = new ArrayList<StateBlock>();
 		previousBlock.add(firstState);
 		currentBlock = new ArrayList<StateBlock>();
-		labelList = new HashMap<Integer, JLabel>();
+		labelList = new LinkedHashMap<Integer, JLabel>();
 
 		setTitle("Welcome - NFA Visualize window!");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(50, 0, 1259, 719);
 		this.setVisible(true);
 
-
 		setActionListener();
 		createBWScreen();
 		displayOutput();
 
 	}
-	
-
 
 	/*
 	 * Below method is called from the constructor when the object of this class
@@ -133,7 +132,7 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 	 */
 	private void displayOutput() {
 		level = 2;
-		//Level 1 by default
+		// Level 1 by default
 		treeBWLevel1.setIcon(new ImageIcon("image/tree.png"));
 		JLabel text = new JLabel("q0");
 		text.setFont(new Font("Serif", Font.BOLD, 16));
@@ -145,50 +144,56 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 		// Since , NFA's are practically never ending, we have kept our
 		// implementation upto 4 levels.
 		while (level != 5) {
-
+			int parentTreeNo = 0;
 			for (StateBlock block : previousBlock) {
-
+				int currentLevelCounter = 0;
 				HashMap<StateBlock, ArrayList<TransitionBlock>> list = block.getStateTransitionList();
 				for (Map.Entry<StateBlock, ArrayList<TransitionBlock>> entry : list.entrySet()) {
 					StateBlock key = entry.getKey();
 					ArrayList<TransitionBlock> value = entry.getValue();
 					for (TransitionBlock transitionBlock : value) {
+						String stateName = "" + key.getName().toString();
+						JLabel stateNo = new JLabel(stateName);
+						stateNo.setFont(new Font("Serif", Font.BOLD, 16));
+						stateNo.setForeground(Color.white);
+						++currentLevelCounter;
+						labelList.get(new Integer(Integer.toString(level) + Integer.toString(parentTreeNo * 3 + (currentLevelCounter)))).setLayout(
+								new FlowLayout(FlowLayout.CENTER));
+						labelList.get(new Integer(Integer.toString(level) + Integer.toString(parentTreeNo * 3 + (currentLevelCounter)))).add(stateNo);
 						currentBlock.add(key);
 					}
 				}
+				parentTreeNo++;
 			}
-			
-			
-			int i = 0;
-			for (StateBlock block : currentBlock) {
-				i++;
-				labelList.get(new Integer(Integer.toString(level) + Integer.toString(i))).setIcon(new ImageIcon("image/tree.png"));
-				String stateName = "" + block.getName().toString();
-				JLabel stateNo = new JLabel(stateName);
-				stateNo.setFont(new Font("Serif", Font.BOLD, 16));
-				stateNo.setForeground(Color.white);
-				JLabel trans = new JLabel("A");
-				trans.setText("A");
-				trans.setFont(new Font("Serif", Font.BOLD, 16));
-				trans.setForeground(Color.white);
-				JLabel transitionChar = new JLabel();
-				FlowLayout fl = new FlowLayout(FlowLayout.CENTER);
-				fl.setVgap(15);
-				transitionChar.setLayout(fl);
-				int x = labelList.get(new Integer(Integer.toString(level) + Integer.toString(i))).getX();
-				int y = labelList.get(new Integer(Integer.toString(level) + Integer.toString(i))).getY();
-				if (level == 4)
-					transitionChar.setBounds(x, y + 60, 40, 40);
-				else
-					transitionChar.setBounds(x + 55, y, 40, 40);
-				transitionChar.setIcon(new ImageIcon("image/apple.png"));
-				transitionChar.add(trans);
-				actionPanel.add(transitionChar);
-
-				labelList.get(new Integer(Integer.toString(level) + Integer.toString(i))).setLayout(new FlowLayout(FlowLayout.CENTER));
-				labelList.get(new Integer(Integer.toString(level) + Integer.toString(i))).add(stateNo);
-			}
-			level++;
+			/*
+			 * 
+			 * int i = 0; for (StateBlock block : currentBlock) { i++;
+			 * labelList.get(new Integer(Integer.toString(level) +
+			 * Integer.toString(i))).setIcon(new ImageIcon("image/tree.png"));
+			 * String stateName = "" + block.getName().toString(); JLabel
+			 * stateNo = new JLabel(stateName); stateNo.setFont(new
+			 * Font("Serif", Font.BOLD, 16));
+			 * stateNo.setForeground(Color.white); JLabel trans = new
+			 * JLabel("A"); trans.setText("A"); trans.setFont(new Font("Serif",
+			 * Font.BOLD, 16)); trans.setForeground(Color.white); JLabel
+			 * transitionChar = new JLabel(); FlowLayout fl = new
+			 * FlowLayout(FlowLayout.CENTER); fl.setVgap(15);
+			 * transitionChar.setLayout(fl); int x = labelList.get(new
+			 * Integer(Integer.toString(level) + Integer.toString(i))).getX();
+			 * int y = labelList.get(new Integer(Integer.toString(level) +
+			 * Integer.toString(i))).getY(); if (level == 4)
+			 * transitionChar.setBounds(x, y + 60, 40, 40); else
+			 * transitionChar.setBounds(x + 55, y, 40, 40);
+			 * transitionChar.setIcon(new ImageIcon("image/apple.png"));
+			 * transitionChar.add(trans); actionPanel.add(transitionChar);
+			 * 
+			 * labelList.get(new Integer(Integer.toString(level) +
+			 * Integer.toString(i))).setLayout(new
+			 * FlowLayout(FlowLayout.CENTER)); labelList.get(new
+			 * Integer(Integer.toString(level) +
+			 * Integer.toString(i))).add(stateNo); >>>>>>> branch 'master' of
+			 * https://github.com/sidhjhawar/JDP.git }
+			 */level++;
 			previousBlock = (ArrayList<StateBlock>) currentBlock.clone();
 			currentBlock.clear();
 
@@ -492,19 +497,17 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 			}
 		};
 	}
-	
-	
 
 	@Override
 	public void addToPanel(FABlock dfaBlock) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void removeFromPanel(FABlock dfaBlock) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -516,7 +519,7 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 	@Override
 	public void moveState(JLabel label, int x1, int y1, int x2, int y2) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
