@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -85,6 +86,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 	private String stateURL;
 	private FABlock faBlock;
 	private JLabel transition;
+	private JButton test;
 	JLabel actionState;
 	private PopupForStateView popupForStateView;
 	private MouseListener hoverListener;
@@ -101,7 +103,9 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 	private JPanel colorPallete;
 	private JTextField transit;
 	private String tranValue;
+	private JPanel output;
 	private ArrayList<QuadCurve2D.Double> curves;
+	private boolean same;
 
 	public NFABuilderView(NFABuilderModel nfaBuilderModel) {
 
@@ -164,6 +168,14 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 		outputScrollPanel.setViewportBorder(new TitledBorder(null, "",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		outputActivityPanel.add(outputScrollPanel);
+		
+		output = new JPanel();
+		output.setLayout(null);
+		output.setLayout(null);
+		outputScrollPanel.setViewportView(output);
+		
+		
+		
 
 		createLeftPaneView();
 		popupForStateView.registerActionListner(new MenuActionListener());
@@ -266,8 +278,27 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 						}
 					}
 				}
+				test = new JButton();
+				test.setText("Test");
+				test.setBounds(250, 31, 85, 41);
+				textField_1 = new JTextField();
+				textField_1.setBounds(82, 31, 165, 41);
+				output.add(textField_1);
+				output.add(test);
+				textField_1.setColumns(10);
+				output.revalidate();
+				output.repaint();
+				test.addMouseListener(new MouseAdapter() {
 
-				NFARunWindow nfaRun = new NFARunWindow(startStateBlock);
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						NFARunWindow nfaRun = new NFARunWindow(startStateBlock);
+						
+					}
+				});
+
+
+			
 			}
 
 		});
@@ -276,6 +307,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 
 		hoverListener = new MouseAdapter() {
 			private boolean shift;
+			
 
 			public void mouseEntered(MouseEvent me) {
 				int x1 = 0, x2 = 0, y1 = 0, y2 = 02;
@@ -287,6 +319,23 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 				if (nfaBlock != null /* && nfaBlock.isState() */) {
 
 					endStateBlock = (StateBlock) nfaBlock;
+					for (int i = 0; i < startStateBlockList.size(); i++)
+					{
+						sblock = startStateBlockList.get(i);
+						fblock = endStateBlockList.get(i);
+						
+						
+						if(startStateBlock.equals(sblock)&&endStateBlock.equals(fblock))
+						{
+							same = true;
+							
+							break;
+						}
+						else
+						{
+							same=false;
+						}
+					}
 					if (startStateBlock.equals(endStateBlock)) {
 						QuadCurve2D.Double curve = new QuadCurve2D.Double(
 								startStateBlock.getX() + 16,
@@ -298,7 +347,8 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 						g2 = (Graphics2D) actionPanel.getGraphics();
 						g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 								RenderingHints.VALUE_ANTIALIAS_ON);
-
+						startStateBlockList.add(startStateBlock);
+						endStateBlockList.add(endStateBlock);
 						curves.add(curve);
 						addColorPallette(curve.getCtrlX(), curve.getCtrlY());
 					}
@@ -308,6 +358,8 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 						g2 = (Graphics2D) actionPanel.getGraphics();
 						g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 								RenderingHints.VALUE_ANTIALIAS_ON);
+						
+						
 						startStateBlockList.add(startStateBlock);
 						endStateBlockList.add(endStateBlock);
 						for (int i = 0; i < startStateBlockList.size(); i++) {
@@ -315,8 +367,11 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 							fblock = endStateBlockList.get(i);
 							if (endStateBlock.equals(sblock)
 									&& startStateBlock.equals(fblock)) {
+								
 								shift = true;
 							}
+							
+							
 						}
 
 						if ((startStateBlock.getX() < endStateBlock.getX())
@@ -448,7 +503,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 		int x = (int) d;
 		int y = (int) e;
 		transition = new JLabel();
-		transition.setBounds(x, y + 10, 20, 20);
+		transition.setBounds(x, y + 10, 40, 20);
 		colorPallete = new JPanel();
 		colorPallete.setBorder(new TitledBorder("Enter Transitions!"));
 		colorPallete.setBounds(x, y - 40, 130, 80);
@@ -462,7 +517,15 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 				tranValue = transit.getText();
 				actionPanel.remove(colorPallete);
 				transition.setFont(new Font("Serif", Font.BOLD, 18));
-				transition.setText(tranValue);
+				if(same)
+				{
+				transition.setText("  ,"+tranValue);
+				
+				}
+				else
+				{
+					transition.setText(tranValue);
+				}
 				actionPanel.add(transition);
 				actionPanel.revalidate();
 				actionPanel.repaint();
@@ -481,7 +544,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 	public void addColorPallette(int x1, int x2, int y1, int y2) {
 
 		transition = new JLabel();
-		transition.setBounds((x1 + x2) / 2, (y1 + y2) / 2, 20, 20);
+		transition.setBounds((x1 + x2) / 2, ((y1 + y2) / 2)-20, 40, 20);
 		colorPallete = new JPanel();
 		colorPallete.setBorder(new TitledBorder("Enter Transitions!"));
 		colorPallete.setBounds((x1 + x2) / 2, (y1 + y2) / 2, 130, 80);
@@ -497,7 +560,15 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 				tranValue = transit.getText();
 				actionPanel.remove(colorPallete);
 				transition.setFont(new Font("Serif", Font.BOLD, 18));
-				transition.setText(tranValue);
+				if(same)
+				{
+				transition.setText("  ,"+tranValue);
+				
+				}
+				else
+				{
+					transition.setText(tranValue);
+				}
 				actionPanel.add(transition);
 				actionPanel.revalidate();
 				actionPanel.repaint();
@@ -546,6 +617,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 			paintLines();
 		}
 	};
+	private JTextField textField_1;
 
 	@Override
 	public void addToPanel(FABlock dfaBlock) {
@@ -725,5 +797,4 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 		}
 
 	}
-
 }
