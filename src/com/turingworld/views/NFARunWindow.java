@@ -71,6 +71,16 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 	private JLabel treeBWLevel416;
 	private JLabel treeBWLevel417;
 	private JLabel treeBWLevel418;
+	private JLabel treeBWLevel420;
+	private JLabel treeBWLevel421;
+	private JLabel treeBWLevel422;
+	private JLabel treeBWLevel423;
+	private JLabel treeBWLevel424;
+	private JLabel treeBWLevel425;
+	private JLabel treeBWLevel426;
+	private JLabel treeBWLevel427;
+	private JLabel treeBWLevel419;
+	
 	private Timer timer;
 	private ActionListener blinker;
 	private Graphics2D g;
@@ -151,7 +161,6 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 		// implementation upto 4 levels.
 		while (level != 5) {
 			int parentTreeNo = 0;
-			int i=0;
 			for (StateBlockTreeNo block : previousBlock) {
 				int currentLevelCounter = 0;
 				int temp;
@@ -160,41 +169,42 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 					StateBlock key = entry.getKey();
 					ArrayList<TransitionBlock> value = entry.getValue();
 					for (TransitionBlock transitionBlock : value) {
-						i++;
 						String stateName = "" + key.getName().toString();
 						JLabel stateNo = new JLabel(stateName);
-						JLabel transitionLabel = new JLabel();
-						transitionLabel.setIcon(new ImageIcon("image/apple.png"));
-						String transitionText = transitionBlock.getName();
-						JLabel transitionValue =  new JLabel(transitionText);
-						transitionValue.setFont(new Font("Serif", Font.BOLD, 16));
-					    transitionValue.setForeground(Color.white);
-						FlowLayout fl = new FlowLayout(FlowLayout.CENTER); fl.setVgap(15);
-						transitionLabel.setLayout(fl);
-						
-						
 						stateNo.setFont(new Font("Serif", Font.BOLD, 16));
 						stateNo.setForeground(Color.white);
 						++currentLevelCounter;
-
 						StateBlockTreeNo stateBlockTreeNo = new StateBlockTreeNo();
 						stateBlockTreeNo.setStateBlock(key);
 
-						if (level != 4) {
+						/*if (level != 4) {*/
 							stateBlockTreeNo.setTreeNo(((block.getTreeNo() - 1) * 3) + currentLevelCounter);
-						} else {
+						/*} else {
 							stateBlockTreeNo.setTreeNo(((block.getTreeNo() - 1) * 2) + currentLevelCounter);
-						}
+						}*/
 						int x = labelList.get(new Integer(Integer.toString(level) + Integer.toString(stateBlockTreeNo.getTreeNo()))).getX();
-						int y = labelList.get(new Integer(Integer.toString(level) +
-						Integer.toString(stateBlockTreeNo.getTreeNo()))).getY(); 
-						if (level == 4)
-							transitionLabel.setBounds(x, y + 60, 40, 40); 
-						else
+						int y = labelList.get(new Integer(Integer.toString(level) + Integer.toString(stateBlockTreeNo.getTreeNo()))).getY(); 
+						JLabel transitionLabel = new JLabel();
+						String transitionText = transitionBlock.getName();
+						JLabel transitionValue =  new JLabel(transitionText);
+					    transitionValue.setForeground(Color.white);
+						FlowLayout fl = new FlowLayout(FlowLayout.CENTER); fl.setVgap(15);
+						transitionLabel.setLayout(fl);
+						if (level == 4){
+							transitionLabel.setBounds(x, y + 60, 30, 30); 
+							transitionLabel.setIcon(new ImageIcon("image/appleLevel4.png"));
+							labelList.get(new Integer(Integer.toString(level) + Integer.toString(stateBlockTreeNo.getTreeNo()))).setIcon(new ImageIcon("image/treeLevel4.png"));
+							transitionValue.setFont(new Font("Serif", Font.BOLD, 12));
+						}
+						else{
 							transitionLabel.setBounds(x + 55, y, 40, 40);
+							transitionLabel.setIcon(new ImageIcon("image/apple.png"));
+							transitionValue.setFont(new Font("Serif", Font.BOLD, 16));
+							labelList.get(new Integer(Integer.toString(level) + Integer.toString(stateBlockTreeNo.getTreeNo()))).setIcon(new ImageIcon("image/tree.png"));
+
+						}
 						transitionLabel.add(transitionValue);
 						actionPanel.add(transitionLabel);
-						labelList.get(new Integer(Integer.toString(level) + Integer.toString(stateBlockTreeNo.getTreeNo()))).setIcon(new ImageIcon("image/tree.png"));
 						labelList.get(new Integer(Integer.toString(level) + Integer.toString(stateBlockTreeNo.getTreeNo()))).setLayout(new FlowLayout(FlowLayout.CENTER));
 						labelList.get(new Integer(Integer.toString(level) + Integer.toString(stateBlockTreeNo.getTreeNo()))).add(stateNo);
 
@@ -205,35 +215,7 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 				}
 				parentTreeNo++;
 			}
-			/*
-			 * 
-			 * int i = 0; for (StateBlock block : currentBlock) { i++;
-			 * labelList.get(new Integer(Integer.toString(level) +
-			 * Integer.toString(i))).setIcon(new ImageIcon("image/tree.png"));
-			 * String stateName = "" + block.getName().toString(); JLabel
-			 * stateNo = new JLabel(stateName); stateNo.setFont(new
-			 * Font("Serif", Font.BOLD, 16));
-			 * stateNo.setForeground(Color.white); JLabel trans = new
-			 * JLabel("A"); trans.setText("A"); trans.setFont(new Font("Serif",
-			 * Font.BOLD, 16)); trans.setForeground(Color.white); JLabel
-			 * transitionChar = new JLabel(); FlowLayout fl = new
-			 * FlowLayout(FlowLayout.CENTER); fl.setVgap(15);
-			 * transitionChar.setLayout(fl); int x = labelList.get(new
-			 * Integer(Integer.toString(level) + Integer.toString(i))).getX();
-			 * int y = labelList.get(new Integer(Integer.toString(level) +
-			 * Integer.toString(i))).getY(); if (level == 4)
-			 * transitionChar.setBounds(x, y + 60, 40, 40); else
-			 * transitionChar.setBounds(x + 55, y, 40, 40);
-			 * transitionChar.setIcon(new ImageIcon("image/apple.png"));
-			 * transitionChar.add(trans); actionPanel.add(transitionChar);
-			 * 
-			 * labelList.get(new Integer(Integer.toString(level) +
-			 * Integer.toString(i))).setLayout(new
-			 * FlowLayout(FlowLayout.CENTER)); labelList.get(new
-			 * Integer(Integer.toString(level) +
-			 * Integer.toString(i))).add(stateNo); >>>>>>> branch 'master' of
-			 * https://github.com/sidhjhawar/JDP.git }
-			 */level++;
+			
 			previousBlock = (ArrayList<StateBlockTreeNo>) currentBlock.clone();
 			currentBlock.clear();
 
@@ -356,130 +338,193 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 		actionPanel.add(treeBWLevel39);
 
 		treeBWLevel41 = new JLabel("");
-		treeBWLevel41.setIcon(new ImageIcon("image/treeBW.png"));
-		treeBWLevel41.setBounds(10, 506, 58, 58);
+		treeBWLevel41.setIcon(new ImageIcon("C:\\Users\\owner\\git\\JDP\\image\\treeBWLevel4.png"));
+		treeBWLevel41.setBounds(10, 506, 40, 40);
 		treeBWLevel41.setName("41");
 		labelList.put(41, treeBWLevel41);
 		actionPanel.add(treeBWLevel41);
 
 		treeBWLevel42 = new JLabel("");
-		treeBWLevel42.setIcon(new ImageIcon("image/treeBW.png"));
-		treeBWLevel42.setBounds(67, 506, 58, 58);
+		treeBWLevel42.setIcon(new ImageIcon("C:\\Users\\owner\\git\\JDP\\image\\treeBWLevel4.png"));
+		treeBWLevel42.setBounds(49, 506, 40, 40);
 		treeBWLevel42.setName("42");
 		labelList.put(42, treeBWLevel42);
 		actionPanel.add(treeBWLevel42);
 
 		treeBWLevel43 = new JLabel("");
-		treeBWLevel43.setIcon(new ImageIcon("image/treeBW.png"));
-		treeBWLevel43.setBounds(125, 506, 58, 58);
+		treeBWLevel43.setIcon(new ImageIcon("C:\\Users\\owner\\git\\JDP\\image\\treeBWLevel4.png"));
+		treeBWLevel43.setBounds(87, 506, 40, 40);
 		treeBWLevel43.setName("43");
 		labelList.put(43, treeBWLevel43);
 		actionPanel.add(treeBWLevel43);
 
 		treeBWLevel44 = new JLabel("");
-		treeBWLevel44.setIcon(new ImageIcon("image/treeBW.png"));
-		treeBWLevel44.setBounds(186, 506, 58, 58);
+		treeBWLevel44.setIcon(new ImageIcon("C:\\Users\\owner\\git\\JDP\\image\\treeBWLevel4.png"));
+		treeBWLevel44.setBounds(125, 506, 40, 40);
 		treeBWLevel44.setName("44");
 		labelList.put(44, treeBWLevel44);
 		actionPanel.add(treeBWLevel44);
 
 		treeBWLevel45 = new JLabel("");
-		treeBWLevel45.setIcon(new ImageIcon("image/treeBW.png"));
-		treeBWLevel45.setBounds(246, 506, 58, 58);
+		treeBWLevel45.setIcon(new ImageIcon("C:\\Users\\owner\\git\\JDP\\image\\treeBWLevel4.png"));
+		treeBWLevel45.setBounds(164, 506, 40, 40);
 		treeBWLevel45.setName("45");
 		labelList.put(45, treeBWLevel45);
 		actionPanel.add(treeBWLevel45);
 
 		treeBWLevel46 = new JLabel("");
-		treeBWLevel46.setIcon(new ImageIcon("image/treeBW.png"));
-		treeBWLevel46.setBounds(300, 506, 58, 58);
+		treeBWLevel46.setIcon(new ImageIcon("C:\\Users\\owner\\git\\JDP\\image\\treeBWLevel4.png"));
+		treeBWLevel46.setBounds(201, 506, 40, 40);
 		treeBWLevel46.setName("46");
 		labelList.put(46, treeBWLevel46);
 		actionPanel.add(treeBWLevel46);
 
 		treeBWLevel47 = new JLabel("");
-		treeBWLevel47.setIcon(new ImageIcon("image/treeBW.png"));
-		treeBWLevel47.setBounds(418, 506, 58, 58);
+		treeBWLevel47.setIcon(new ImageIcon("C:\\Users\\owner\\git\\JDP\\image\\treeBWLevel4.png"));
+		treeBWLevel47.setBounds(237, 506, 40, 40);
 		treeBWLevel47.setName("47");
 		labelList.put(47, treeBWLevel47);
 		actionPanel.add(treeBWLevel47);
 
 		treeBWLevel48 = new JLabel("");
-		treeBWLevel48.setIcon(new ImageIcon("image/treeBW.png"));
-		treeBWLevel48.setBounds(471, 506, 58, 58);
+		treeBWLevel48.setIcon(new ImageIcon("C:\\Users\\owner\\git\\JDP\\image\\treeBWLevel4.png"));
+		treeBWLevel48.setBounds(274, 506, 40, 40);
 		treeBWLevel48.setName("48");
 		labelList.put(48, treeBWLevel48);
 		actionPanel.add(treeBWLevel48);
 
 		treeBWLevel49 = new JLabel("");
-		treeBWLevel49.setIcon(new ImageIcon("image/treeBW.png"));
-		treeBWLevel49.setBounds(523, 506, 58, 58);
+		treeBWLevel49.setIcon(new ImageIcon("C:\\Users\\owner\\git\\JDP\\image\\treeBWLevel4.png"));
+		treeBWLevel49.setBounds(311, 506, 40, 40);
 		treeBWLevel49.setName("49");
 		labelList.put(49, treeBWLevel49);
 		actionPanel.add(treeBWLevel49);
 
 		treeBWLevel412 = new JLabel("");
-		treeBWLevel412.setIcon(new ImageIcon("image/treeBW.png"));
-		treeBWLevel412.setBounds(692, 506, 58, 58);
+		treeBWLevel412.setIcon(new ImageIcon("C:\\Users\\owner\\git\\JDP\\image\\treeBWLevel4.png"));
+		treeBWLevel412.setBounds(494, 506, 40, 40);
 		treeBWLevel412.setName("412");
 		labelList.put(412, treeBWLevel412);
 		actionPanel.add(treeBWLevel412);
 
 		treeBWLevel410 = new JLabel("");
-		treeBWLevel410.setIcon(new ImageIcon("image/treeBW.png"));
-		treeBWLevel410.setBounds(579, 506, 58, 58);
+		treeBWLevel410.setIcon(new ImageIcon("C:\\Users\\owner\\git\\JDP\\image\\treeBWLevel4.png"));
+		treeBWLevel410.setBounds(418, 506, 40, 40);
 		treeBWLevel410.setName("410");
 		labelList.put(410, treeBWLevel410);
 		actionPanel.add(treeBWLevel410);
 
 		treeBWLevel411 = new JLabel("");
-		treeBWLevel411.setIcon(new ImageIcon("image/treeBW.png"));
-		treeBWLevel411.setBounds(635, 506, 58, 58);
+		treeBWLevel411.setIcon(new ImageIcon("C:\\Users\\owner\\git\\JDP\\image\\treeBWLevel4.png"));
+		treeBWLevel411.setBounds(456, 506, 40, 40);
 		treeBWLevel411.setName("411");
 		labelList.put(411, treeBWLevel411);
 		actionPanel.add(treeBWLevel411);
 
 		treeBWLevel413 = new JLabel("");
-		treeBWLevel413.setIcon(new ImageIcon("image/treeBW.png"));
-		treeBWLevel413.setBounds(826, 506, 58, 58);
+		treeBWLevel413.setIcon(new ImageIcon("C:\\Users\\owner\\git\\JDP\\image\\treeBWLevel4.png"));
+		treeBWLevel413.setBounds(532, 506, 40, 40);
 		treeBWLevel413.setName("413");
 		labelList.put(413, treeBWLevel413);
 		actionPanel.add(treeBWLevel413);
 
 		treeBWLevel414 = new JLabel("");
-		treeBWLevel414.setIcon(new ImageIcon("image/treeBW.png"));
-		treeBWLevel414.setBounds(886, 506, 58, 58);
+		treeBWLevel414.setIcon(new ImageIcon("C:\\Users\\owner\\git\\JDP\\image\\treeBWLevel4.png"));
+		treeBWLevel414.setBounds(570, 506, 40, 40);
 		treeBWLevel414.setName("414");
 		labelList.put(414, treeBWLevel414);
 		actionPanel.add(treeBWLevel414);
 
 		treeBWLevel415 = new JLabel("");
-		treeBWLevel415.setIcon(new ImageIcon("image/treeBW.png"));
-		treeBWLevel415.setBounds(943, 506, 58, 58);
+		treeBWLevel415.setIcon(new ImageIcon("C:\\Users\\owner\\git\\JDP\\image\\treeBWLevel4.png"));
+		treeBWLevel415.setBounds(609, 506, 40, 40);
 		treeBWLevel415.setName("415");
 		labelList.put(415, treeBWLevel415);
 		actionPanel.add(treeBWLevel415);
 
 		treeBWLevel416 = new JLabel("");
-		treeBWLevel416.setIcon(new ImageIcon("image/treeBW.png"));
-		treeBWLevel416.setBounds(999, 506, 58, 58);
+		treeBWLevel416.setIcon(new ImageIcon("C:\\Users\\owner\\git\\JDP\\image\\treeBWLevel4.png"));
+		treeBWLevel416.setBounds(648, 506, 40, 40);
 		treeBWLevel416.setName("416");
 		labelList.put(416, treeBWLevel416);
 		actionPanel.add(treeBWLevel416);
 
 		treeBWLevel417 = new JLabel("");
-		treeBWLevel417.setIcon(new ImageIcon("image/treeBW.png"));
-		treeBWLevel417.setBounds(1057, 506, 58, 58);
+		treeBWLevel417.setIcon(new ImageIcon("C:\\Users\\owner\\git\\JDP\\image\\treeBWLevel4.png"));
+		treeBWLevel417.setBounds(686, 506, 40, 40);
 		treeBWLevel417.setName("417");
 		labelList.put(417, treeBWLevel417);
 		actionPanel.add(treeBWLevel417);
 
 		treeBWLevel418 = new JLabel("");
-		treeBWLevel418.setIcon(new ImageIcon("image/treeBW.png"));
-		treeBWLevel418.setBounds(1113, 506, 58, 58);
+		treeBWLevel418.setIcon(new ImageIcon("C:\\Users\\owner\\git\\JDP\\image\\treeBWLevel4.png"));
+		treeBWLevel418.setBounds(724, 506, 40, 40);
 		treeBWLevel418.setName("418");
 		labelList.put(418, treeBWLevel418);
 		actionPanel.add(treeBWLevel418);
+		
+		treeBWLevel419 = new JLabel("");
+		treeBWLevel419.setIcon(new ImageIcon("C:\\Users\\owner\\git\\JDP\\image\\treeBWLevel4.png"));
+		treeBWLevel419.setName("419");
+		treeBWLevel419.setBounds(831, 506, 40, 40);
+		labelList.put(419, treeBWLevel419);
+		actionPanel.add(treeBWLevel419);
+		
+		treeBWLevel420 = new JLabel("");
+		treeBWLevel420.setIcon(new ImageIcon("C:\\Users\\owner\\git\\JDP\\image\\treeBWLevel4.png"));
+		treeBWLevel420.setName("420");
+		treeBWLevel420.setBounds(869, 506, 40, 40);
+		labelList.put(420, treeBWLevel420);
+		actionPanel.add(treeBWLevel420);
+		
+		treeBWLevel421 = new JLabel("");
+		treeBWLevel421.setIcon(new ImageIcon("C:\\Users\\owner\\git\\JDP\\image\\treeBWLevel4.png"));
+		treeBWLevel421.setName("421");
+		treeBWLevel421.setBounds(904, 506, 40, 40);
+		labelList.put(421, treeBWLevel421);
+		actionPanel.add(treeBWLevel421);
+		
+		treeBWLevel422 = new JLabel("");
+		treeBWLevel422.setIcon(new ImageIcon("C:\\Users\\owner\\git\\JDP\\image\\treeBWLevel4.png"));
+		treeBWLevel422.setName("422");
+		treeBWLevel422.setBounds(945, 506, 40, 40);
+		labelList.put(422, treeBWLevel422);
+		actionPanel.add(treeBWLevel422);
+		
+		treeBWLevel423 = new JLabel("");
+		treeBWLevel423.setIcon(new ImageIcon("C:\\Users\\owner\\git\\JDP\\image\\treeBWLevel4.png"));
+		treeBWLevel423.setName("423");
+		treeBWLevel423.setBounds(983, 506, 40, 40);
+		labelList.put(423, treeBWLevel423);
+		actionPanel.add(treeBWLevel423);
+		
+		treeBWLevel424 = new JLabel("");
+		treeBWLevel424.setIcon(new ImageIcon("C:\\Users\\owner\\git\\JDP\\image\\treeBWLevel4.png"));
+		treeBWLevel424.setName("424");
+		treeBWLevel424.setBounds(1021, 506, 40, 40);
+		labelList.put(424, treeBWLevel424);
+		actionPanel.add(treeBWLevel424);
+		
+		treeBWLevel425 = new JLabel("");
+		treeBWLevel425.setIcon(new ImageIcon("C:\\Users\\owner\\git\\JDP\\image\\treeBWLevel4.png"));
+		treeBWLevel425.setName("425");
+		treeBWLevel425.setBounds(1059, 506, 40, 40);
+		labelList.put(425, treeBWLevel425);
+		actionPanel.add(treeBWLevel425);
+		
+		treeBWLevel426 = new JLabel("");
+		treeBWLevel426.setIcon(new ImageIcon("C:\\Users\\owner\\git\\JDP\\image\\treeBWLevel4.png"));
+		treeBWLevel426.setName("426");
+		labelList.put(426, treeBWLevel426);
+		treeBWLevel426.setBounds(1097, 506, 40, 40);
+		actionPanel.add(treeBWLevel426);
+		
+		treeBWLevel427 = new JLabel("");
+		treeBWLevel427.setIcon(new ImageIcon("C:\\Users\\owner\\git\\JDP\\image\\treeBWLevel4.png"));
+		treeBWLevel427.setName("427");
+		treeBWLevel427.setBounds(1135, 506, 40, 40);
+		labelList.put(4127, treeBWLevel427);
+		actionPanel.add(treeBWLevel427);
 
 	}
 
@@ -508,31 +553,40 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 				g.draw(new Line2D.Double(1007, 260, 1087, 345));
 				// Level 31
 				g.draw(new Line2D.Double(95, 410, 40, 500));
-				g.draw(new Line2D.Double(95, 410, 98, 500));
+				g.draw(new Line2D.Double(95, 410, 70, 500));
+				g.draw(new Line2D.Double(95, 410, 100, 500));
 				// Level 32
 				g.draw(new Line2D.Double(184, 410, 157, 500));
-				g.draw(new Line2D.Double(184, 410, 217, 500));
+				g.draw(new Line2D.Double(184, 410, 187, 500));
+				g.draw(new Line2D.Double(184, 410, 220, 500));
 				// Level 33
-				g.draw(new Line2D.Double(265, 410, 274, 500));
+				g.draw(new Line2D.Double(265, 410, 265, 500));
+				g.draw(new Line2D.Double(265, 410, 295, 500));
 				g.draw(new Line2D.Double(265, 410, 328, 500));
 				// Level 34
-				g.draw(new Line2D.Double(499, 410, 446, 500));
-				g.draw(new Line2D.Double(499, 410, 500, 500));
+				g.draw(new Line2D.Double(499, 410, 445, 500));
+				g.draw(new Line2D.Double(499, 410, 480, 500));
+				g.draw(new Line2D.Double(499, 410, 510, 500));
 				// Level 35
 				g.draw(new Line2D.Double(584, 410, 553, 500));
-				g.draw(new Line2D.Double(584, 410, 607, 500));
+				g.draw(new Line2D.Double(584, 410, 588, 500));
+				g.draw(new Line2D.Double(584, 410, 620, 500));
 				// Level 36
 				g.draw(new Line2D.Double(667, 410, 667, 500));
-				g.draw(new Line2D.Double(667, 410, 719, 500));
+				g.draw(new Line2D.Double(667, 410, 697, 500));
+				g.draw(new Line2D.Double(667, 410, 730, 500));
 				// Level 37
 				g.draw(new Line2D.Double(916, 410, 857, 500));
-				g.draw(new Line2D.Double(916, 410, 916, 500));
+				g.draw(new Line2D.Double(916, 410, 887, 500));
+				g.draw(new Line2D.Double(916, 410, 925, 500));
 				// Level 38
 				g.draw(new Line2D.Double(1005, 410, 974, 500));
-				g.draw(new Line2D.Double(1005, 410, 1025, 500));
+				g.draw(new Line2D.Double(1005, 410, 1000, 500));
+				g.draw(new Line2D.Double(1005, 410, 1030, 500));
 				// Level 39
 				g.draw(new Line2D.Double(1087, 410, 1087, 500));
-				g.draw(new Line2D.Double(1087, 410, 1144, 500));
+				g.draw(new Line2D.Double(1087, 410, 1115, 500));
+				g.draw(new Line2D.Double(1087, 410, 1150, 500));
 
 			}
 		};
@@ -561,5 +615,4 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 		// TODO Auto-generated method stub
 
 	}
-
 }
