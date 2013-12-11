@@ -171,15 +171,7 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 					    transitionValue.setForeground(Color.white);
 						FlowLayout fl = new FlowLayout(FlowLayout.CENTER); fl.setVgap(15);
 						transitionLabel.setLayout(fl);
-						int x = labelList.get(new Integer(Integer.toString(level) + Integer.toString(i))).getX();
-						int y = labelList.get(new Integer(Integer.toString(level) +
-						Integer.toString(i))).getY(); 
-						if (level == 4)
-							transitionLabel.setBounds(x, y + 60, 40, 40); 
-						else
-							transitionLabel.setBounds(x + 55, y, 40, 40);
-						transitionLabel.add(transitionValue);
-						actionPanel.add(transitionLabel);
+						
 						
 						stateNo.setFont(new Font("Serif", Font.BOLD, 16));
 						stateNo.setForeground(Color.white);
@@ -193,7 +185,16 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 						} else {
 							stateBlockTreeNo.setTreeNo(((block.getTreeNo() - 1) * 2) + currentLevelCounter);
 						}
-						labelList.get(new Integer(Integer.toString(level) + Integer.toString(i))).setIcon(new ImageIcon("image/tree.png"));
+						int x = labelList.get(new Integer(Integer.toString(level) + Integer.toString(stateBlockTreeNo.getTreeNo()))).getX();
+						int y = labelList.get(new Integer(Integer.toString(level) +
+						Integer.toString(stateBlockTreeNo.getTreeNo()))).getY(); 
+						if (level == 4)
+							transitionLabel.setBounds(x, y + 60, 40, 40); 
+						else
+							transitionLabel.setBounds(x + 55, y, 40, 40);
+						transitionLabel.add(transitionValue);
+						actionPanel.add(transitionLabel);
+						labelList.get(new Integer(Integer.toString(level) + Integer.toString(stateBlockTreeNo.getTreeNo()))).setIcon(new ImageIcon("image/tree.png"));
 						labelList.get(new Integer(Integer.toString(level) + Integer.toString(stateBlockTreeNo.getTreeNo()))).setLayout(new FlowLayout(FlowLayout.CENTER));
 						labelList.get(new Integer(Integer.toString(level) + Integer.toString(stateBlockTreeNo.getTreeNo()))).add(stateNo);
 
