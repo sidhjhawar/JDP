@@ -151,6 +151,7 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 		// implementation upto 4 levels.
 		while (level != 5) {
 			int parentTreeNo = 0;
+			int i=0;
 			for (StateBlockTreeNo block : previousBlock) {
 				int currentLevelCounter = 0;
 				int temp;
@@ -159,8 +160,27 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 					StateBlock key = entry.getKey();
 					ArrayList<TransitionBlock> value = entry.getValue();
 					for (TransitionBlock transitionBlock : value) {
+						i++;
 						String stateName = "" + key.getName().toString();
 						JLabel stateNo = new JLabel(stateName);
+						JLabel transitionLabel = new JLabel();
+						transitionLabel.setIcon(new ImageIcon("image/apple.png"));
+						String transitionText = transitionBlock.getName();
+						JLabel transitionValue =  new JLabel(transitionText);
+						transitionValue.setFont(new Font("Serif", Font.BOLD, 16));
+					    transitionValue.setForeground(Color.white);
+						FlowLayout fl = new FlowLayout(FlowLayout.CENTER); fl.setVgap(15);
+						transitionLabel.setLayout(fl);
+						int x = labelList.get(new Integer(Integer.toString(level) + Integer.toString(i))).getX();
+						int y = labelList.get(new Integer(Integer.toString(level) +
+						Integer.toString(i))).getY(); 
+						if (level == 4)
+							transitionLabel.setBounds(x, y + 60, 40, 40); 
+						else
+							transitionLabel.setBounds(x + 55, y, 40, 40);
+						transitionLabel.add(transitionValue);
+						actionPanel.add(transitionLabel);
+						
 						stateNo.setFont(new Font("Serif", Font.BOLD, 16));
 						stateNo.setForeground(Color.white);
 						++currentLevelCounter;
@@ -173,7 +193,7 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 						} else {
 							stateBlockTreeNo.setTreeNo(((block.getTreeNo() - 1) * 2) + currentLevelCounter);
 						}
-
+						labelList.get(new Integer(Integer.toString(level) + Integer.toString(i))).setIcon(new ImageIcon("image/tree.png"));
 						labelList.get(new Integer(Integer.toString(level) + Integer.toString(stateBlockTreeNo.getTreeNo()))).setLayout(new FlowLayout(FlowLayout.CENTER));
 						labelList.get(new Integer(Integer.toString(level) + Integer.toString(stateBlockTreeNo.getTreeNo()))).add(stateNo);
 
@@ -223,9 +243,9 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 	// Plots the J Components on the screen. Called from the constuctor.
 	private void createBWScreen() {
 		float[] dash1 = { 2f, 0f, 2f };
-		Color myNewBlue = new Color(136, 69, 19);
-
-		BasicStroke bs1 = new BasicStroke(14, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL);
+	//	Color myNewBlue = new Color(136, 69, 19);
+		Color myNewBlue = new Color(153, 118, 55);
+		BasicStroke bs1 = new BasicStroke(10, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL);
 
 		actionPanel = new ImagePanel(new ImageIcon("image/BackgroundNFA.png").getImage());
 		actionPanel.setBackground(Color.white);
