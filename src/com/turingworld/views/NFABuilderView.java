@@ -724,7 +724,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 
 				actionState.setBounds(dtde.getLocation().x, dtde.getLocation().y, 80, 80);
 				b = nfaBuilderController.createBlockObj(stateURL, dtde.getLocation().x, dtde.getLocation().y, 50, 93, actionState, true, null);
-				JLabel text = new JLabel("q" + NFABuilderModel.stateNo);
+				JLabel text = new JLabel("q" + (NFABuilderModel.stateNo-1));
 				text.setForeground(Color.WHITE);
 				text.setFont(new Font("Serif", Font.BOLD, 20));
 				actionState.add(text);
@@ -782,9 +782,18 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 						initial.setBounds(nfaBlockObj.getX(), nfaBlockObj.getY(), 80, 80);
 						initial.setTransferHandler(new TransferHandler("text"));
 						initial.addMouseListener(listener);
-						;
+						BorderLayout fl = new BorderLayout();
+						//fl.setVgap(30);
+						initial.setLayout(fl);
+						JLabel text = new JLabel("     Initial");
+						
+						
+						text.setForeground(Color.WHITE);
+						text.setFont(new Font("Serif", Font.BOLD, 16));
+						initial.add(text,BorderLayout.CENTER);
+					
+						
 						nfaBlockObj.setDfaLabel(initial);
-
 						actionPanel.add(nfaBlockObj.getDfaLabel());
 						actionPanel.revalidate();
 						actionPanel.repaint();
@@ -806,6 +815,17 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 						initial.setBounds(nfaBlockObj.getX(), nfaBlockObj.getY(), 80, 80);
 						initial.setTransferHandler(new TransferHandler("text"));
 						initial.addMouseListener(listener);
+						
+						
+						BorderLayout fl = new BorderLayout();
+						//fl.setVgap(30);
+						initial.setLayout(fl);
+						JLabel text = new JLabel("     Final");
+						
+						
+						text.setForeground(Color.BLACK);
+						text.setFont(new Font("Serif", Font.BOLD, 16));
+						initial.add(text,BorderLayout.CENTER);
 						nfaBlockObj.setDfaLabel(initial);
 
 						actionPanel.add(nfaBlockObj.getDfaLabel());
