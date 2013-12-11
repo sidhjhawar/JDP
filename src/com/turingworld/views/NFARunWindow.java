@@ -74,8 +74,8 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 	private Timer timer;
 	private ActionListener blinker;
 	private Graphics2D g;
-	private ArrayList<StateBlock> previousBlock;
-	private ArrayList<StateBlock> currentBlock;
+	private ArrayList<StateBlockTreeNo> previousBlock;
+	private ArrayList<StateBlockTreeNo> currentBlock;
 	private int level = 0;
 	int x1 = 0;
 	int y1 = 0;
@@ -107,9 +107,15 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 		 * NFARunWindow(nfaModel); nfaController = new
 		 * NFABuilderController(nfaModel, nfaWindow);
 		 */
-		previousBlock = new ArrayList<StateBlock>();
-		previousBlock.add(firstState);
-		currentBlock = new ArrayList<StateBlock>();
+		previousBlock = new ArrayList<StateBlockTreeNo>();
+
+		StateBlockTreeNo stateBlockTreeNo = new StateBlockTreeNo();
+		stateBlockTreeNo.setStateBlock(firstState);
+		stateBlockTreeNo.setTreeNo(1);
+
+		previousBlock.add(stateBlockTreeNo);
+
+		currentBlock = new ArrayList<StateBlockTreeNo>();
 		labelList = new LinkedHashMap<Integer, JLabel>();
 
 		setTitle("Welcome - NFA Visualize window!");
@@ -145,9 +151,10 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 		// implementation upto 4 levels.
 		while (level != 5) {
 			int parentTreeNo = 0;
-			for (StateBlock block : previousBlock) {
+			for (StateBlockTreeNo block : previousBlock) {
 				int currentLevelCounter = 0;
-				HashMap<StateBlock, ArrayList<TransitionBlock>> list = block.getStateTransitionList();
+				int temp;
+				HashMap<StateBlock, ArrayList<TransitionBlock>> list = block.getStateBlock().getStateTransitionList();
 				for (Map.Entry<StateBlock, ArrayList<TransitionBlock>> entry : list.entrySet()) {
 					StateBlock key = entry.getKey();
 					ArrayList<TransitionBlock> value = entry.getValue();
@@ -157,11 +164,23 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 						stateNo.setFont(new Font("Serif", Font.BOLD, 16));
 						stateNo.setForeground(Color.white);
 						++currentLevelCounter;
-						labelList.get(new Integer(Integer.toString(level) + Integer.toString(parentTreeNo * 3 + (currentLevelCounter)))).setLayout(
-								new FlowLayout(FlowLayout.CENTER));
-						labelList.get(new Integer(Integer.toString(level) + Integer.toString(parentTreeNo * 3 + (currentLevelCounter)))).add(stateNo);
-						currentBlock.add(key);
+
+						StateBlockTreeNo stateBlockTreeNo = new StateBlockTreeNo();
+						stateBlockTreeNo.setStateBlock(key);
+
+						if (level != 4) {
+							stateBlockTreeNo.setTreeNo(((block.getTreeNo() - 1) * 3) + currentLevelCounter);
+						} else {
+							stateBlockTreeNo.setTreeNo(((block.getTreeNo() - 1) * 2) + currentLevelCounter);
+						}
+
+						labelList.get(new Integer(Integer.toString(level) + Integer.toString(stateBlockTreeNo.getTreeNo()))).setLayout(new FlowLayout(FlowLayout.CENTER));
+						labelList.get(new Integer(Integer.toString(level) + Integer.toString(stateBlockTreeNo.getTreeNo()))).add(stateNo);
+
+						currentBlock.add(stateBlockTreeNo);
 					}
+					temp = currentLevelCounter / 3;
+					currentLevelCounter = currentLevelCounter * (temp + 1);
 				}
 				parentTreeNo++;
 			}
@@ -194,7 +213,7 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 			 * Integer.toString(i))).add(stateNo); >>>>>>> branch 'master' of
 			 * https://github.com/sidhjhawar/JDP.git }
 			 */level++;
-			previousBlock = (ArrayList<StateBlock>) currentBlock.clone();
+			previousBlock = (ArrayList<StateBlockTreeNo>) currentBlock.clone();
 			currentBlock.clear();
 
 		}
