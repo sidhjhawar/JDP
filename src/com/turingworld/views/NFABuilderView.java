@@ -342,7 +342,8 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 						}
 					}
 				}
-				test = new JButton();
+				NFARunWindow nfaRun = new NFARunWindow(startStateBlock);
+			/*	test = new JButton();
 				test.setText("Test");
 				test.setBounds(250, 31, 85, 41);
 				textField_1 = new JTextField();
@@ -359,7 +360,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 						NFARunWindow nfaRun = new NFARunWindow(startStateBlock);
 
 					}
-				});
+				});*/
 
 			}
 

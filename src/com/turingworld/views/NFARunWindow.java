@@ -176,38 +176,36 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 						++currentLevelCounter;
 						StateBlockTreeNo stateBlockTreeNo = new StateBlockTreeNo();
 						stateBlockTreeNo.setStateBlock(key);
-
-						/*if (level != 4) {*/
-							stateBlockTreeNo.setTreeNo(((block.getTreeNo() - 1) * 3) + currentLevelCounter);
-						/*} else {
-							stateBlockTreeNo.setTreeNo(((block.getTreeNo() - 1) * 2) + currentLevelCounter);
-						}*/
+						stateBlockTreeNo.setTreeNo(((block.getTreeNo() - 1) * 3) + currentLevelCounter);
+						
 						int x = labelList.get(new Integer(Integer.toString(level) + Integer.toString(stateBlockTreeNo.getTreeNo()))).getX();
 						int y = labelList.get(new Integer(Integer.toString(level) + Integer.toString(stateBlockTreeNo.getTreeNo()))).getY(); 
 						JLabel transitionLabel = new JLabel();
 						String transitionText = transitionBlock.getName();
 						JLabel transitionValue =  new JLabel(transitionText);
 					    transitionValue.setForeground(Color.white);
-						FlowLayout fl = new FlowLayout(FlowLayout.CENTER); fl.setVgap(15);
-						transitionLabel.setLayout(fl);
+					    labelList.get(new Integer(Integer.toString(level) + Integer.toString(stateBlockTreeNo.getTreeNo()))).setLayout(new FlowLayout(FlowLayout.CENTER));
+						labelList.get(new Integer(Integer.toString(level) + Integer.toString(stateBlockTreeNo.getTreeNo()))).add(stateNo);
+						FlowLayout fl = new FlowLayout(FlowLayout.CENTER); 
 						if (level == 4){
-							transitionLabel.setBounds(x, y + 60, 30, 30); 
+							transitionLabel.setBounds(x, y + 40, 30, 30); 
 							transitionLabel.setIcon(new ImageIcon("image/appleLevel4.png"));
 							labelList.get(new Integer(Integer.toString(level) + Integer.toString(stateBlockTreeNo.getTreeNo()))).setIcon(new ImageIcon("image/treeLevel4.png"));
-							transitionValue.setFont(new Font("Serif", Font.BOLD, 12));
+							transitionValue.setFont(new Font("Serif", Font.BOLD, 10));
+							fl.setVgap(10);
 						}
 						else{
 							transitionLabel.setBounds(x + 55, y, 40, 40);
 							transitionLabel.setIcon(new ImageIcon("image/apple.png"));
 							transitionValue.setFont(new Font("Serif", Font.BOLD, 16));
 							labelList.get(new Integer(Integer.toString(level) + Integer.toString(stateBlockTreeNo.getTreeNo()))).setIcon(new ImageIcon("image/tree.png"));
-
+							 fl.setVgap(15);
 						}
+					   
+						transitionLabel.setLayout(fl);
 						transitionLabel.add(transitionValue);
+						
 						actionPanel.add(transitionLabel);
-						labelList.get(new Integer(Integer.toString(level) + Integer.toString(stateBlockTreeNo.getTreeNo()))).setLayout(new FlowLayout(FlowLayout.CENTER));
-						labelList.get(new Integer(Integer.toString(level) + Integer.toString(stateBlockTreeNo.getTreeNo()))).add(stateNo);
-
 						currentBlock.add(stateBlockTreeNo);
 					}
 					temp = currentLevelCounter / 3;
@@ -215,7 +213,7 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 				}
 				parentTreeNo++;
 			}
-			
+			level++;
 			previousBlock = (ArrayList<StateBlockTreeNo>) currentBlock.clone();
 			currentBlock.clear();
 
