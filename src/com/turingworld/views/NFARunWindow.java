@@ -240,7 +240,7 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 		float[] dash1 = { 2f, 0f, 2f };
 	//	Color myNewBlue = new Color(136, 69, 19);
 		Color myNewBlue = new Color(153, 118, 55);
-		BasicStroke bs1 = new BasicStroke(10, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL);
+		BasicStroke bs1 = new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL);
 
 		actionPanel = new ImagePanel(new ImageIcon("image/BackgroundNFA.png").getImage());
 		actionPanel.setBackground(Color.white);
