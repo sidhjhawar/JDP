@@ -85,8 +85,46 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 	private JLabel treeBWLevel427;
 	private JLabel treeBWLevel419;
 	private JPanel testPanel;
-	
+
 	private JLabel transitionLabel1121;
+	private JLabel transitionLabel1122;
+	private JLabel transitionLabel1123;
+	private JLabel transitionLabel2131;
+	private JLabel transitionLabel2132;
+	private JLabel transitionLabel2133;
+	private JLabel transitionLabel2234;
+	private JLabel transitionLabel2235;
+	private JLabel transitionLabel2236;
+	private JLabel transitionLabel2337;
+	private JLabel transitionLabel2338;
+	private JLabel transitionLabel2339;
+	private JLabel transitionLabel3141;
+	private JLabel transitionLabel3142;
+	private JLabel transitionLabel3143;
+	private JLabel transitionLabel3244;
+	private JLabel transitionLabel3245;
+	private JLabel transitionLabel3246;
+	private JLabel transitionLabel3347;
+	private JLabel transitionLabel3348;
+	private JLabel transitionLabel3349;
+	private JLabel transitionLabel34410;
+	private JLabel transitionLabel34411;
+	private JLabel transitionLabel34412;
+	private JLabel transitionLabel35413;
+	private JLabel transitionLabel35414;
+	private JLabel transitionLabel35415;
+	private JLabel transitionLabel36416;
+	private JLabel transitionLabel36417;
+	private JLabel transitionLabel36418;
+	private JLabel transitionLabel37419;
+	private JLabel transitionLabel37420;
+	private JLabel transitionLabel37421;
+	private JLabel transitionLabel38422;
+	private JLabel transitionLabel38423;
+	private JLabel transitionLabel38424;
+	private JLabel transitionLabel39425;
+	private JLabel transitionLabel39426;
+	private JLabel transitionLabel39427;
 
 	private Timer timer;
 	private ActionListener blinker;
@@ -99,6 +137,7 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 	int x2 = 0;
 	int y2 = 0;
 	private HashMap<Integer, JLabel> labelList;
+	private HashMap<Integer, JLabel> appleLabels;
 	private StateBlock initialState;
 	private Line2D line;
 	private String testString = "";
@@ -115,6 +154,8 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 	private StateBlock firstState;
 
 	public NFARunWindow(StateBlock firstState) {
+
+		appleLabels = new HashMap<Integer, JLabel>();
 
 		this.firstState = firstState;
 
@@ -165,6 +206,8 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 		int length = testText.length();
 
 		boolean isNotFound = true;
+		JLabel parentTree = new JLabel();
+		JLabel childTree = new JLabel();
 
 		while (length != 0) {
 			isNotFound = true;
@@ -177,15 +220,17 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 					StateBlockTreeNo key = entry.getKey();
 					String value = entry.getValue();
 					if (value.equals(transitionCharacter) || value.equals("e")) {
-						JLabel parentTree = block.getTreeLabel();
-						JLabel childTree = key.getTreeLabel();
+						parentTree = block.getTreeLabel();
+						childTree = key.getTreeLabel();
 
 						parentTree.setIcon(new ImageIcon("image/tree.png"));
 
 						if (level == 3) {
 							childTree.setIcon(new ImageIcon("image/treeLevel4.png"));
+							appleLabels.get(Integer.parseInt(parentTree.getName() + childTree.getName())).setIcon(new ImageIcon("image/appleLevel4.png"));
 						} else {
 							childTree.setIcon(new ImageIcon("image/tree.png"));
+							appleLabels.get(Integer.parseInt(parentTree.getName() + childTree.getName())).setIcon(new ImageIcon("image/apple.png"));
 						}
 
 						currentBlock.add(key);
@@ -197,6 +242,15 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 
 				if (isNotFound) {
 					block.getTreeLabel().setIcon(new ImageIcon("image/treeBW.png"));
+					for (Map.Entry<Integer, JLabel> entry : appleLabels.entrySet()) {
+						Integer key = entry.getKey();
+						JLabel value = entry.getValue();
+
+						if (key.toString().substring(2, 4).equals(block.getTreeLabel().getName()))
+						{
+							value.setIcon(new ImageIcon("image/appleBW.png"))
+;						}
+					}
 				}
 
 				isNotFound = true;
@@ -258,36 +312,53 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 						int x = labelList.get(new Integer(Integer.toString(level) + Integer.toString(stateBlockTreeNo.getTreeNo()))).getX();
 						int y = labelList.get(new Integer(Integer.toString(level) + Integer.toString(stateBlockTreeNo.getTreeNo()))).getY();
 						JLabel transitionLabel = new JLabel();
-						String transitionText = transitionBlock.getName();
-						JLabel transitionValue = new JLabel(transitionText);
-						transitionValue.setForeground(Color.white);
 						labelList.get(new Integer(Integer.toString(level) + Integer.toString(stateBlockTreeNo.getTreeNo()))).setLayout(new FlowLayout(FlowLayout.CENTER));
 						labelList.get(new Integer(Integer.toString(level) + Integer.toString(stateBlockTreeNo.getTreeNo()))).add(stateNo);
-						FlowLayout fl = new FlowLayout(FlowLayout.CENTER);
-						if (level == 4) {
-							transitionLabel.setBounds(x, y + 40, 30, 30);
-							transitionLabel.setIcon(new ImageIcon("image/appleLevel4.png"));
-							// labelList.get(new Integer(Integer.toString(level)
-							// +
-							// Integer.toString(stateBlockTreeNo.getTreeNo()))).setIcon(new
-							// ImageIcon("image/treeLevel4.png"));
-							transitionValue.setFont(new Font("Serif", Font.BOLD, 10));
-							fl.setVgap(10);
-						} else {
-							transitionLabel.setBounds(x + 55, y, 40, 40);
-							transitionLabel.setIcon(new ImageIcon("image/apple.png"));
-							transitionValue.setFont(new Font("Serif", Font.BOLD, 16));
-							// labelList.get(new Integer(Integer.toString(level)
-							// +
-							// Integer.toString(stateBlockTreeNo.getTreeNo()))).setIcon(new
-							// ImageIcon("image/tree.png"));
-							fl.setVgap(15);
-						}
 
-						transitionLabel.setLayout(fl);
-						transitionLabel.add(transitionValue);
+						/*
+						 * if (level == 4) { transitionLabel.setBounds(x, y +
+						 * 40, 30, 30); transitionLabel.setIcon(new
+						 * ImageIcon("image/appleLevel4.png")); //
+						 * labelList.get(new Integer(Integer.toString(level) //
+						 * + //
+						 * Integer.toString(stateBlockTreeNo.getTreeNo()))).
+						 * setIcon(new // ImageIcon("image/treeLevel4.png"));
+						 * transitionValue.setFont(new Font("Serif", Font.BOLD,
+						 * 10)); fl.setVgap(10); } else {
+						 * transitionLabel.setBounds(x + 55, y, 40, 40);
+						 * transitionLabel.setIcon(new
+						 * ImageIcon("image/apple.png"));
+						 * transitionValue.setFont(new Font("Serif", Font.BOLD,
+						 * 16)); // labelList.get(new
+						 * Integer(Integer.toString(level) // + //
+						 * Integer.toString
+						 * (stateBlockTreeNo.getTreeNo()))).setIcon(new //
+						 * ImageIcon("image/tree.png")); fl.setVgap(15); }
+						 */
 
-						actionPanel.add(transitionLabel);
+						JLabel transitionValue = new JLabel();
+						transitionValue = appleLabels.get(Integer.parseInt(block.getTreeLabel().getName() + stateBlockTreeNo.getTreeLabel().getName()));
+						String transitionText = transitionBlock.getName();
+						transitionValue.setFont(new Font("Serif", Font.BOLD, 20));
+						transitionValue.setForeground(Color.WHITE);
+						transitionValue.setText(transitionText);
+						transitionValue.setHorizontalTextPosition(JLabel.CENTER);
+						transitionValue.setVerticalTextPosition(JLabel.CENTER);
+
+						/*
+						 * JLabel transitionValue = new JLabel(transitionText);
+						 * transitionValue.setForeground(Color.white);
+						 * FlowLayout fl = new FlowLayout(FlowLayout.CENTER);
+						 * transitionLabel =
+						 * appleLabels.get(Integer.parseInt(block
+						 * .getTreeLabel().getName() +
+						 * stateBlockTreeNo.getTreeLabel().getName()));
+						 * transitionValue.setFont(new Font("Serif", Font.BOLD,
+						 * 16)); transitionLabel.setLayout(fl);
+						 * transitionLabel.add(transitionValue);
+						 */
+
+						actionPanel.add(transitionValue);
 
 						currentBlock.add(stateBlockTreeNo);
 					}
@@ -309,7 +380,7 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 		float[] dash1 = { 2f, 0f, 2f };
 		// Color myNewBlue = new Color(136, 69, 19);
 		Color myNewBlue = new Color(153, 118, 55);
-		BasicStroke bs1 = new BasicStroke(3, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL);
+		BasicStroke bs1 = new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL);
 
 		actionPanel = new ImagePanel(new ImageIcon("image/BackgroundNFA.png").getImage());
 		actionPanel.setBackground(Color.white);
@@ -326,205 +397,244 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 		timer.start();
 
 		transitionLabel1121 = new JLabel();
+		appleLabels.put(1121, transitionLabel1121);
 		transitionLabel1121.setBounds(435, 135, 40, 40);
-		transitionLabel1121.setIcon(new ImageIcon("image/apple.png"));
+		transitionLabel1121.setIcon(new ImageIcon("image/appleBW.png"));
 		actionPanel.add(transitionLabel1121);
 
-		JLabel transitionLabel1122 = new JLabel();
+		transitionLabel1122 = new JLabel();
+		appleLabels.put(1122, transitionLabel1122);
 		transitionLabel1122.setBounds(616, 135, 40, 40);
-		transitionLabel1122.setIcon(new ImageIcon("image/apple.png"));
+		transitionLabel1122.setIcon(new ImageIcon("image/appleBW.png"));
 		actionPanel.add(transitionLabel1122);
 
-		JLabel transitionLabel1123 = new JLabel();
+		transitionLabel1123 = new JLabel();
+		appleLabels.put(1123, transitionLabel1123);
 		transitionLabel1123.setBounds(801, 133, 40, 40);
-		transitionLabel1123.setIcon(new ImageIcon("image/apple.png"));
+		transitionLabel1123.setIcon(new ImageIcon("image/appleBW.png"));
 		actionPanel.add(transitionLabel1123);
 
-		JLabel transitionLabel2131 = new JLabel();
+		transitionLabel2131 = new JLabel();
+		appleLabels.put(2131, transitionLabel2131);
 		transitionLabel2131.setBounds(210, 282, 40, 40);
-		transitionLabel2131.setIcon(new ImageIcon("image/apple.png"));
+		transitionLabel2131.setIcon(new ImageIcon("image/appleBW.png"));
 		actionPanel.add(transitionLabel2131);
 
-		JLabel transitionLabel2132 = new JLabel();
+		transitionLabel2132 = new JLabel();
+		appleLabels.put(2132, transitionLabel2132);
 		transitionLabel2132.setBounds(264, 282, 40, 40);
-		transitionLabel2132.setIcon(new ImageIcon("image/apple.png"));
+		transitionLabel2132.setIcon(new ImageIcon("image/appleBW.png"));
 		actionPanel.add(transitionLabel2132);
 
-		JLabel transitionLabel2133 = new JLabel();
+		transitionLabel2133 = new JLabel();
+		appleLabels.put(2133, transitionLabel2133);
 		transitionLabel2133.setBounds(312, 282, 40, 40);
-		transitionLabel2133.setIcon(new ImageIcon("image/apple.png"));
+		transitionLabel2133.setIcon(new ImageIcon("image/appleBW.png"));
 		actionPanel.add(transitionLabel2133);
 
-		JLabel transitionLabel2234 = new JLabel();
+		transitionLabel2234 = new JLabel();
+		appleLabels.put(2234, transitionLabel2234);
 		transitionLabel2234.setBounds(549, 282, 40, 40);
-		transitionLabel2234.setIcon(new ImageIcon("image/apple.png"));
+		transitionLabel2234.setIcon(new ImageIcon("image/appleBW.png"));
 		actionPanel.add(transitionLabel2234);
 
-		JLabel transitionLabel2235 = new JLabel();
+		transitionLabel2235 = new JLabel();
+		appleLabels.put(2235, transitionLabel2235);
 		transitionLabel2235.setBounds(615, 282, 40, 40);
-		transitionLabel2235.setIcon(new ImageIcon("image/apple.png"));
+		transitionLabel2235.setIcon(new ImageIcon("image/appleBW.png"));
 		actionPanel.add(transitionLabel2235);
 
-		JLabel transitionLabel2236 = new JLabel();
+		transitionLabel2236 = new JLabel();
+		appleLabels.put(2236, transitionLabel2236);
 		transitionLabel2236.setBounds(674, 282, 40, 40);
-		transitionLabel2236.setIcon(new ImageIcon("image/apple.png"));
+		transitionLabel2236.setIcon(new ImageIcon("image/appleBW.png"));
 		actionPanel.add(transitionLabel2236);
 
-		JLabel transitionLabel2337 = new JLabel();
+		transitionLabel2337 = new JLabel();
+		appleLabels.put(2337, transitionLabel2337);
 		transitionLabel2337.setBounds(913, 282, 40, 40);
-		transitionLabel2337.setIcon(new ImageIcon("image/apple.png"));
+		transitionLabel2337.setIcon(new ImageIcon("image/appleBW.png"));
 		actionPanel.add(transitionLabel2337);
 
-		JLabel transitionLabel2338 = new JLabel();
+		transitionLabel2338 = new JLabel();
+		appleLabels.put(2338, transitionLabel2338);
 		transitionLabel2338.setBounds(966, 282, 40, 40);
-		transitionLabel2338.setIcon(new ImageIcon("image/apple.png"));
+		transitionLabel2338.setIcon(new ImageIcon("image/appleBW.png"));
 		actionPanel.add(transitionLabel2338);
 
-		JLabel transitionLabel2339 = new JLabel();
+		transitionLabel2339 = new JLabel();
+		appleLabels.put(2339, transitionLabel2339);
 		transitionLabel2339.setBounds(1017, 282, 40, 40);
-		transitionLabel2339.setIcon(new ImageIcon("image/apple.png"));
+		transitionLabel2339.setIcon(new ImageIcon("image/appleBW.png"));
 		actionPanel.add(transitionLabel2339);
 
-		JLabel transitionLabel3141 = new JLabel();
+		transitionLabel3141 = new JLabel();
+		appleLabels.put(3141, transitionLabel3141);
 		transitionLabel3141.setBounds(118, 460, 40, 40);
-		transitionLabel3141.setIcon(new ImageIcon("image/appleLevel4.png"));
+		transitionLabel3141.setIcon(new ImageIcon("image/appleLevel4BW.png"));
 		actionPanel.add(transitionLabel3141);
 
-		JLabel transitionLabel3142 = new JLabel();
+		transitionLabel3142 = new JLabel();
+		appleLabels.put(3142, transitionLabel3142);
 		transitionLabel3142.setBounds(145, 460, 40, 40);
-		transitionLabel3142.setIcon(new ImageIcon("image/appleLevel4.png"));
+		transitionLabel3142.setIcon(new ImageIcon("image/appleLevel4BW.png"));
 		actionPanel.add(transitionLabel3142);
 
-		JLabel transitionLabel3143 = new JLabel();
+		transitionLabel3143 = new JLabel();
+		appleLabels.put(3143, transitionLabel3143);
 		transitionLabel3143.setBounds(173, 460, 40, 40);
-		transitionLabel3143.setIcon(new ImageIcon("image/appleLevel4.png"));
+		transitionLabel3143.setIcon(new ImageIcon("image/appleLevel4BW.png"));
 		actionPanel.add(transitionLabel3143);
 
-		JLabel transitionLabel3244 = new JLabel();
+		transitionLabel3244 = new JLabel();
+		appleLabels.put(3244, transitionLabel3244);
 		transitionLabel3244.setBounds(237, 460, 40, 40);
-		transitionLabel3244.setIcon(new ImageIcon("image/appleLevel4.png"));
+		transitionLabel3244.setIcon(new ImageIcon("image/appleLevel4BW.png"));
 		actionPanel.add(transitionLabel3244);
 
-		JLabel transitionLabel3245 = new JLabel();
+		transitionLabel3245 = new JLabel();
+		appleLabels.put(3245, transitionLabel3245);
 		transitionLabel3245.setBounds(262, 460, 40, 40);
-		transitionLabel3245.setIcon(new ImageIcon("image/appleLevel4.png"));
+		transitionLabel3245.setIcon(new ImageIcon("image/appleLevel4BW.png"));
 		actionPanel.add(transitionLabel3245);
 
-		JLabel transitionLabel3246 = new JLabel();
+		transitionLabel3246 = new JLabel();
+		appleLabels.put(3246, transitionLabel3246);
 		transitionLabel3246.setBounds(285, 460, 40, 40);
-		transitionLabel3246.setIcon(new ImageIcon("image/appleLevel4.png"));
+		transitionLabel3246.setIcon(new ImageIcon("image/appleLevel4BW.png"));
 		actionPanel.add(transitionLabel3246);
 
-		JLabel transitionLabel3347 = new JLabel();
+		transitionLabel3347 = new JLabel();
+		appleLabels.put(3347, transitionLabel3347);
 		transitionLabel3347.setBounds(346, 460, 40, 40);
-		transitionLabel3347.setIcon(new ImageIcon("image/appleLevel4.png"));
+		transitionLabel3347.setIcon(new ImageIcon("image/appleLevel4BW.png"));
 		actionPanel.add(transitionLabel3347);
 
-		JLabel transitionLabel3348 = new JLabel();
+		transitionLabel3348 = new JLabel();
+		appleLabels.put(3348, transitionLabel3348);
 		transitionLabel3348.setBounds(376, 460, 40, 40);
-		transitionLabel3348.setIcon(new ImageIcon("image/appleLevel4.png"));
+		transitionLabel3348.setIcon(new ImageIcon("image/appleLevel4BW.png"));
 		actionPanel.add(transitionLabel3348);
 
-		JLabel transitionLabel3349 = new JLabel();
+		transitionLabel3349 = new JLabel();
+		appleLabels.put(3349, transitionLabel3349);
 		transitionLabel3349.setBounds(406, 460, 40, 40);
-		transitionLabel3349.setIcon(new ImageIcon("image/appleLevel4.png"));
+		transitionLabel3349.setIcon(new ImageIcon("image/appleLevel4BW.png"));
 		actionPanel.add(transitionLabel3349);
 
-		JLabel transitionLabel34410 = new JLabel();
+		transitionLabel34410 = new JLabel();
+		appleLabels.put(34410, transitionLabel34410);
 		transitionLabel34410.setBounds(469, 460, 40, 40);
-		transitionLabel34410.setIcon(new ImageIcon("image/appleLevel4.png"));
+		transitionLabel34410.setIcon(new ImageIcon("image/appleLevel4BW.png"));
 		actionPanel.add(transitionLabel34410);
 
-		JLabel transitionLabel34411 = new JLabel();
+		transitionLabel34411 = new JLabel();
+		appleLabels.put(34411, transitionLabel34411);
 		transitionLabel34411.setBounds(496, 460, 40, 40);
-		transitionLabel34411.setIcon(new ImageIcon("image/appleLevel4.png"));
+		transitionLabel34411.setIcon(new ImageIcon("image/appleLevel4BW.png"));
 		actionPanel.add(transitionLabel34411);
 
-		JLabel transitionLabel34412 = new JLabel();
+		transitionLabel34412 = new JLabel();
+		appleLabels.put(34412, transitionLabel34412);
 		transitionLabel34412.setBounds(524, 460, 40, 40);
-		transitionLabel34412.setIcon(new ImageIcon("image/appleLevel4.png"));
+		transitionLabel34412.setIcon(new ImageIcon("image/appleLevel4BW.png"));
 		actionPanel.add(transitionLabel34412);
 
-		JLabel transitionLabel35413 = new JLabel();
+		transitionLabel35413 = new JLabel();
+		appleLabels.put(35413, transitionLabel35413);
 		transitionLabel35413.setBounds(588, 460, 40, 40);
-		transitionLabel35413.setIcon(new ImageIcon("image/appleLevel4.png"));
+		transitionLabel35413.setIcon(new ImageIcon("image/appleLevel4BW.png"));
 		actionPanel.add(transitionLabel35413);
 
-		JLabel transitionLabel35414 = new JLabel();
+		transitionLabel35414 = new JLabel();
+		appleLabels.put(35414, transitionLabel35414);
 		transitionLabel35414.setBounds(616, 460, 40, 40);
-		transitionLabel35414.setIcon(new ImageIcon("image/appleLevel4.png"));
+		transitionLabel35414.setIcon(new ImageIcon("image/appleLevel4BW.png"));
 		actionPanel.add(transitionLabel35414);
 
-		JLabel transitionLabel35415 = new JLabel();
+		transitionLabel35415 = new JLabel();
+		appleLabels.put(35415, transitionLabel35415);
 		transitionLabel35415.setBounds(642, 460, 40, 40);
-		transitionLabel35415.setIcon(new ImageIcon("image/appleLevel4.png"));
+		transitionLabel35415.setIcon(new ImageIcon("image/appleLevel4BW.png"));
 		actionPanel.add(transitionLabel35415);
 
-		JLabel transitionLabel36416 = new JLabel();
+		transitionLabel36416 = new JLabel();
+		appleLabels.put(36416, transitionLabel36416);
 		transitionLabel36416.setBounds(704, 460, 40, 40);
-		transitionLabel36416.setIcon(new ImageIcon("image/appleLevel4.png"));
+		transitionLabel36416.setIcon(new ImageIcon("image/appleLevel4BW.png"));
 		actionPanel.add(transitionLabel36416);
 
-		JLabel transitionLabel36417 = new JLabel();
+		transitionLabel36417 = new JLabel();
+		appleLabels.put(36417, transitionLabel36417);
 		transitionLabel36417.setBounds(733, 460, 40, 40);
-		transitionLabel36417.setIcon(new ImageIcon("image/appleLevel4.png"));
+		transitionLabel36417.setIcon(new ImageIcon("image/appleLevel4BW.png"));
 		actionPanel.add(transitionLabel36417);
 
-		JLabel transitionLabel36418 = new JLabel();
+		transitionLabel36418 = new JLabel();
+		appleLabels.put(36418, transitionLabel36418);
 		transitionLabel36418.setBounds(758, 460, 40, 40);
-		transitionLabel36418.setIcon(new ImageIcon("image/appleLevel4.png"));
+		transitionLabel36418.setIcon(new ImageIcon("image/appleLevel4BW.png"));
 		actionPanel.add(transitionLabel36418);
 
-		JLabel transitionLabel37419 = new JLabel();
+		transitionLabel37419 = new JLabel();
+		appleLabels.put(37419, transitionLabel37419);
 		transitionLabel37419.setBounds(820, 460, 40, 40);
-		transitionLabel37419.setIcon(new ImageIcon("image/appleLevel4.png"));
+		transitionLabel37419.setIcon(new ImageIcon("image/appleLevel4BW.png"));
 		actionPanel.add(transitionLabel37419);
 
-		JLabel transitionLabel37420 = new JLabel();
+		transitionLabel37420 = new JLabel();
+		appleLabels.put(37420, transitionLabel37420);
 		transitionLabel37420.setBounds(848, 460, 40, 40);
-		transitionLabel37420.setIcon(new ImageIcon("image/appleLevel4.png"));
+		transitionLabel37420.setIcon(new ImageIcon("image/appleLevel4BW.png"));
 		actionPanel.add(transitionLabel37420);
 
-		JLabel transitionLabel37421 = new JLabel();
+		transitionLabel37421 = new JLabel();
+		appleLabels.put(37421, transitionLabel37421);
 		transitionLabel37421.setBounds(876, 460, 40, 40);
-		transitionLabel37421.setIcon(new ImageIcon("image/appleLevel4.png"));
+		transitionLabel37421.setIcon(new ImageIcon("image/appleLevel4BW.png"));
 		actionPanel.add(transitionLabel37421);
 
-		JLabel transitionLabel38422 = new JLabel();
+		transitionLabel38422 = new JLabel();
+		appleLabels.put(38422, transitionLabel38422);
 		transitionLabel38422.setBounds(938, 460, 40, 40);
-		transitionLabel38422.setIcon(new ImageIcon("image/appleLevel4.png"));
+		transitionLabel38422.setIcon(new ImageIcon("image/appleLevel4BW.png"));
 		actionPanel.add(transitionLabel38422);
 
-		JLabel transitionLabel38423 = new JLabel();
+		transitionLabel38423 = new JLabel();
+		appleLabels.put(38423, transitionLabel38423);
 		transitionLabel38423.setBounds(965, 460, 40, 40);
-		transitionLabel38423.setIcon(new ImageIcon("image/appleLevel4.png"));
+		transitionLabel38423.setIcon(new ImageIcon("image/appleLevel4BW.png"));
 		actionPanel.add(transitionLabel38423);
 
-		JLabel transitionLabel38424 = new JLabel();
+		transitionLabel38424 = new JLabel();
+		appleLabels.put(38424, transitionLabel38424);
 		transitionLabel38424.setBounds(992, 460, 40, 40);
-		transitionLabel38424.setIcon(new ImageIcon("image/appleLevel4.png"));
+		transitionLabel38424.setIcon(new ImageIcon("image/appleLevel4BW.png"));
 		actionPanel.add(transitionLabel38424);
-		
-		JLabel transitionLabel39425 = new JLabel();
+
+		transitionLabel39425 = new JLabel();
+		appleLabels.put(39425, transitionLabel39425);
 		transitionLabel39425.setBounds(1054, 460, 40, 40);
-		transitionLabel39425.setIcon(new ImageIcon("image/appleLevel4.png"));
+		transitionLabel39425.setIcon(new ImageIcon("image/appleLevel4BW.png"));
 		actionPanel.add(transitionLabel39425);
-		
-		JLabel transitionLabel39426 = new JLabel();
+
+		transitionLabel39426 = new JLabel();
+		appleLabels.put(39426, transitionLabel39427);
 		transitionLabel39426.setBounds(1082, 460, 40, 40);
-		transitionLabel39426.setIcon(new ImageIcon("image/appleLevel4.png"));
+		transitionLabel39426.setIcon(new ImageIcon("image/appleLevel4BW.png"));
 		actionPanel.add(transitionLabel39426);
-		
-		JLabel transitionLabel39427 = new JLabel();
+
+		transitionLabel39427 = new JLabel();
+		appleLabels.put(39427, transitionLabel39427);
 		transitionLabel39427.setBounds(1111, 460, 40, 40);
-		transitionLabel39427.setIcon(new ImageIcon("image/appleLevel4.png"));
+		transitionLabel39427.setIcon(new ImageIcon("image/appleLevel4BW.png"));
 		actionPanel.add(transitionLabel39427);
 
 		treeBWLevel1 = new JLabel("");
 		treeBWLevel1.setLayout(new FlowLayout(FlowLayout.CENTER));
 		treeBWLevel1.setIcon(new ImageIcon("image/treeBW.png"));
 		treeBWLevel1.setBounds(605, 51, 58, 58);
-		treeBWLevel1.setName("1");
+		treeBWLevel1.setName("11");
 		actionPanel.add(treeBWLevel1);
 		labelList.put(11, treeBWLevel1);
 		treeBWLevel23 = new JLabel("");
