@@ -152,6 +152,7 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 	private JLabel arrowLabel;
 	private StateBlockTreeNo firstBlock;
 	private StateBlock firstState;
+	private JPanel panel_1;
 
 	public NFARunWindow(StateBlock firstState) {
 
@@ -246,10 +247,9 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 						Integer key = entry.getKey();
 						JLabel value = entry.getValue();
 
-						if (key.toString().substring(2, 4).equals(block.getTreeLabel().getName()))
-						{
-							value.setIcon(new ImageIcon("image/appleBW.png"))
-;						}
+						if (key.toString().substring(2, 4).equals(block.getTreeLabel().getName())) {
+							value.setIcon(new ImageIcon("image/appleBW.png"));
+						}
 					}
 				}
 
@@ -883,7 +883,7 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 		actionPanel.add(treeBWLevel427);
 		arrowLabel = new JLabel("");
 		arrowLabel.setIcon(new ImageIcon("image/arrow.png"));
-		arrowLabel.setBounds(525, 600, 30, 30);
+		arrowLabel.setBounds(660, 600, 30, 30);
 		actionPanel.add(arrowLabel);
 		arrowLabel.setVisible(false);
 
@@ -894,7 +894,7 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 		actionPanel.add(panel);
 		panel.setLayout(null);
 		testPanel = new JPanel();
-		testPanel.setBounds(507, 40, 245, 39);
+		testPanel.setBounds(650, 27, 245, 39);
 		panel.add(testPanel);
 		testPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 
@@ -913,18 +913,21 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 		testPanel.setVisible(false);
 		testPanel.setBackground(Color.LIGHT_GRAY);
 
+		panel_1 = new JPanel();
+		panel_1.setBackground(Color.LIGHT_GRAY);
+		panel_1.setBounds(181, 27, 376, 44);
+		panel.add(panel_1);
+
+		JLabel lblNewLabel = new JLabel("Enter Test string");
+		panel_1.add(lblNewLabel);
+		
 		testField = new JTextField();
 		testField.setBounds(20, 40, 161, 27);
-		panel.add(testField);
+		panel_1.add(testField);
 		testField.setColumns(10);
-
 		testBtn = new JButton("Test");
-		testBtn.setBounds(193, 40, 92, 30);
-		panel.add(testBtn);
-
-		JLabel lblNewLabel = new JLabel("Enter Testing string");
-		lblNewLabel.setBounds(132, 12, 140, 16);
-		panel.add(lblNewLabel);
+		testBtn.setBounds(340, 20, 92, 30);
+		panel_1.add(testBtn);
 
 		testBtn.addMouseListener(new MouseAdapter() {
 
@@ -947,7 +950,7 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 					@Override
 					public void mouseClicked(MouseEvent e) {
 						arrowLabel.setVisible(true);
-						arrowLabel.setBounds(565, 600, 30, 30);
+						arrowLabel.setBounds(700, 600, 30, 30);
 						NFARunWindow.this.testUserInput(testString.substring(0, 1));
 						testBtn1.setBackground(Color.GREEN);
 						testBtn2.setBackground(Color.GRAY);
@@ -960,7 +963,7 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 				testBtn2.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
-						arrowLabel.setBounds(610, 600, 30, 30);
+						arrowLabel.setBounds(745, 600, 30, 30);
 						arrowLabel.setVisible(true);
 						NFARunWindow.this.testUserInput(testString.substring(0, 2));
 						testBtn2.setBackground(Color.GREEN);
@@ -973,7 +976,7 @@ public class NFARunWindow extends JFrame implements NFABuildViewInterface {
 				testBtn3.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
-						arrowLabel.setBounds(655, 600, 30, 30);
+						arrowLabel.setBounds(790, 600, 30, 30);
 						NFARunWindow.this.testUserInput(testString.substring(0, 3));
 						testBtn3.setBackground(Color.GREEN);
 						arrowLabel.setVisible(false);
