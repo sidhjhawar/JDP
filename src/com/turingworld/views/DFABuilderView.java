@@ -1,3 +1,4 @@
+
 package com.turingworld.views;
 
 /**
@@ -39,8 +40,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -388,7 +387,9 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		panelActivity = new JPanel();
 		recentActivityScrollPanel.setViewportView(panelActivity);
 		panelActivity.setLayout(new BoxLayout(panelActivity, BoxLayout.Y_AXIS));
-		actionPanel = new ImagePanel(new ImageIcon("image/background.png").getImage());
+		//actionPanel = new ImagePanel(new ImageIcon(ClassLoader.getSystemResource("image/background.png").getImage());
+		actionPanel = new ImagePanel(new ImageIcon(ClassLoader.getSystemResource("image/background.png")).getImage());
+		//newMenu.setIcon(new ImageIcon(ClassLoader.getSystemResource(ClassLoader.getSystemResource("image/newIcon.png")));
 		actionPanel.setBounds(155, 3, 785, 514);
 		contentPanel.add(actionPanel);
 		actionPanel.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -431,7 +432,8 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 
 							actionPanel.remove(dfaBlockObj.getDfaLabel());
 							((StateBlock) dfaBlockObj).setInitial(false);
-							JLabel label = new JLabel((new ImageIcon("image/tunnel.png")));
+							JLabel label = new JLabel((new ImageIcon(ClassLoader.getSystemResource("image/tunnel.png"))));
+							
 							dfaBlockObj.setDfaLabel(label);
 							repaint();
 
@@ -441,7 +443,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 
 							actionPanel.remove(dfaBlockObj.getDfaLabel());
 							((StateBlock) dfaBlockObj).setInitial(true);
-							JLabel label = new JLabel((new ImageIcon("image/house.png")));
+							JLabel label = new JLabel((new ImageIcon(ClassLoader.getSystemResource("image/house.png"))));
 							label.setBounds(dfaBlockObj.getX(), dfaBlockObj.getY(), 76, 96);
 							dfaBlockObj.setDfaLabel(label);
 							runStartStateBlock = (StateBlock) dfaBlockObj;
@@ -485,7 +487,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 						if (((StateBlock) dfaBlockObj).isFinal()) {
 							actionPanel.remove(dfaBlockObj.getDfaLabel());
 							((StateBlock) dfaBlockObj).setFinal(false);
-							JLabel label = new JLabel((new ImageIcon("image/tunnel.png")));
+							JLabel label = new JLabel((new ImageIcon(ClassLoader.getSystemResource("image/tunnel.png"))));
 							dfaBlockObj.setDfaLabel(label);
 							repaint();
 
@@ -496,7 +498,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 							actionPanel.remove(dfaBlockObj.getDfaLabel());
 							((StateBlock) dfaBlockObj).setFinal(true);
 
-							JLabel label = new JLabel((new ImageIcon("image/princess.png")));
+							JLabel label = new JLabel((new ImageIcon(ClassLoader.getSystemResource("image/princess.png"))));
 							label.setBounds(dfaBlockObj.getX(), dfaBlockObj.getY(), 76, 96);
 
 							dfaBlockObj.setDfaLabel(label);
@@ -588,7 +590,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 
 		mushroom = new JButton();
 		JLabel mushroom1 = new JLabel("");
-		mushroom.setIcon(new ImageIcon("image/mushroom.png"));
+		mushroom.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/mushroom.png")));
 		mushroom.setBorder(BorderFactory.createEmptyBorder());
 		mushroom1.setHorizontalAlignment(SwingConstants.CENTER);
 		FlowLayout f2 = new FlowLayout();
@@ -619,7 +621,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 
 		flower1 = new JButton();
 		JLabel flower = new JLabel("");
-		flower1.setIcon(new ImageIcon("image/flower.png"));
+		flower1.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/flower.png")));
 		flower1.setHorizontalAlignment(SwingConstants.CENTER);
 		flower1.setBorder(BorderFactory.createEmptyBorder());
 		FlowLayout f1 = new FlowLayout();
@@ -650,7 +652,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 
 		coin1 = new JButton();
 		JLabel coin = new JLabel("");
-		coin1.setIcon(new ImageIcon("image/coin.png"));
+		coin1.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/coin.png")));
 		coin1.setHorizontalAlignment(SwingConstants.CENTER);
 		coin1.setBorder(BorderFactory.createEmptyBorder());
 		FlowLayout f3 = new FlowLayout();
@@ -683,7 +685,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 
 		enemy1 = new JButton();
 		JLabel enemy = new JLabel("");
-		enemy1.setIcon(new ImageIcon("image/enemy.png"));
+		enemy1.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/enemy.png")));
 		enemy1.setBorder(BorderFactory.createEmptyBorder());
 		enemy1.setHorizontalAlignment(SwingConstants.CENTER);
 		FlowLayout f4 = new FlowLayout();
@@ -768,7 +770,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 				dispose();
 			}
 		});
-		mntmHome.setIcon(new ImageIcon("image/homeIcon.png"));
+		mntmHome.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/homeIcon.png")));
 		menuBar.add(mntmHome);
 
 		JMenuItem mntmNew = new JMenuItem("New");
@@ -777,7 +779,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 				createNewWindow();
 			}
 		});
-		mntmNew.setIcon(new ImageIcon("image/newIcon.png"));
+		mntmNew.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/newIcon.png")));
 		menuBar.add(mntmNew);
 		JMenuItem mntmTrivia = new JMenuItem("Trivia");
 		mntmTrivia.addActionListener(new ActionListener() {
@@ -786,7 +788,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 			}
 
 		});
-		mntmTrivia.setIcon(new ImageIcon("image/exclamationIcon.png"));
+		mntmTrivia.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/exclamationIcon.png")));
 		menuBar.add(mntmTrivia);
 
 		JMenuItem mntmTutorial = new JMenuItem("Tutorial");
@@ -800,7 +802,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 				}
 			}
 		});
-		mntmTutorial.setIcon(new ImageIcon("image/helpIcon.png"));
+		mntmTutorial.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/helpIcon.png")));
 		menuBar.add(mntmTutorial);
 	}
 
@@ -820,7 +822,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 			label.setLayout(new FlowLayout());
 			label.setTransferHandler(new TransferHandler("text"));
 			label.setSize(30, 20);
-			label.setIcon(new ImageIcon(block.getBlockLabelURL()));
+			label.setIcon(new ImageIcon(ClassLoader.getSystemResource(block.getBlockLabelURL())));
 			block.setBlockLabel(label);
 
 			if (block.getName().charAt(0) == 'q') {
@@ -885,7 +887,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		leftPanel.setLayout(null);
 
 		undo = new JLabel("undo");
-		undo.setIcon(new ImageIcon("image/undo.png"));
+		undo.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/undo.png")));
 		undo.setToolTipText("Undo");
 		undo.setName("undo");
 		undo.setBounds(30, 190, 75, 75);
@@ -896,20 +898,20 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		castle.setHorizontalAlignment(SwingConstants.CENTER);
 		castle.setName("leftPanelState");
 		castle.setToolTipText("");
-		castle.setIcon(new ImageIcon("image/tunnel.png"));
+		castle.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/tunnel.png")));
 		castle.setBounds(30, 42, 76, 96);
 		castle.setTransferHandler(new TransferHandler("text"));
 		leftPanel.add(castle);
 
 		redo = new JLabel("redo");
 		redo.setToolTipText("Redo");
-		redo.setIcon(new ImageIcon("image/redo.png"));
+		redo.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/redo.png")));
 		redo.setBounds(30, 309, 75, 75);
 		leftPanel.add(redo);
 
 		eraser = new JLabel("eraser");
 		eraser.setToolTipText("Eraser\r\n");
-		eraser.setIcon(new ImageIcon("image/delete.png"));
+		eraser.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/delete.png")));
 		eraser.setBounds(30, 428, 75, 75);
 		eraser.addMouseListener(new MouseAdapter() {
 
@@ -946,7 +948,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 
 		JLabel play = new JLabel("Play Button");
 		play.setToolTipText("Play\r\n");
-		play.setIcon(new ImageIcon("image/run.png"));
+		play.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/run.png")));
 		play.setBounds(30, 549, 75, 75);
 		leftPanel.add(play);
 		colorPositionX = 12;
@@ -1033,7 +1035,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		inputPathLabels = new ArrayList<JLabel>();
 		plus = new JButton();
 		JLabel plus1 = new JLabel("");
-		plus.setIcon(new ImageIcon("image/plus.png"));
+		plus.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/plus.png")));
 		plus.setBorder(BorderFactory.createEmptyBorder());
 		plus1.setHorizontalAlignment(SwingConstants.CENTER);
 		FlowLayout f2 = new FlowLayout();
@@ -1073,13 +1075,13 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 				FlowLayout f1 = new FlowLayout();
 				mushroom1.setLayout(f1);
 				if (charList[0].equals("a")) {
-					mushroom1.setIcon(new ImageIcon("image/mushroom.png"));
+					mushroom1.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/mushroom.png")));
 				} else if (charList[0].equals("b")) {
-					mushroom1.setIcon(new ImageIcon("image/flower.png"));
+					mushroom1.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/flower.png")));
 				} else if (charList[0].equals("c")) {
-					mushroom1.setIcon(new ImageIcon("image/coin.png"));
+					mushroom1.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/coin.png")));
 				} else {
-					mushroom1.setIcon(new ImageIcon("image/enemy.png"));
+					mushroom1.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/enemy.png")));
 				}
 				mushroom1.addActionListener(new ActionListener() {
 
@@ -1087,13 +1089,17 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 					public void actionPerformed(ActionEvent arg0) {
 						JLabel mushroomTransit1 = new JLabel();
 						if (charList[0].equals("a")) {
-							Icon = new ImageIcon("image/mushroom.png");
+							//Icon = new ImageIcon("image/mushroom.png");
+							Icon = new ImageIcon(ClassLoader.getSystemResource("image/mushroom.png"));
 						} else if (charList[0].equals("b")) {
-							Icon = new ImageIcon("image/flower.png");
+							//Icon = new ImageIcon("image/flower.png");
+							Icon = new ImageIcon(ClassLoader.getSystemResource("image/flower.png"));
 						} else if (charList[0].equals("c")) {
-							Icon = new ImageIcon("image/coin.png");
+							//Icon = new ImageIcon(ClassLoader.getSystemResource("image/mushroom.png"));Icon = new ImageIcon("image/coin.png");
+							Icon = new ImageIcon(ClassLoader.getSystemResource("image/coin.png"));
 						} else {
-							Icon = new ImageIcon("image/enemy.png");
+							//Icon = new ImageIcon("image/enemy.png");
+							Icon = new ImageIcon(ClassLoader.getSystemResource("image/enemy.png"));
 						}
 						// RotatedIcon ri = new RotatedIcon(Icon, degrees);
 						mushroomTransit1.setIcon(Icon);
@@ -1119,13 +1125,13 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 				FlowLayout f2 = new FlowLayout(FlowLayout.CENTER);
 				mushroom2.setLayout(f2);
 				if (charList[1].equals("a")) {
-					mushroom2.setIcon(new ImageIcon("image/mushroom.png"));
+					mushroom2.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/mushroom.png")));
 				} else if (charList[1].equals("b")) {
-					mushroom2.setIcon(new ImageIcon("image/flower.png"));
+					mushroom2.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/flower.png")));
 				} else if (charList[1].equals("c")) {
-					mushroom2.setIcon(new ImageIcon("image/coin.png"));
+					mushroom2.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/coin.png")));
 				} else {
-					mushroom2.setIcon(new ImageIcon("image/enemy.png"));
+					mushroom2.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/enemy.png")));
 				}
 				mushroom2.addActionListener(new ActionListener() {
 
@@ -1135,13 +1141,17 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 						JLabel mushroomTransit = new JLabel();
 
 						if (charList[1].equals("a")) {
-							Icon = new ImageIcon("image/mushroom.png");
+							//Icon = new ImageIcon("image/mushroom.png");
+							Icon = new ImageIcon(ClassLoader.getSystemResource("image/mushroom.png"));
 						} else if (charList[1].equals("b")) {
-							Icon = new ImageIcon("image/flower.png");
+							//Icon = new ImageIcon("image/flower.png");
+							Icon = new ImageIcon(ClassLoader.getSystemResource("image/flower.png"));
 						} else if (charList[1].equals("c")) {
-							Icon = new ImageIcon("image/coin.png");
+							//Icon = new ImageIcon("image/coin.png");
+							Icon = new ImageIcon(ClassLoader.getSystemResource("image/coin.png"));
 						} else {
-							Icon = new ImageIcon("image/enemy.png");
+							//Icon = new ImageIcon("image/enemy.png");
+							Icon = new ImageIcon(ClassLoader.getSystemResource("image/enemy.png"));
 						}
 						mushroomTransit.setIcon(Icon);
 
@@ -1305,17 +1315,17 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		FlowLayout f1 = new FlowLayout();
 		mushroom1.setLayout(f1);
 		if (charList[0].equals("a")) {
-			mushroom1.setIcon(new ImageIcon("image/mushroom.png"));
+			mushroom1.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/mushroom.png")));
 			transitURL = "image/mushroom.png";
 
 		} else if (charList[0].equals("b")) {
-			mushroom1.setIcon(new ImageIcon("image/flower.png"));
+			mushroom1.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/flower.png")));
 			transitURL = "image/flower.png";
 		} else if (charList[0].equals("c")) {
-			mushroom1.setIcon(new ImageIcon("image/coin.png"));
+			mushroom1.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/coin.png")));
 			transitURL = "image/coin.png";
 		} else {
-			mushroom1.setIcon(new ImageIcon("image/enemy.png"));
+			mushroom1.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/enemy.png")));
 			transitURL = "image/enemy.png";
 		}
 		// mushroom1.add(g);
@@ -1333,20 +1343,23 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 					if (charList[0].equals("a")) {
 						// mushroom1.setIcon(new
 						// ImageIcon("image/mushroom.png"));
-						Icon = new ImageIcon("image/mushroom.png");
+						Icon = new ImageIcon(ClassLoader.getSystemResource("image/mushroom.png"));
 						transitURL = "image/mushroom.png";
 
 					} else if (charList[0].equals("b")) {
-						// mushroom1.setIcon(new ImageIcon("image/flower.png"));
-						Icon = new ImageIcon("image/flower.png");
+						// mushroom1.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/flower.png"));
+						//Icon = new ImageIcon("image/flower.png");
+						Icon = new ImageIcon(ClassLoader.getSystemResource("image/flower.png"));
 						transitURL = "image/flower.png";
 
 					} else if (charList[0].equals("c")) {
-						Icon = new ImageIcon("image/coin.png");
+						//Icon = new ImageIcon("image/coin.png");
+						Icon = new ImageIcon(ClassLoader.getSystemResource("image/coin.png"));
 						transitURL = "image/coin.png";
 
 					} else {
-						Icon = new ImageIcon("image/enemy.png");
+						//Icon = new ImageIcon("image/enemy.png");
+						Icon = new ImageIcon(ClassLoader.getSystemResource("image/enemy.png"));
 						transitURL = "image/enemy.png";
 
 					}
@@ -1377,16 +1390,16 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 		FlowLayout f2 = new FlowLayout(FlowLayout.CENTER);
 		mushroom2.setLayout(f2);
 		if (charList[1].equals("a")) {
-			mushroom2.setIcon(new ImageIcon("image/mushroom.png"));
+			mushroom2.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/mushroom.png")));
 			transitURL = "image/mushroom.png";
 		} else if (charList[1].equals("b")) {
-			mushroom2.setIcon(new ImageIcon("image/flower.png"));
+			mushroom2.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/flower.png")));
 			transitURL = "image/flower.png";
 		} else if (charList[1].equals("c")) {
-			mushroom2.setIcon(new ImageIcon("image/coin.png"));
+			mushroom2.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/coin.png")));
 			transitURL = "image/coin.png";
 		} else {
-			mushroom2.setIcon(new ImageIcon("image/enemy.png"));
+			mushroom2.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/enemy.png")));
 			transitURL = "image/enemy.png";
 		}
 		mushroom2.addActionListener(new ActionListener() {
@@ -1401,17 +1414,21 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 					stateTransit2 = new JLabel();
 
 					if (charList[1].equals("a")) {
-						Icon = new ImageIcon("image/mushroom.png");
+						//Icon = new ImageIcon("image/mushroom.png");
+						Icon = new ImageIcon(ClassLoader.getSystemResource("image/mushroom.png"));
 						transitURL = "image/mushrooom.png";
 					} else if (charList[1].equals("b")) {
-						Icon = new ImageIcon("image/flower.png");
+						//Icon = new ImageIcon("image/flower.png");
+						Icon = new ImageIcon(ClassLoader.getSystemResource("image/flower.png"));
 						transitURL = "image/flower.png";
 					} else if (charList[1].equals("c")) {
-						Icon = new ImageIcon("image/coin.png");
+						//Icon = new ImageIcon("image/coin.png");
+						Icon = new ImageIcon(ClassLoader.getSystemResource("image/coin.png"));
 						transitURL = "image/coin.png";
 					} else {
-						// mushroom1.setIcon(new ImageIcon("image/enemy.png"));
-						Icon = new ImageIcon("image/enemy.png");
+						// mushroom1.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/enemy.png"));
+						//Icon = new ImageIcon("image/enemy.png");
+						Icon = new ImageIcon(ClassLoader.getSystemResource("image/enemy.png"));
 						transitURL = "image/enemy.png";
 					}
 					RotatedIcon ri = new RotatedIcon(Icon, degrees);
@@ -1510,7 +1527,7 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 				actionstate = new JLabel("");
 
 				actionstate.setName("actiontransition" + BlockBuilderModel.stateNo);
-				actionstate.setIcon(new ImageIcon("image/tunnel.png"));
+				actionstate.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/tunnel.png")));
 				stateURL = "image/tunnel.png";
 				actionstate.addMouseListener(listener);
 				actionstate.setTransferHandler(new TransferHandler("text"));
@@ -1607,7 +1624,8 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 								if (transit.equals(dfaBlockObj.getDfaLabel())) {
 
 									JLabel temp = dfaBlockObj.getDfaLabel();
-									ImageIcon icon = new ImageIcon(dfaBlockObj.getDfaLabelURL());
+									//ImageIcon icon = new ImageIcon(dfaBlockObj.getDfaLabelURL());
+									ImageIcon icon = new ImageIcon(ClassLoader.getSystemResource(dfaBlockObj.getDfaLabelURL()));
 									RotatedIcon r = new RotatedIcon(icon, degrees);
 									temp.setIcon(r);
 
@@ -1680,7 +1698,8 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 								if (transit1.equals(dfaBlockObj.getDfaLabel())) {
 
 									JLabel temp = dfaBlockObj.getDfaLabel();
-									ImageIcon icon = new ImageIcon(dfaBlockObj.getDfaLabelURL());
+									//ImageIcon icon = new ImageIcon(dfaBlockObj.getDfaLabelURL());
+									ImageIcon icon = new ImageIcon(ClassLoader.getSystemResource(dfaBlockObj.getDfaLabelURL()));
 									RotatedIcon r = new RotatedIcon(icon, degrees);
 									temp.setIcon(r);
 
@@ -1784,3 +1803,4 @@ public class DFABuilderView extends JFrame implements DFABuildViewInterface {
 	}
 
 }
+

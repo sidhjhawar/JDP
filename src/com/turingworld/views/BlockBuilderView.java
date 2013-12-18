@@ -173,7 +173,7 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 				createNewWindow();
 			}
 		});
-		newMenu.setIcon(new ImageIcon("image/newIcon.png"));
+		newMenu.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/newIcon.png")));
 		menuBar.add(newMenu);
 	}
 
@@ -214,7 +214,7 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 			text.setFont(new Font("Serif", Font.BOLD, 25));
 
 			tempicon.add(text);
-			tempicon.setIcon(new ImageIcon("image/outputBlock.png"));
+			tempicon.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/outputBlock.png")));
 			actionicons.add(tempicon);
 			viewHelper.getOutput().add(tempicon);
 		}
@@ -250,13 +250,13 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 		transitionLabel = new JLabel("TransitionA");
 		transitionLabel.setName("leftPanelTransitionA");
 		transitionLabel.setToolTipText("Transition\r\n\r\nA");
-		transitionLabel.setIcon(new ImageIcon("image/transition.png"));
+		transitionLabel.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/transition.png")));
 		transitionLabel.setBounds(41, 110, 75, 73);
 		transitionLabel.setTransferHandler(new TransferHandler("text"));
 		leftPanel.add(transitionLabel);
 
 		undoLabel = new JLabel("undo");
-		undoLabel.setIcon(new ImageIcon("image/undo.png"));
+		undoLabel.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/undo.png")));
 		undoLabel.setToolTipText("Undo");
 		undoLabel.setName("undo");
 		undoLabel.setBounds(41, 212, 75, 73);
@@ -266,20 +266,20 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 		stateLabel = new JLabel("state");
 		stateLabel.setName("leftPanelState");
 		stateLabel.setToolTipText("State");
-		stateLabel.setIcon(new ImageIcon("image/state1.png"));
+		stateLabel.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/state1.png")));
 		stateLabel.setBounds(41, 11, 75, 73);
 		stateLabel.setTransferHandler(new TransferHandler("text"));
 		leftPanel.add(stateLabel);
 
 		redoLabel = new JLabel("redo");
 		redoLabel.setToolTipText("Redo");
-		redoLabel.setIcon(new ImageIcon("image/redo.png"));
+		redoLabel.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/redo.png")));
 		redoLabel.setBounds(41, 313, 75, 75);
 		leftPanel.add(redoLabel);
 
 		eraserLabel = new JLabel("eraser");
 		eraserLabel.setToolTipText("Eraser\r\n");
-		eraserLabel.setIcon(new ImageIcon("image/delete.png"));
+		eraserLabel.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/delete.png")));
 		eraserLabel.setBounds(41, 429, 75, 75);
 		eraserLabel.addMouseListener(new MouseAdapter() {
 
@@ -316,7 +316,7 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 
 		snapshotLabel = new JLabel("snapShot");
 		snapshotLabel.setToolTipText("Shap Shot");
-		snapshotLabel.setIcon(new ImageIcon("image/camera.png"));
+		snapshotLabel.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/camera.png")));
 		snapshotLabel.setBounds(41, 544, 75, 75);
 		leftPanel.add(snapshotLabel);
 
@@ -387,26 +387,26 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 					textLabel.setFont(new Font("Serif", Font.BOLD, 12));
 
 					if (block.isState()) {
-						blockLabel.setIcon(new ImageIcon("image/mini_state.png"));
+						blockLabel.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/mini_state.png")));
 						textLabel.setText("q" + stateNo++);
 						textLabel.setForeground(Color.white);
 						blockLabel.setLayout(new BorderLayout());
 						blockLabel.add(textLabel, BorderLayout.CENTER);
 					} else {
 						if (block.getTransitionType().equals("A")) {
-							blockLabel.setIcon(new ImageIcon("image/mini_transitionA.png"));
+							blockLabel.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/mini_transitionA.png")));
 							textLabel.setText("A");
 							blockLabel.add(textLabel);
 						} else if (block.getTransitionType().equals("B")) {
-							blockLabel.setIcon(new ImageIcon("image/mini_transitionB.png"));
+							blockLabel.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/mini_transitionB.png")));
 							textLabel.setText("B");
 							blockLabel.add(textLabel);
 						} else if (block.getTransitionType().equals("C")) {
-							blockLabel.setIcon(new ImageIcon("image/mini_transitionC.png"));
+							blockLabel.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/mini_transitionC.png")));
 							textLabel.setText("C");
 							blockLabel.add(textLabel);
 						} else {
-							blockLabel.setIcon(new ImageIcon("image/mini_transitionD.png"));
+							blockLabel.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/mini_transitionD.png")));
 							textLabel.setText("D");
 							blockLabel.add(textLabel);
 						}
@@ -471,7 +471,7 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				actiontransition.setIcon(new ImageIcon("image/transitionD.png"));
+				actiontransition.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/transitionD.png")));
 				actiontransition.add(greenLabel, BorderLayout.CENTER);
 				b.setTransitionType("D");
 				b.setBlockLabelURL("image/transitionD.png");
@@ -494,7 +494,7 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				actiontransition.setIcon(new ImageIcon("image/transitionB.png"));
+				actiontransition.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/transitionB.png")));
 				actiontransition.add(redLabel, BorderLayout.CENTER);
 				b.setTransitionType("B");
 				b.setBlockLabelURL("image/transitionB.png");
@@ -516,7 +516,7 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				actiontransition.setIcon(new ImageIcon("image/transitionA.png"));
+				actiontransition.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/transitionA.png")));
 				actiontransition.add(yellowLabel, BorderLayout.CENTER);
 				b.setTransitionType("A");
 				b.setBlockLabelURL("image/transitionA.png");
@@ -538,7 +538,7 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				actiontransition.setIcon(new ImageIcon("image/transitionC.png"));
+				actiontransition.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/transitionC.png")));
 				b.setTransitionType("C");
 				b.setBlockLabelURL("image/transitionC.png");
 				JLabel msg = new JLabel(++activityNo + ". C is added to the panel");
@@ -624,7 +624,7 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 					blockLabel.setLayout(new BorderLayout());
 
 					if (block.isState()) {
-						blockLabel.setIcon(new ImageIcon("image/state.png"));
+						blockLabel.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/state.png")));
 						textLabel.setText("q" + stateNo++);
 						textLabel.setFont(new Font("Serif", Font.BOLD, 16));
 						textLabel.setForeground(Color.white);
@@ -632,19 +632,19 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 					} else {
 						textLabel.setFont(new Font("Serif", Font.BOLD, 30));
 						if (block.getTransitionType().equals("A")) {
-							blockLabel.setIcon(new ImageIcon("image/transitionA.png"));
+							blockLabel.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/transitionA.png")));
 							textLabel.setText("A");
 							blockLabel.add(textLabel);
 						} else if (block.getTransitionType().equals("B")) {
-							blockLabel.setIcon(new ImageIcon("image/transitionB.png"));
+							blockLabel.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/transitionB.png")));
 							textLabel.setText("B");
 							blockLabel.add(textLabel);
 						} else if (block.getTransitionType().equals("C")) {
-							blockLabel.setIcon(new ImageIcon("image/transitionC.png"));
+							blockLabel.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/transitionC.png")));
 							textLabel.setText("C");
 							blockLabel.add(textLabel);
 						} else {
-							blockLabel.setIcon(new ImageIcon("image/transitionD.png"));
+							blockLabel.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/transitionD.png")));
 							textLabel.setText("D");
 							blockLabel.add(textLabel);
 						}
@@ -673,7 +673,7 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 					transitionY = dtde.getLocation().y;
 					actiontransition = new JLabel("transitionA");
 					actiontransition.setName("actiontransition" + (BlockBuilderModel.transitionNo));
-					actiontransition.setIcon(new ImageIcon("image/transition.png"));
+					actiontransition.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/transition.png")));
 					actiontransition.setBounds(transitionX, transitionY, 75, 73);
 
 					actiontransition.addMouseListener(listener);
@@ -692,7 +692,7 @@ public class BlockBuilderView extends JFrame implements BuildViewInterface {
 					actionstate = new JLabel("state");
 
 					actionstate.setName("actiontransition" + BlockBuilderModel.stateNo);
-					actionstate.setIcon(new ImageIcon("image/state.png"));
+					actionstate.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/state.png")));
 					actionstate.addMouseListener(listener);
 					actionstate.setTransferHandler(new TransferHandler("text"));
 					actionstate.setBounds(dtde.getLocation().x, dtde.getLocation().y, 75, 73);

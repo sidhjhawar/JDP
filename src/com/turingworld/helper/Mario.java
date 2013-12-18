@@ -25,21 +25,22 @@ public class Mario extends JLabel {
 		if (state.equalsIgnoreCase("RUNNING")) {
 			xSpeed = 1;
 			ySpeed = 0;
-			marioLabel.setIcon(new ImageIcon("image/mario_run.gif"));
+			marioLabel.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/mario_run.gif")));
+			//new ImageIcon(ClassLoader.getSystemResource(ClassLoader.getSystemResource("image/newIcon.png")));
 		} else if (state.equalsIgnoreCase("JUMPING")) {
 			xSpeed = 0;
 			ySpeed = -1;
-			marioLabel.setIcon(new ImageIcon("image/mario.png"));
+			marioLabel.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/mario.png")));
 		} else if (state.equalsIgnoreCase("FALLING")) {
 			xSpeed = 0;
 			ySpeed = 1;
-			marioLabel.setIcon(new ImageIcon("image/mario.png"));
+			marioLabel.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/mario.png")));
 		} else if (state.equalsIgnoreCase("FINISH")) {
 			xSpeed = 0;
 			ySpeed = 0;
-			marioLabel.setIcon(new ImageIcon("image/mario.png"));
+			marioLabel.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/mario.png")));
 		} else {
-			marioLabel.setIcon(new ImageIcon("image/mario.png"));
+			marioLabel.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/mario.png")));
 		}
 		// return marioLabel;
 

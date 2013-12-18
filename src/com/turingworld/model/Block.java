@@ -9,7 +9,6 @@ package com.turingworld.model;
  */
 import java.awt.Rectangle;
 
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import com.google.gson.annotations.Expose;

@@ -15,7 +15,6 @@ import javax.swing.JLabel;
 import com.turingworld.command.AddNFABlockCommand;
 import com.turingworld.command.Invoker;
 import com.turingworld.model.BlockBuilderModel;
-import com.turingworld.model.DFABuilderModel;
 import com.turingworld.model.FABlock;
 import com.turingworld.model.NFABuilderModel;
 import com.turingworld.model.StateBlock;

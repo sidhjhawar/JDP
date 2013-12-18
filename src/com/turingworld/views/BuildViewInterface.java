@@ -3,8 +3,6 @@ package com.turingworld.views;
 /**
  * @author bbachuna, chauhanp, erajan, haashraf, sjhawar, vrajasek.
  */
-import javax.swing.JLabel;
-
 import com.turingworld.model.Block;
 
 public interface BuildViewInterface {

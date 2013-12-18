@@ -66,7 +66,8 @@ public class HomeScreen extends JFrame {
 	private void createLoad() {
 
 		JButton btnNewButton = new JButton("Load Existing Files");
-		btnNewButton.setIcon(new ImageIcon("image/load.png"));
+		btnNewButton.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/load.png")));
+		//btnNewButton.setIcon(new ImageIcon("image/load.png"));
 		btnNewButton.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 18));
 		getContentPane().add(btnNewButton, BorderLayout.SOUTH);
 
@@ -115,7 +116,8 @@ public class HomeScreen extends JFrame {
 
 	private void createHelp() {
 		JButton helpBtn = new JButton("Help\r\n");
-		helpBtn.setIcon(new ImageIcon("image/help.png"));
+		helpBtn.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/help.png")));
+		//helpBtn.setIcon(new ImageIcon("image/help.png"));
 		helpBtn.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 18));
 		getContentPane().add(helpBtn, BorderLayout.CENTER);
 	}
@@ -134,7 +136,8 @@ public class HomeScreen extends JFrame {
 			}
 		});
 		buildBtn.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 18));
-		buildBtn.setIcon(new ImageIcon("image/build.png"));
+		buildBtn.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/build.png")));
+		//buildBtn.setIcon(new ImageIcon("image/build.png"));
 		getContentPane().add(buildBtn, BorderLayout.NORTH);
 
 	}

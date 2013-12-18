@@ -29,8 +29,6 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
 
-import com.turingworld.model.Block;
-
 public class ViewHelper extends JFrame {
 
 	private JLabel noticeLabel;
@@ -210,15 +208,16 @@ public class ViewHelper extends JFrame {
 				dispose();
 			}
 		});
-		homeMenu.setIcon(new ImageIcon("image/homeIcon.png"));
+		homeMenu.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/homeIcon.png")));
+		//actionPanel = new ImagePanel(new ImageIcon(ClassLoader.getSystemResource(ClassLoader.getSystemResource("image/background.png")).getImage());
 		menuBar.add(homeMenu);
 
 		JMenuItem saveMenu = new JMenuItem("Save");
-		saveMenu.setIcon(new ImageIcon("image/SaveIcon.png"));
+		saveMenu.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/SaveIcon.png")));
 		menuBar.add(saveMenu);
 
 		JMenuItem loadMenu = new JMenuItem("Load");
-		loadMenu.setIcon(new ImageIcon("image/loadIcon.jpg"));
+		loadMenu.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/loadIcon.jpg")));
 		menuBar.add(loadMenu);
 
 		JMenuItem triviaMenu = new JMenuItem("Trivia");
@@ -229,11 +228,11 @@ public class ViewHelper extends JFrame {
 			}
 
 		});
-		triviaMenu.setIcon(new ImageIcon("image/exclamationIcon.png"));
+		triviaMenu.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/exclamationIcon.png")));
 		menuBar.add(triviaMenu);
 
 		JMenuItem tutorialMenu = new JMenuItem("Tutorial");
-		tutorialMenu.setIcon(new ImageIcon("image/helpIcon.png"));
+		tutorialMenu.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/helpIcon.png")));
 		tutorialMenu.addActionListener(new ActionListener() {
 			
 			@Override

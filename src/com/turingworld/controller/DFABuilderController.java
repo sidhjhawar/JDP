@@ -8,22 +8,17 @@ package com.turingworld.controller;
  * methods of this class are being called. This class also contains methods which checks whether
  * there is only one outward transition from each state. 
  */
-import java.awt.Color;
-import java.awt.Font;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-import com.turingworld.command.AddBlockCommand;
 import com.turingworld.command.AddDFABlockCommand;
 import com.turingworld.command.Invoker;
-import com.turingworld.model.Block;
 import com.turingworld.model.BlockBuilderModel;
-import com.turingworld.model.FABlock;
 import com.turingworld.model.DFABuilderModel;
+import com.turingworld.model.FABlock;
 import com.turingworld.model.StateBlock;
 import com.turingworld.model.TransitionBlock;
 import com.turingworld.views.DFABuildViewInterface;

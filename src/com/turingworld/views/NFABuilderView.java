@@ -200,7 +200,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 				dispose();
 			}
 		});
-		mntmHome.setIcon(new ImageIcon("image/homeIcon.png"));
+		mntmHome.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/homeIcon.png")));
 		menuBar.add(mntmHome);
 
 		JMenuItem mntmNew = new JMenuItem("New");
@@ -209,7 +209,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 				createNewWindow();
 			}
 		});
-		mntmNew.setIcon(new ImageIcon("image/newIcon.png"));
+		mntmNew.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/newIcon.png")));
 		menuBar.add(mntmNew);
 		JMenuItem mntmTrivia = new JMenuItem("Trivia");
 		mntmTrivia.addActionListener(new ActionListener() {
@@ -218,7 +218,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 			}
 
 		});
-		mntmTrivia.setIcon(new ImageIcon("image/exclamationIcon.png"));
+		mntmTrivia.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/exclamationIcon.png")));
 		menuBar.add(mntmTrivia);
 
 		JMenuItem mntmTutorial = new JMenuItem("Tutorial");
@@ -232,7 +232,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 				}
 			}
 		});
-		mntmTutorial.setIcon(new ImageIcon("image/helpIcon.png"));
+		mntmTutorial.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/helpIcon.png")));
 		menuBar.add(mntmTutorial);
 	}
 
@@ -267,7 +267,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 		leftPanel.setLayout(null);
 
 		undo = new JLabel("undo");
-		undo.setIcon(new ImageIcon("image/undo.png"));
+		undo.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/undo.png")));
 		undo.setToolTipText("Undo");
 		undo.setName("undo");
 		undo.setBounds(30, 190, 75, 75);
@@ -278,20 +278,20 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 		stateCirle.setHorizontalAlignment(SwingConstants.CENTER);
 		stateCirle.setName("leftPanelState");
 		stateCirle.setToolTipText("");
-		stateCirle.setIcon(new ImageIcon("image/stateCirlce.png"));
+		stateCirle.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/stateCirlce.png")));
 		stateCirle.setBounds(30, 42, 80, 80);
 		stateCirle.setTransferHandler(new TransferHandler("text"));
 		leftPanel.add(stateCirle);
 
 		redo = new JLabel("redo");
 		redo.setToolTipText("Redo");
-		redo.setIcon(new ImageIcon("image/redo.png"));
+		redo.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/redo.png")));
 		redo.setBounds(30, 309, 75, 75);
 		leftPanel.add(redo);
 
 		eraser = new JLabel("eraser");
 		eraser.setToolTipText("Eraser\r\n");
-		eraser.setIcon(new ImageIcon("image/delete.png"));
+		eraser.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/delete.png")));
 		eraser.setBounds(30, 428, 75, 75);
 		eraser.addMouseListener(new MouseAdapter() {
 
@@ -328,7 +328,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 
 		play = new JLabel("Play Button");
 		play.setToolTipText("Play\r\n");
-		play.setIcon(new ImageIcon("image/run.png"));
+		play.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/run.png")));
 		play.setBounds(30, 549, 75, 75);
 		play.addMouseListener(new MouseAdapter() {
 
@@ -713,7 +713,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 				actionState = new JLabel("state");
 
 				actionState.setName("actiontransition" + BlockBuilderModel.stateNo);
-				actionState.setIcon(new ImageIcon("image/stateCirlce.png"));
+				actionState.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/stateCirlce.png")));
 				stateURL = "image/stateCirlce.png";
 				actionState.addMouseListener(listener);
 				actionState.setTransferHandler(new TransferHandler("text"));
@@ -778,7 +778,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 						actionPanel.remove(nfaBlockObj.getDfaLabel());
 						JLabel initial = new JLabel();
 						initial.setName("");
-						initial.setIcon(new ImageIcon("image/initialStateCirlce.png"));
+						initial.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/initialStateCirlce.png")));
 						initial.setBounds(nfaBlockObj.getX(), nfaBlockObj.getY(), 80, 80);
 						initial.setTransferHandler(new TransferHandler("text"));
 						initial.addMouseListener(listener);
@@ -811,7 +811,7 @@ public class NFABuilderView extends JFrame implements NFABuildViewInterface {
 						actionPanel.remove(nfaBlockObj.getDfaLabel());
 						JLabel initial = new JLabel();
 						initial.setName("");
-						initial.setIcon(new ImageIcon("image/finalStateCirlce.png"));
+						initial.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/finalStateCirlce.png")));
 						initial.setBounds(nfaBlockObj.getX(), nfaBlockObj.getY(), 80, 80);
 						initial.setTransferHandler(new TransferHandler("text"));
 						initial.addMouseListener(listener);

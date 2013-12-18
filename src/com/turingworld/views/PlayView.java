@@ -11,10 +11,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import javax.swing.border.TitledBorder;
 
@@ -22,7 +22,6 @@ import com.turingworld.controller.DFABuilderController;
 import com.turingworld.helper.Mario;
 import com.turingworld.model.StateBlock;
 import com.turingworld.model.TransitionBlock;
-import javax.swing.SwingConstants;
 
 public class PlayView extends JPanel {
 	private JLabel panelBottom;
@@ -68,32 +67,33 @@ public class PlayView extends JPanel {
 		setLayout(null);
 
 		panelBottom = new JLabel("");
-		panelBottom.setIcon(new ImageIcon("image/bottomPanel.png"));
+		panelBottom.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/bottomPanel.png")));
+	//	new ImageIcon(ClassLoader.getSystemResource(ClassLoader.getSystemResource("image/tunnel.png"))
 		panelBottom.setBounds(0, 442, 785, 72);
 		add(panelBottom);
 
 		panelRight = new JLabel("");
-		panelRight.setIcon(new ImageIcon("image/panelRight.png"));
+		panelRight.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/panelRight.png")));
 		panelRight.setBounds(638, 0, 147, 441);
 		add(panelRight);
 
 		panelMiddle = new JLabel("");
-		panelMiddle.setIcon(new ImageIcon("image/panelMiddle.png"));
+		panelMiddle.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/panelMiddle.png")));
 		panelMiddle.setBounds(147, 238, 493, 49);
 		add(panelMiddle);
 
 		panelUp = new JLabel("");
-		panelUp.setIcon(new ImageIcon("image/panelUp.png"));
+		panelUp.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/panelUp.png")));
 		panelUp.setBounds(147, 0, 493, 96);
 		add(panelUp);
 
 		panelLeft = new JLabel("");
-		panelLeft.setIcon(new ImageIcon("image/panelLeft.png"));
+		panelLeft.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/panelLeft.png")));
 		panelLeft.setBounds(0, 0, 48, 441);
 		add(panelLeft);
 
 		ladder = new JLabel("");
-		ladder.setIcon(new ImageIcon("image/ladder.png"));
+		ladder.setIcon(new ImageIcon(ClassLoader.getSystemResource("image/ladder.png")));
 		ladder.setHorizontalAlignment(SwingConstants.CENTER);
 		ladder.setBounds(148, 282, 35, 89);
 
